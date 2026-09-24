@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#142d3d" />
+    <meta name="description" content="WagSignals is a calm, practical guide to reading dog body language." />
+    <title>WagSignals — Read the whole dog</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <style>
+      :root {
+        --ink: #142d3d;
+        --ink-soft: #4b626b;
+        --paper: #f8f5ee;
+        --paper-2: #fffdf8;
+        --line: #d9dfd8;
+        --coral: #f06c52;
+        --coral-dark: #c94c3b;
+        --sun: #f5be48;
+        --sky: #d9eff2;
+        --green: #b9d8b0;
+        --shadow: 0 20px 60px rgba(20, 45, 61, 0.10);
+        --radius-lg: 28px;
+        --radius-md: 18px;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.55;
+      }
+      img { display: block; max-width: 100%; }
+      button, a { font: inherit; }
+      a { color: inherit; }
+
+      .skip-link {
+        position: absolute;
+        top: -48px;
+        left: 16px;
+        z-index: 20;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: var(--ink);
+        color: white;
+      }
+      .skip-link:focus { top: 12px; }
+
+      .shell { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 0;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--ink);
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        text-decoration: none;
+      }
+      .brand-mark {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 12px 12px 12px 4px;
+        background: var(--coral);
+        color: white;
+        font-size: 17px;
+        transform: rotate(-7deg);
+      }
+      .nav { display: flex; align-items: center; gap: 26px; color: var(--ink-soft); font-size: 14px; font-weight: 700; }
+      .nav a { text-decoration: none; }
+      .nav a:hover, .nav a:focus-visible { color: var(--coral-dark); }
+      .nav-cta {
+        padding: 10px 16px;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        color: var(--ink) !important;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 560px;
+        display: grid;
+        grid-template-columns: 0.88fr 1.12fr;
+        align-items: center;
+        gap: 32px;
+        padding: 50px 0 58px;
+      }
+      .hero-copy { position: relative; z-index: 1; max-width: 520px; }
+      .eyebrow, .section-kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--coral-dark);
+        font-size: 12px;
+        font-weight: 850;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--sun); }
+      h1, h2, h3, p { margin-top: 0; }
+      h1 {
+        max-width: 620px;
+        margin: 15px 0 20px;
+        font-size: clamp(3.5rem, 7vw, 6.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.075em;
+        font-weight: 850;
+      }
+      .hero-copy > p { max-width: 480px; margin-bottom: 28px; color: var(--ink-soft); font-size: 18px; }
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 20px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        background: var(--coral);
+        color: white;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 10px 24px rgba(240, 108, 82, 0.22);
+        transition: transform 160ms ease, background 160ms ease;
+      }
+      .button:hover, .button:focus-visible { background: var(--coral-dark); transform: translateY(-2px); }
+      .button.secondary { background: transparent; border-color: var(--line); color: var(--ink); box-shadow: none; }
+      .button.secondary:hover, .button.secondary:focus-visible { border-color: var(--ink); background: var(--paper-2); }
+      .helper { margin: 13px 0 0; color: var(--ink-soft); font-size: 13px; }
+
+      .hero-art {
+        position: relative;
+        min-height: 455px;
+        overflow: hidden;
+        border: 9px solid var(--paper-2);
+        border-radius: 38px;
+        background: var(--sky);
+        box-shadow: var(--shadow);
+        transform: rotate(2deg);
+      }
+      .hero-art img { width: 100%; height: 100%; min-height: 455px; object-fit: cover; object-position: center; }
+      .hero-sticker {
+        position: absolute;
+        right: 24px;
+        bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 170px;
+        padding: 12px 15px;
+        border-radius: 16px 16px 4px 16px;
+        background: var(--paper-2);
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.25;
+        box-shadow: 0 10px 28px rgba(20, 45, 61, 0.16);
+        transform: rotate(-4deg);
+      }
+      .hero-sticker span { font-size: 22px; }
+
+      .signal-section { padding: 72px 0 88px; }
+      .section-intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+      .section-intro h2 { max-width: 570px; margin: 8px 0 0; font-size: clamp(2.4rem, 5vw, 4rem); line-height: 1; letter-spacing: -0.065em; }
+      .section-intro p { max-width: 330px; margin: 0; color: var(--ink-soft); }
+      .signal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+      .signal-card {
+        min-height: 166px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: rgba(255, 253, 248, 0.72);
+        color: var(--ink);
+        text-align: left;
+        cursor: pointer;
+        transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      }
+      .signal-card:hover, .signal-card:focus-visible { border-color: var(--coral); transform: translateY(-3px); box-shadow: 0 12px 28px rgba(20,45,61,0.08); }
+      .signal-card[aria-pressed="true"] { border: 2px solid var(--coral); background: #fff8ed; box-shadow: 0 14px 30px rgba(240,108,82,0.12); }
+      .signal-icon { display: grid; width: 44px; height: 44px; place-items: center; margin-bottom: 18px; border-radius: 14px; background: var(--sky); font-size: 23px; }
+      .signal-card:nth-child(2) .signal-icon { background: #ffe5c5; }
+      .signal-card:nth-child(3) .signal-icon { background: #e7dff7; }
+      .signal-card:nth-child(4) .signal-icon { background: #fbd2c9; }
+      .signal-card h3 { margin-bottom: 4px; font-size: 18px; letter-spacing: -0.03em; }
+      .signal-card p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.35; }
+
+      .read-panel {
+        display: grid;
+        grid-template-columns: 0.74fr 1.26fr;
+        gap: 32px;
+        align-items: start;
+        margin-top: 18px;
+        padding: 32px;
+        border-radius: var(--radius-lg);
+        background: var(--ink);
+        color: white;
+      }
+      .read-panel h3 { margin: 6px 0 10px; font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.02; letter-spacing: -0.06em; }
+      .read-panel .section-kicker { color: var(--sun); }
+      .read-panel .section-kicker::before { content: "●"; color: var(--sun); font-size: 10px; }
+      .read-panel > div > p { margin-bottom: 0; color: #c9d5d7; }
+      .read-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+      .read-list li { min-height: 118px; padding: 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 15px; background: rgba(255,255,255,0.05); }
+      .read-list strong { display: block; margin-bottom: 5px; color: white; font-size: 14px; }
+      .read-list span { color: #c9d5d7; font-size: 14px; line-height: 1.38; }
+
+      .body-section { padding: 0 0 88px; }
+      .body-map {
+        display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        gap: 44px;
+        align-items: center;
+        padding: 40px;
+        border-radius: var(--radius-lg);
+        background: var(--sky);
+      }
+      .body-map h2 { max-width: 380px; margin: 8px 0 14px; font-size: clamp(2.4rem, 4vw, 3.8rem); line-height: 0.98; letter-spacing: -0.065em; }
+      .body-map > div > p { max-width: 410px; color: var(--ink-soft); }
+      .map-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+      .map-list li { display: grid; grid-template-columns: 42px 1fr; gap: 12px; align-items: start; padding: 16px; border-radius: 15px; background: rgba(255,253,248,0.72); }
+      .map-badge { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 12px; background: var(--paper-2); color: var(--coral-dark); font-size: 18px; font-weight: 850; }
+      .map-list strong { display: block; margin-bottom: 3px; font-size: 15px; }
+      .map-list span { color: var(--ink-soft); font-size: 13px; line-height: 1.35; }
+
+      .pause-section { padding: 0 0 92px; }
+      .pause-card { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 36px; align-items: center; padding: 34px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--paper-2); }
+      .pause-card h2 { margin: 8px 0 12px; font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1; letter-spacing: -0.06em; }
+      .pause-card p { margin-bottom: 0; color: var(--ink-soft); }
+      .pause-steps { display: grid; gap: 10px; }
+      .pause-step { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; padding: 14px; border-radius: 14px; background: #fff8ed; }
+      .pause-step b { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 50%; background: var(--sun); color: var(--ink); font-size: 14px; }
+      .pause-step strong { display: block; margin-bottom: 2px; font-size: 15px; }
+      .pause-step span { color: var(--ink-soft); font-size: 14px; }
+
+      footer { padding: 28px 0 40px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 13px; }
+      .footer-inner { display: flex; justify-content: space-between; gap: 20px; }
+      .footer-inner p { margin: 0; max-width: 620px; }
+      .footer-mark { color: var(--ink); font-weight: 800; }
+
+      :focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; } }
+      @media (max-width: 860px) {
+        .hero, .body-map, .pause-card { grid-template-columns: 1fr; }
+        .hero { padding-top: 26px; }
+        .hero-copy { max-width: 680px; }
+        .hero-art { min-height: 370px; transform: none; }
+        .hero-art img { min-height: 370px; }
+        .signal-grid { grid-template-columns: repeat(2, 1fr); }
+        .read-panel { grid-template-columns: 1fr; }
+        .body-map { gap: 24px; }
+      }
+      @media (max-width: 560px) {
+        .shell { width: min(100% - 28px, 1160px); }
+        .topbar { padding: 14px 0; }
+        .nav { gap: 10px; }
+        .nav a:not(.nav-cta) { display: none; }
+        h1 { font-size: clamp(3.3rem, 18vw, 5rem); }
+        .hero { min-height: auto; padding-bottom: 45px; }
+        .hero-art, .hero-art img { min-height: 290px; }
+        .signal-section { padding: 48px 0 58px; }
+        .section-intro { display: block; }
+        .section-intro p { margin-top: 16px; }
+        .signal-grid, .read-list, .map-list { grid-template-columns: 1fr; }
+        .read-panel, .body-map, .pause-card { padding: 22px; }
+        .body-section, .pause-section { padding-bottom: 58px; }
+        .footer-inner { display: block; }
+        .footer-inner .footer-mark { display: block; margin-bottom: 9px; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#signals">Skip to body language guide</a>
+    <header class="shell topbar">
+      <a class="brand" href="#top" aria-label="WagSignals home"><span class="brand-mark" aria-hidden="true">✦</span>WagSignals</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#signals">Signals</a>
+        <a href="#body-map">Body map</a>
+        <a class="nav-cta" href="#pause">When to pause</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="shell hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <span class="eyebrow">Dog body language, made practical</span>
+          <h1 id="hero-title">The tail is only one clue.</h1>
+          <p>Learn to read the full picture—ears, eyes, mouth, movement, and context—so your dog feels understood before they have to shout.</p>
+          <div class="hero-actions">
+            <a class="button" href="#signals">Read a signal <span aria-hidden="true">↘</span></a>
+            <a class="button secondary" href="#body-map">See the body map</a>
+          </div>
+          <p class="helper">A gentle starting point for dog people, adopters, and curious kids.</p>
+        </div>
+        <div class="hero-art">
+          <img src="./assets/dog-language-hero.png" alt="Three friendly dogs in a sunny park showing different body language" />
+          <div class="hero-sticker"><span aria-hidden="true">👀</span> Look for patterns, not just one pose.</div>
+        </div>
+      </section>
+
+      <section class="shell signal-section" id="signals" aria-labelledby="signals-title">
+        <div class="section-intro">
+          <div>
+            <span class="section-kicker">Start here</span>
+            <h2 id="signals-title">What might your dog be saying?</h2>
+          </div>
+          <p>Tap a moment to get a quick, low-pressure read. Then check the whole body before you act.</p>
+        </div>
+        <div class="signal-grid" role="group" aria-label="Dog body language moments">
+          <button class="signal-card" type="button" aria-pressed="true" data-signal="relaxed">
+            <span class="signal-icon" aria-hidden="true">☼</span>
+            <h3>Soft & relaxed</h3>
+            <p>Loose body, easy breathing, and a face that can wiggle.</p>
+          </button>
+          <button class="signal-card" type="button" aria-pressed="false" data-signal="playful">
+            <span class="signal-icon" aria-hidden="true">↘</span>
+            <h3>Ready to play</h3>
+            <p>Front end low, back end up, and a springy invitation.</p>
+          </button>
+          <button class="signal-card" type="button" aria-pressed="false" data-signal="unsure">
+            <span class="signal-icon" aria-hidden="true">◌</span>
+            <h3>Not so sure</h3>
+            <p>Weight shifts away, head turns, or the body gets smaller.</p>
+          </button>
+          <button class="signal-card" type="button" aria-pressed="false" data-signal="overwhelmed">
+            <span class="signal-icon" aria-hidden="true">!</span>
+            <h3>Needs space</h3>
+            <p>Stillness, a hard stare, lip licking, or a tight mouth can be a pause.</p>
+          </button>
+        </div>
+        <div class="read-panel" aria-live="polite">
+          <div>
+            <span class="section-kicker" id="read-kicker">A softer read</span>
+            <h3 id="read-title">Loose usually means comfortable.</h3>
+            <p id="read-summary">A relaxed dog can still be alert or excited. Look for easy movement and the ability to choose what happens next.</p>
+          </div>
+          <ul class="read-list" id="read-list">
+            <li><strong>Look for</strong><span>Soft eyes, a wiggly middle, and a mouth that rests open or gently closed.</span></li>
+            <li><strong>Try this</strong><span>Keep the moment predictable. Let your dog approach, sniff, or move away.</span></li>
+            <li><strong>Don’t assume</strong><span>A wag only tells you the tail is moving—not whether the feeling is happy.</span></li>
+            <li><strong>Helpful next step</strong><span>Notice what changed just before the body changed. Context is the missing clue.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="shell body-section" id="body-map" aria-labelledby="body-map-title">
+        <div class="body-map">
+          <div>
+            <span class="section-kicker">The whole-body check</span>
+            <h2 id="body-map-title">Read the sentence, not one word.</h2>
+            <p>Dogs speak in clusters of signals. Scan from face to feet, then add the setting: who is nearby, what just happened, and whether your dog can leave.</p>
+          </div>
+          <ul class="map-list">
+            <li><span class="map-badge" aria-hidden="true">01</span><div><strong>Ears</strong><span>Forward can mean interest; pinned back can mean worry, appeasement, or simply a breeze.</span></div></li>
+            <li><span class="map-badge" aria-hidden="true">02</span><div><strong>Eyes</strong><span>Soft and blinking is different from a fixed stare or showing the whites.</span></div></li>
+            <li><span class="map-badge" aria-hidden="true">03</span><div><strong>Mouth</strong><span>A loose open mouth is not the same as a tight mouth, lip lick, or repeated yawn.</span></div></li>
+            <li><span class="map-badge" aria-hidden="true">04</span><div><strong>Body</strong><span>Loose curves invite connection; freezing or leaning away asks for more space.</span></div></li>
+            <li><span class="map-badge" aria-hidden="true">05</span><div><strong>Tail</strong><span>Height, speed, and stiffness matter together. A wag is not a universal “yes.”</span></div></li>
+            <li><span class="map-badge" aria-hidden="true">06</span><div><strong>Choice</strong><span>The clearest clue: can your dog move closer, move away, or take a break?</span></div></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="shell pause-section" id="pause" aria-labelledby="pause-title">
+        <div class="pause-card">
+          <div>
+            <span class="section-kicker">A kind default</span>
+            <h2 id="pause-title">When in doubt, make space.</h2>
+            <p>Distance is information. Give your dog a clear exit, lower the intensity, and notice whether their body softens. If they keep escalating or seem unwell, contact a qualified force-free professional or veterinarian.</p>
+          </div>
+          <div class="pause-steps" aria-label="Three steps for a calmer moment">
+            <div class="pause-step"><b>1</b><div><strong>Pause the pressure</strong><span>Stop reaching, hugging, cornering, or asking for more.</span></div></div>
+            <div class="pause-step"><b>2</b><div><strong>Open an exit</strong><span>Turn your body sideways and give your dog room to choose.</span></div></div>
+            <div class="pause-step"><b>3</b><div><strong>Listen to the change</strong><span>Softening means the space helped. If not, add more distance.</span></div></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="shell footer-inner">
+        <span class="footer-mark">WagSignals ✦</span>
+        <p>Educational guidance, not a diagnosis. Every dog is an individual; breed, health, age, history, and context all matter.</p>
+      </div>
+    </footer>
+
+    <script>
+      const signalContent = {
+        relaxed: {
+          kicker: 'A softer read',
+          title: 'Loose usually means comfortable.',
+          summary: 'A relaxed dog can still be alert or excited. Look for easy movement and the ability to choose what happens next.',
+          items: [
+            ['Look for', 'Soft eyes, a wiggly middle, and a mouth that rests open or gently closed.'],
+            ['Try this', 'Keep the moment predictable. Let your dog approach, sniff, or move away.'],
+            ['Don’t assume', 'A wag only tells you the tail is moving—not whether the feeling is happy.'],
+            ['Helpful next step', 'Notice what changed just before the body changed. Context is the missing clue.']
+          ]
+        },
+        playful: {
+          kicker: 'An invitation',
+          title: 'A play bow says “join me.”',
+          summary: 'A true play bow usually comes with bouncy movement, a loose face, and room for the other dog to opt in or out.',
+          items: [
+            ['Look for', 'Front legs down, hips high, a curved or wiggly body, and a quick recovery after the bow.'],
+            ['Try this', 'Match the energy with a short, low-pressure game and easy breaks.'],
+            ['Don’t assume', 'A lowered front can also be a stretch or a way to make distance—check the rest of the body.'],
+            ['Helpful next step', 'Give both dogs a chance to pause. Good play has give-and-take, not just pursuit.']
+          ]
+        },
+        unsure: {
+          kicker: 'A small request',
+          title: 'Turning away can be polite.',
+          summary: 'Dogs often use tiny signals before bigger ones: a head turn, lip lick, sniff, or weight shift can mean “that is a lot.”',
+          items: [
+            ['Look for', 'A smaller posture, a closed mouth, looking away, or repeated displacement behaviors.'],
+            ['Try this', 'Reduce the intensity and let your dog finish sniffing or create a little distance.'],
+            ['Don’t assume', 'Yawning is not always tiredness; in context it can be a way to release pressure.'],
+            ['Helpful next step', 'Respect the first quiet signal. It is useful communication, not bad behavior.']
+          ]
+        },
+        overwhelmed: {
+          kicker: 'A clear boundary',
+          title: 'Stillness can be a stop sign.',
+          summary: 'A frozen body, hard stare, tight mouth, or weight pushed forward deserves space. A dog who cannot leave may escalate.',
+          items: [
+            ['Look for', 'Sudden stillness, stiffness, intense focus, lifted lip, growl, or a tail held very high and tight.'],
+            ['Try this', 'Stop the interaction, turn away, and create distance without scolding or grabbing.'],
+            ['Don’t assume', 'A growl is not “being bad.” It is valuable information that the situation is too much.'],
+            ['Helpful next step', 'If this pattern repeats, get support from a reward-based behavior professional.']
+          ]
+        }
+      };
+
+      const cards = document.querySelectorAll('.signal-card');
+      const kicker = document.getElementById('read-kicker');
+      const title = document.getElementById('read-title');
+      const summary = document.getElementById('read-summary');
+      const list = document.getElementById('read-list');
+
+      function selectSignal(key) {
+        const signal = signalContent[key];
+        cards.forEach((card) => card.setAttribute('aria-pressed', String(card.dataset.signal === key)));
+        kicker.textContent = signal.kicker;
+        title.textContent = signal.title;
+        summary.textContent = signal.summary;
+        list.innerHTML = signal.items.map(([label, copy]) => `<li><strong>${label}</strong><span>${copy}</span></li>`).join('');
+      }
+
+      cards.forEach((card) => card.addEventListener('click', () => selectSignal(card.dataset.signal)));
+    </script>
+  </body>
+</html>
