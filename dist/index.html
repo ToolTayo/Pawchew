@@ -177,8 +177,11 @@
       .section-intro p { max-width: 330px; margin: 0; color: var(--ink-soft); }
       .signal-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
       .signal-card {
-        min-height: 166px;
-        padding: 20px;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 12px 16px;
         border: 1px solid var(--line);
         border-radius: var(--radius-md);
         background: rgba(255, 253, 248, 0.72);
@@ -189,6 +192,7 @@
       }
       .signal-card:hover, .signal-card:focus-visible { border-color: var(--coral); transform: translateY(-3px); box-shadow: 0 12px 28px rgba(20,45,61,0.08); }
       .signal-card[aria-pressed="true"] { border: 2px solid var(--coral); background: #fff8ed; box-shadow: 0 14px 30px rgba(240,108,82,0.12); }
+      .signal-thumb { width: 100%; aspect-ratio: 1.35; object-fit: cover; border-radius: 13px; margin-bottom: 13px; background: var(--sky); }
       .signal-icon { display: grid; width: 44px; height: 44px; place-items: center; margin-bottom: 18px; border-radius: 14px; background: var(--sky); font-size: 23px; }
       .signal-card:nth-child(2) .signal-icon { background: #ffe5c5; }
       .signal-card:nth-child(3) .signal-icon { background: #e7dff7; }
@@ -198,7 +202,7 @@
 
       .read-panel {
         display: grid;
-        grid-template-columns: 0.74fr 1.26fr;
+        grid-template-columns: 200px 0.74fr 1.26fr;
         gap: 32px;
         align-items: start;
         margin-top: 18px;
@@ -207,6 +211,8 @@
         background: var(--ink);
         color: white;
       }
+      .read-visual { min-width: 0; }
+      .read-visual img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; }
       .read-panel h3 { margin: 6px 0 10px; font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.02; letter-spacing: -0.06em; }
       .read-panel .section-kicker { color: var(--sun); }
       .read-panel .section-kicker::before { content: "●"; color: var(--sun); font-size: 10px; }
@@ -259,6 +265,7 @@
         .hero-art img { min-height: 370px; }
         .signal-grid { grid-template-columns: repeat(2, 1fr); }
         .read-panel { grid-template-columns: 1fr; }
+        .read-visual img { max-width: 260px; }
         .body-map { gap: 24px; }
       }
       @media (max-width: 560px) {
@@ -272,7 +279,13 @@
         .signal-section { padding: 48px 0 58px; }
         .section-intro { display: block; }
         .section-intro p { margin-top: 16px; }
-        .signal-grid, .read-list, .map-list { grid-template-columns: 1fr; }
+        .signal-grid { grid-template-columns: repeat(2, 1fr); }
+        .read-list, .map-list { grid-template-columns: 1fr; }
+        .signal-card { min-height: 0; padding: 8px 8px 12px; }
+        .signal-thumb { aspect-ratio: 1; margin-bottom: 9px; border-radius: 10px; }
+        .signal-icon { width: 34px; height: 34px; margin-bottom: 10px; border-radius: 10px; font-size: 18px; }
+        .signal-card h3 { font-size: 16px; }
+        .signal-card p { font-size: 14px; }
         .read-panel, .body-map, .pause-card { padding: 22px; }
         .body-section, .pause-section { padding-bottom: 58px; }
         .footer-inner { display: block; }
@@ -319,47 +332,58 @@
         </div>
         <div class="signal-grid" role="group" aria-label="Dog body language moments">
           <button class="signal-card" type="button" aria-pressed="true" data-signal="relaxed">
+            <img class="signal-thumb" src="./assets/guide-relaxed.png" alt="" width="1024" height="1024" loading="eager" />
             <span class="signal-icon" aria-hidden="true">☼</span>
             <h3>Relaxed / happy</h3>
             <p>Loose body, easy breathing, and a face that can wiggle.</p>
           </button>
           <button class="signal-card" type="button" aria-pressed="false" data-signal="playful">
+            <img class="signal-thumb" src="./assets/guide-playful.png" alt="" width="1024" height="1024" loading="lazy" />
             <span class="signal-icon" aria-hidden="true">↘</span>
             <h3>Ready to play</h3>
             <p>Front end low, back end up, and a springy invitation.</p>
           </button>
           <button class="signal-card" type="button" aria-pressed="false" data-signal="interested">
+            <img class="signal-thumb" src="./assets/guide-interested.png" alt="" width="1024" height="1024" loading="lazy" />
             <span class="signal-icon" aria-hidden="true">⌁</span>
             <h3>Interested / alert</h3>
             <p>Weight forward, ears tracking, and attention on something new.</p>
           </button>
           <button class="signal-card" type="button" aria-pressed="false" data-signal="unsure">
+            <img class="signal-thumb" src="./assets/guide-uncertain.png" alt="" width="1024" height="1024" loading="lazy" />
             <span class="signal-icon" aria-hidden="true">◌</span>
             <h3>Not so sure</h3>
             <p>Weight shifts away, head turns, or the body gets smaller.</p>
           </button>
           <button class="signal-card" type="button" aria-pressed="false" data-signal="stressed">
+            <img class="signal-thumb" src="./assets/guide-stressed.png" alt="" width="1024" height="1024" loading="lazy" />
             <span class="signal-icon" aria-hidden="true">≈</span>
             <h3>Stressed / anxious</h3>
             <p>Fast panting, pacing, shaking, lip licking, or trouble settling.</p>
           </button>
           <button class="signal-card" type="button" aria-pressed="false" data-signal="fearful">
+            <img class="signal-thumb" src="./assets/guide-fearful.png" alt="" width="1024" height="1024" loading="lazy" />
             <span class="signal-icon" aria-hidden="true">⌄</span>
             <h3>Fearful</h3>
             <p>Body low or tucked, ears back, retreating, hiding, or freezing.</p>
           </button>
           <button class="signal-card" type="button" aria-pressed="false" data-signal="overwhelmed">
+            <img class="signal-thumb" src="./assets/guide-needs-space.png" alt="" width="1024" height="1024" loading="lazy" />
             <span class="signal-icon" aria-hidden="true">!</span>
             <h3>Needs space</h3>
             <p>Stillness, a hard stare, lip licking, or a tight mouth can be a pause.</p>
           </button>
           <button class="signal-card" type="button" aria-pressed="false" data-signal="warning">
+            <img class="signal-thumb" src="./assets/guide-warning.png" alt="" width="1024" height="1024" loading="lazy" />
             <span class="signal-icon" aria-hidden="true">⚠</span>
             <h3>Strong warning</h3>
             <p>Stiffness, hard focus, growling, snapping, or lunging means stop.</p>
           </button>
         </div>
         <div class="read-panel" aria-live="polite">
+          <div class="read-visual">
+            <img id="read-image" src="./assets/guide-relaxed.png" alt="A golden retriever sitting with a relaxed body and soft eyes" width="1024" height="1024" />
+          </div>
           <div>
             <span class="section-kicker" id="read-kicker">A softer read</span>
             <h3 id="read-title">Loose usually means comfortable.</h3>
@@ -388,6 +412,8 @@
             <li><span class="map-badge" aria-hidden="true">04</span><div><strong>Body</strong><span>Loose curves invite connection; freezing or leaning away asks for more space.</span></div></li>
             <li><span class="map-badge" aria-hidden="true">05</span><div><strong>Tail</strong><span>Height, speed, and stiffness matter together. A wag is not a universal “yes.”</span></div></li>
             <li><span class="map-badge" aria-hidden="true">06</span><div><strong>Choice</strong><span>The clearest clue: can your dog move closer, move away, or take a break?</span></div></li>
+            <li><span class="map-badge" aria-hidden="true">07</span><div><strong>Movement</strong><span>Speed, direction, rhythm, and whether the dog can stop all add meaning to the pose.</span></div></li>
+            <li><span class="map-badge" aria-hidden="true">08</span><div><strong>Situation / context</strong><span>Read what happened before, who is nearby, and whether the dog has a safe way out.</span></div></li>
           </ul>
         </div>
       </section>
@@ -421,6 +447,8 @@
           kicker: 'A softer read',
           title: 'Loose usually means comfortable.',
           summary: 'A relaxed dog can still be alert or excited. Look for easy movement and the ability to choose what happens next.',
+          image: './assets/guide-relaxed.png',
+          alt: 'A golden retriever sitting with a loose body, soft eyes, and an easy open mouth',
           items: [
             ['Look for', 'Soft eyes, a wiggly middle, and a mouth that rests open or gently closed.'],
             ['Try this', 'Keep the moment predictable. Let your dog approach, sniff, or move away.'],
@@ -432,6 +460,8 @@
           kicker: 'An invitation',
           title: 'A play bow says “join me.”',
           summary: 'A true play bow usually comes with bouncy movement, a loose face, and room for the other dog to opt in or out.',
+          image: './assets/guide-playful.png',
+          alt: 'A small dog holding a clear play bow with its front legs down and hips raised',
           items: [
             ['Look for', 'Front legs down, hips high, a curved or wiggly body, and a quick recovery after the bow.'],
             ['Try this', 'Match the energy with a short, low-pressure game and easy breaks.'],
@@ -443,6 +473,8 @@
           kicker: 'Curiosity in motion',
           title: 'Alert is not the same as upset.',
           summary: 'A dog can notice something new and still feel okay. Check whether the body stays loose and whether your dog can disengage.',
+          image: './assets/guide-interested.png',
+          alt: 'A beagle standing with weight gently forward and ears tracking something interesting',
           items: [
             ['Look for', 'Eyes and ears oriented toward a sound or object, with a mouth and body that remain flexible.'],
             ['Try this', 'Give your dog time to observe, then reward looking back at you or choosing to move on.'],
@@ -454,6 +486,8 @@
           kicker: 'A small request',
           title: 'Turning away can be polite.',
           summary: 'Dogs often use tiny signals before bigger ones: a head turn, lip lick, sniff, or weight shift can mean “that is a lot.”',
+          image: './assets/guide-uncertain.png',
+          alt: 'A dog turning its head away with one paw lifted and ears angled back',
           items: [
             ['Look for', 'A smaller posture, a closed mouth, looking away, or repeated displacement behaviors.'],
             ['Try this', 'Reduce the intensity and let your dog finish sniffing or create a little distance.'],
@@ -465,6 +499,8 @@
           kicker: 'Stress is a pattern',
           title: 'Busy bodies may be asking for less.',
           summary: 'Panting, pacing, shaking, lip licking, yawning, or scanning can signal stress—especially when they repeat or cluster together.',
+          image: './assets/guide-stressed.png',
+          alt: 'A dog sitting with a lip lick, shifting ears, and a slightly tense posture',
           items: [
             ['Look for', 'Difficulty settling, repeated displacement behaviors, rapid breathing, or trying to get away.'],
             ['Try this', 'Lower noise and activity, add distance, and offer a predictable place to rest.'],
@@ -476,6 +512,8 @@
           kicker: 'Fear needs choice',
           title: 'Small and still can mean “I feel unsafe.”',
           summary: 'A fearful dog may hide, crouch, tuck the tail, freeze, or try to flee. The kindest response is more control and less pressure.',
+          image: './assets/guide-fearful.png',
+          alt: 'A small dog crouched low with its tail tucked in a safe corner near an open exit',
           items: [
             ['Look for', 'Low posture, tucked tail, ears back, avoiding eye contact, trembling, hiding, or escape attempts.'],
             ['Try this', 'Move away, keep your body turned sideways, and let your dog choose a safe distance.'],
@@ -487,6 +525,8 @@
           kicker: 'A clear boundary',
           title: 'Stillness can be a stop sign.',
           summary: 'A frozen body, hard stare, tight mouth, or weight pushed forward deserves space. A dog who cannot leave may escalate.',
+          image: './assets/guide-needs-space.png',
+          alt: 'A dog standing still with a tight mouth, turned head, and body leaning back to ask for space',
           items: [
             ['Look for', 'Sudden stillness, stiffness, intense focus, lifted lip, growl, or a tail held very high and tight.'],
             ['Try this', 'Stop the interaction, turn away, and create distance without scolding or grabbing.'],
@@ -498,6 +538,8 @@
           kicker: 'Stop and create distance',
           title: 'Strong warnings are safety information.',
           summary: 'A stiff body, hard stare, growl, snap, or lunge means the situation is too intense. Give space immediately and avoid punishment.',
+          image: './assets/guide-warning.png',
+          alt: 'A dog in a stiff side profile with hard focus and a lifted lip showing a clear warning',
           items: [
             ['Look for', 'Sudden stillness, rigid posture, hard focus, lifted lip, teeth, growling, snapping, or lunging.'],
             ['Try this', 'Stop reaching or approaching, turn away, and create a clear exit without grabbing the collar.'],
@@ -511,6 +553,7 @@
       const kicker = document.getElementById('read-kicker');
       const title = document.getElementById('read-title');
       const summary = document.getElementById('read-summary');
+      const readImage = document.getElementById('read-image');
       const list = document.getElementById('read-list');
 
       function selectSignal(key) {
@@ -519,6 +562,8 @@
         kicker.textContent = signal.kicker;
         title.textContent = signal.title;
         summary.textContent = signal.summary;
+        readImage.src = signal.image;
+        readImage.alt = signal.alt;
         list.innerHTML = signal.items.map(([label, copy]) => `<li><strong>${label}</strong><span>${copy}</span></li>`).join('');
       }
 

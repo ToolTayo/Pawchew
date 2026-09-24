@@ -6,7 +6,15 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const requiredFiles = [
   'index.html',
   'favicon.svg',
-  'assets/dog-language-hero.png'
+  'assets/dog-language-hero.png',
+  'assets/guide-relaxed.png',
+  'assets/guide-playful.png',
+  'assets/guide-interested.png',
+  'assets/guide-uncertain.png',
+  'assets/guide-stressed.png',
+  'assets/guide-fearful.png',
+  'assets/guide-needs-space.png',
+  'assets/guide-warning.png'
 ];
 
 for (const relativePath of requiredFiles) {
@@ -23,7 +31,7 @@ for (const reference of references) {
 }
 
 const requiredCopy = [
-  'eyes', 'ears', 'mouth', 'body', 'tail', 'movement', 'context',
+  'eyes', 'ears', 'mouth', 'body', 'tail', 'movement', 'context', 'Movement', 'Situation / context',
   'Relaxed / happy', 'Ready to play', 'Interested / alert', 'Not so sure',
   'Stressed / anxious', 'Fearful', 'Needs space', 'Strong warning'
 ];
