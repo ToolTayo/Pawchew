@@ -233,6 +233,18 @@
       .read-list strong { display: block; margin-bottom: 5px; color: white; font-size: 14px; }
       .read-list span { color: #c9d5d7; font-size: 14px; line-height: 1.38; }
 
+      .behavior-section { padding: 0 0 92px; }
+      .behavior-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+      .behavior-card { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--paper-2); box-shadow: var(--shadow-card); }
+      .behavior-card img { width: 100%; height: 188px; object-fit: contain; background: var(--sky); }
+      .behavior-card-body { padding: 17px 17px 19px; }
+      .behavior-tag { display: inline-flex; margin-bottom: 8px; color: var(--coral-dark); font-size: 11px; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
+      .behavior-card h3 { margin: 0 0 8px; font-size: 20px; letter-spacing: -0.04em; }
+      .behavior-card > .behavior-card-body > p { min-height: 58px; margin: 0 0 15px; color: var(--ink-soft); font-size: 14px; line-height: 1.42; }
+      .behavior-note { margin: 0; padding-top: 11px; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 13px; line-height: 1.4; }
+      .behavior-note + .behavior-note { margin-top: 9px; padding-top: 9px; border-top: 0; }
+      .behavior-note strong { color: var(--ink); }
+
       .body-section { padding: 0 0 88px; }
       .body-map {
         display: grid;
@@ -274,6 +286,7 @@
         .hero-copy { max-width: 680px; }
         .hero-art { max-width: 760px; transform: none; }
         .signal-grid { grid-template-columns: repeat(2, 1fr); }
+        .behavior-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .read-panel { grid-template-columns: 1fr; }
         .read-visual img { max-width: 260px; }
         .body-map { gap: 24px; }
@@ -290,12 +303,15 @@
         .section-intro { display: block; }
         .section-intro p { margin-top: 16px; }
         .signal-grid { grid-template-columns: 1fr; gap: 12px; }
+        .behavior-grid { grid-template-columns: 1fr; gap: 12px; }
         .read-list, .map-list { grid-template-columns: 1fr; }
         .signal-card, .signal-card[aria-pressed="true"] { padding: 10px 11px 14px; }
         .signal-thumb { height: clamp(180px, 54vw, 230px); margin-bottom: 10px; border-radius: 11px; }
         .signal-icon { width: 34px; height: 34px; margin-bottom: 10px; border-radius: 10px; font-size: 18px; }
         .signal-card h3 { font-size: 16px; }
         .signal-card p { font-size: 14px; }
+        .behavior-card img { height: 220px; }
+        .behavior-card > .behavior-card-body > p { min-height: 0; }
         .read-panel, .body-map, .pause-card { padding: 22px; }
         .body-section, .pause-section { padding-bottom: 58px; }
         .footer-inner { display: block; }
@@ -309,6 +325,7 @@
       <a class="brand" href="#top" aria-label="WagSignals home"><span class="brand-mark" aria-hidden="true">✦</span>WagSignals</a>
       <nav class="nav" aria-label="Main navigation">
         <a href="#signals">Signals</a>
+        <a href="#behaviors">Behaviors</a>
         <a href="#body-map">Body map</a>
         <a class="nav-cta" href="#pause">When to pause</a>
       </nav>
@@ -405,6 +422,50 @@
             <li><strong>Don’t assume</strong><span>A wag only tells you the tail is moving—not whether the feeling is happy.</span></li>
             <li><strong>Helpful next step</strong><span>Notice what changed just before the body changed. Context is the missing clue.</span></li>
           </ul>
+        </div>
+      </section>
+
+      <section class="shell behavior-section" id="behaviors" aria-labelledby="behaviors-title">
+        <div class="section-intro">
+          <div>
+            <span class="section-kicker">Everyday behavior</span>
+            <h2 id="behaviors-title">What dogs do—and what it can tell you.</h2>
+          </div>
+          <p>Behavior is a clue, not a verdict. Look at the whole dog, the moment around it, and what they can choose next.</p>
+        </div>
+        <div class="behavior-grid" aria-label="Common dog behaviors">
+          <article class="behavior-card">
+            <img src="./assets/behavior-sniffing.png" alt="A dog sniffing grass in a sunny park" width="1024" height="1024" loading="lazy" decoding="async" />
+            <div class="behavior-card-body"><span class="behavior-tag">Information gathering</span><h3>Sniffing & exploring</h3><p>Nose work helps dogs learn about the world and can be calming enrichment.</p><p class="behavior-note"><strong>Try:</strong> Give sniff walks time instead of rushing every stop.</p><p class="behavior-note"><strong>Notice:</strong> Sudden frantic sniffing can also be a way to release pressure.</p></div>
+          </article>
+          <article class="behavior-card">
+            <img src="./assets/behavior-barking.png" alt="A dog barking toward a distant delivery van" width="1024" height="1024" loading="lazy" decoding="async" />
+            <div class="behavior-card-body"><span class="behavior-tag">Communication</span><h3>Barking & vocalizing</h3><p>Barks can mean alert, excitement, frustration, fear, or a request for help.</p><p class="behavior-note"><strong>Try:</strong> Check distance, trigger, rhythm, and recovery before responding.</p><p class="behavior-note"><strong>Notice:</strong> Punishment may silence a warning without changing the feeling.</p></div>
+          </article>
+          <article class="behavior-card">
+            <img src="./assets/behavior-chewing.png" alt="A dog calmly chewing a rubber toy on a mat" width="1024" height="1024" loading="lazy" decoding="async" />
+            <div class="behavior-card-body"><span class="behavior-tag">Enrichment</span><h3>Chewing & shredding</h3><p>Chewing is normal exploration and can help a dog settle when the outlet is safe.</p><p class="behavior-note"><strong>Try:</strong> Trade unsafe items for an appropriate chew—never chase or grab.</p><p class="behavior-note"><strong>Notice:</strong> A sudden increase may point to boredom, stress, or discomfort.</p></div>
+          </article>
+          <article class="behavior-card">
+            <img src="./assets/behavior-digging.png" alt="A beagle digging in a designated garden patch" width="1024" height="1024" loading="lazy" decoding="async" />
+            <div class="behavior-card-body"><span class="behavior-tag">Natural instinct</span><h3>Digging</h3><p>Dogs may dig to explore scent, cool down, bury treasure, play, or make an escape route.</p><p class="behavior-note"><strong>Try:</strong> Offer a safe digging spot and reward choosing it.</p><p class="behavior-note"><strong>Notice:</strong> Digging at doors or fences can signal urgency or a need for more support.</p></div>
+          </article>
+          <article class="behavior-card">
+            <img src="./assets/behavior-zoomies.png" alt="A happy dog running zoomies in a safe grassy yard" width="1024" height="1024" loading="lazy" decoding="async" />
+            <div class="behavior-card-body"><span class="behavior-tag">Energy release</span><h3>Zoomies</h3><p>Fast loops and sudden sprints are often a normal release of energy or arousal.</p><p class="behavior-note"><strong>Try:</strong> Clear hazards and let the run happen in a safe space.</p><p class="behavior-note"><strong>Notice:</strong> Afterward, watch whether the body can settle, drink, and rest.</p></div>
+          </article>
+          <article class="behavior-card">
+            <img src="./assets/behavior-jumping.png" alt="A dog greeting a person with front paws lifted" width="1024" height="1024" loading="lazy" decoding="async" />
+            <div class="behavior-card-body"><span class="behavior-tag">Greeting</span><h3>Jumping up</h3><p>Jumping usually comes from excitement, a learned greeting, or wanting access to a person.</p><p class="behavior-note"><strong>Try:</strong> Reward four paws on the floor and keep greetings calm and consistent.</p><p class="behavior-note"><strong>Notice:</strong> Turning away is clearer and kinder than pushing the dog down.</p></div>
+          </article>
+          <article class="behavior-card">
+            <img src="./assets/behavior-pawing.png" alt="A dog gently pawing a seated person's hand for attention" width="1024" height="1024" loading="lazy" decoding="async" />
+            <div class="behavior-card-body"><span class="behavior-tag">A request</span><h3>Pawing & nudging</h3><p>A paw or nose bump can ask for attention, access, play, food, or reassurance.</p><p class="behavior-note"><strong>Try:</strong> Notice what happens next and teach a calmer way to ask.</p><p class="behavior-note"><strong>Notice:</strong> A tense face or repeated nudging can mean the dog needs support, not more touch.</p></div>
+          </article>
+          <article class="behavior-card">
+            <img src="./assets/behavior-resting.png" alt="A dog resting comfortably in a soft bed at home" width="1024" height="1024" loading="lazy" decoding="async" />
+            <div class="behavior-card-body"><span class="behavior-tag">Recovery</span><h3>Resting & hiding</h3><p>Choosing a bed, quiet corner, or hideaway is a healthy way to recover and regulate.</p><p class="behavior-note"><strong>Try:</strong> Protect the rest spot and let your dog come back to you.</p><p class="behavior-note"><strong>Notice:</strong> A sudden, persistent change in resting or social behavior deserves a health check.</p></div>
+          </article>
         </div>
       </section>
 

@@ -14,7 +14,15 @@ const requiredFiles = [
   'assets/guide-stressed.png',
   'assets/guide-fearful.png',
   'assets/guide-needs-space.png',
-  'assets/guide-warning.png'
+  'assets/guide-warning.png',
+  'assets/behavior-sniffing.png',
+  'assets/behavior-barking.png',
+  'assets/behavior-chewing.png',
+  'assets/behavior-digging.png',
+  'assets/behavior-zoomies.png',
+  'assets/behavior-jumping.png',
+  'assets/behavior-pawing.png',
+  'assets/behavior-resting.png'
 ];
 
 for (const relativePath of requiredFiles) {
@@ -34,11 +42,15 @@ const requiredCopy = [
   'eyes', 'ears', 'mouth', 'body', 'tail', 'movement', 'context', 'Movement', 'Situation / context',
   'Relaxed / happy', 'Ready to play', 'Interested / alert', 'Not so sure',
   'Stressed / anxious', 'Fearful', 'Needs space', 'Strong warning'
+  , 'Sniffing & exploring', 'Barking & vocalizing', 'Chewing & shredding', 'Digging',
+  'Zoomies', 'Jumping up', 'Pawing & nudging', 'Resting & hiding'
 ];
 const missingCopy = requiredCopy.filter((text) => !html.includes(text));
 if (missingCopy.length) throw new Error(`Missing required body-language content: ${missingCopy.join(', ')}`);
 
 const signalCount = (html.match(/data-signal=/g) ?? []).length;
 if (signalCount < 8) throw new Error(`Expected at least 8 signal cards, found ${signalCount}.`);
+const behaviorCount = (html.match(/class="behavior-card"/g) ?? []).length;
+if (behaviorCount < 8) throw new Error(`Expected at least 8 behavior cards, found ${behaviorCount}.`);
 
-console.log(`Checked ${requiredFiles.length} required files, ${references.length} local references, and ${signalCount} signal cards.`);
+console.log(`Checked ${requiredFiles.length} required files, ${references.length} local references, ${signalCount} signal cards, and ${behaviorCount} behavior cards.`);
