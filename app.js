@@ -44,12 +44,45 @@ function todayKey() {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
 
-function readProgress() {
-  try { return { dailyDates: [], quizBest: 0, favorites: [], ...JSON.parse(localStorage.getItem(storageKey) || '{}') }; }
-  catch { return { dailyDates: [], quizBest: 0, favorites: [] }; }
+function isDateKey(value) {
+  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(new Date(`${value}T12:00:00`).getTime());
 }
 
-function saveProgress(progress) { localStorage.setItem(storageKey, JSON.stringify(progress)); }
+function uniqueStrings(value) {
+  return Array.isArray(value) ? [...new Set(value.filter((item) => typeof item === 'string' && item.trim()))] : [];
+}
+
+function normalizeProgress(value) {
+  const source = value && typeof value === 'object' ? value : {};
+  const dailyDates = uniqueStrings(source.dailyDates).filter(isDateKey).sort();
+  const completedChallenges = uniqueStrings(source.completedChallenges);
+  const learnedClues = uniqueStrings(source.learnedClues);
+  if (!Array.isArray(source.learnedClues)) learnedClues.push(...dailyDates.map((date) => `legacy-daily-${date}`));
+  const legacyPawprints = dailyDates.length + completedChallenges.length;
+  const pawprints = Number.isFinite(Number(source.pawprints)) ? Math.max(0, Math.floor(Number(source.pawprints))) : legacyPawprints;
+  const quizBest = Number.isFinite(Number(source.quizBest)) ? Math.min(quizQuestions.length, Math.max(0, Math.floor(Number(source.quizBest)))) : 0;
+  const longestStreak = Number.isFinite(Number(source.longestStreak)) ? Math.max(0, Math.floor(Number(source.longestStreak))) : getLongestStreak(dailyDates);
+  return {
+    dailyDates,
+    quizBest,
+    favorites: uniqueStrings(source.favorites),
+    completedChallenges,
+    learnedClues,
+    pawprints,
+    longestStreak,
+    lastDailyCompletion: isDateKey(source.lastDailyCompletion) ? source.lastDailyCompletion : (dailyDates[dailyDates.length - 1] || '')
+  };
+}
+
+function readProgress() {
+  try { return normalizeProgress(JSON.parse(localStorage.getItem(storageKey) || '{}')); }
+  catch { return normalizeProgress({}); }
+}
+
+function saveProgress(progress) {
+  try { localStorage.setItem(storageKey, JSON.stringify(normalizeProgress(progress))); }
+  catch { /* Private browsing can deny storage; the current page still remains usable. */ }
+}
 
 function dayDifference(first, second) {
   return Math.round((new Date(`${second}T12:00:00`) - new Date(`${first}T12:00:00`)) / 86400000);
@@ -66,11 +99,33 @@ function currentStreak(dates) {
   return streak;
 }
 
+function getLongestStreak(dates) {
+  const sorted = [...new Set(dates)].sort();
+  if (!sorted.length) return 0;
+  let longest = 1;
+  let streak = 1;
+  for (let index = 1; index < sorted.length; index += 1) {
+    if (dayDifference(sorted[index - 1], sorted[index]) === 1) streak += 1;
+    else streak = 1;
+    longest = Math.max(longest, streak);
+  }
+  return longest;
+}
+
+function addPawprint(progress, collection, id) {
+  if (!collection.includes(id)) {
+    collection.push(id);
+    progress.pawprints += 1;
+    return true;
+  }
+  return false;
+}
+
 function renderProgress() {
-  const target = document.querySelector('[data-progress-summary]');
-  if (!target) return;
   const progress = readProgress();
-  target.textContent = `${currentStreak(progress.dailyDates)} day${currentStreak(progress.dailyDates) === 1 ? '' : 's'} in a row · ${progress.dailyDates.length} daily clue${progress.dailyDates.length === 1 ? '' : 's'} learned · quiz best ${progress.quizBest}/${quizQuestions.length}`;
+  const streak = currentStreak(progress.dailyDates);
+  const summary = `🐾 ${progress.pawprints} pawprint${progress.pawprints === 1 ? '' : 's'} · 🔥 ${streak} day${streak === 1 ? '' : 's'} · ${progress.learnedClues.length} clue${progress.learnedClues.length === 1 ? '' : 's'} · decode best ${progress.quizBest}/${quizQuestions.length}`;
+  document.querySelectorAll('[data-progress-summary]').forEach((target) => { target.textContent = summary; });
 }
 
 function renderDaily() {
@@ -104,9 +159,15 @@ function renderDaily() {
   learnButton.textContent = learned ? 'Learned today ✓' : 'Mark as learned';
   learnButton.addEventListener('click', () => {
     const next = readProgress();
-    if (!next.dailyDates.includes(todayKey())) next.dailyDates.push(todayKey());
+    const date = todayKey();
+    if (!next.dailyDates.includes(date)) {
+      next.dailyDates.push(date);
+      next.lastDailyCompletion = date;
+      next.longestStreak = Math.max(next.longestStreak, getLongestStreak(next.dailyDates));
+      addPawprint(next, next.learnedClues, lesson.id);
+    }
     saveProgress(next); renderProgress(); learnButton.disabled = true; learnButton.textContent = 'Learned today ✓';
-    document.querySelector('#daily-status').textContent = `Nice work. Your streak is now ${currentStreak(next.dailyDates)} day${currentStreak(next.dailyDates) === 1 ? '' : 's'}.`;
+    document.querySelector('#daily-status').textContent = `Nice work. Your streak is now ${currentStreak(next.dailyDates)} day${currentStreak(next.dailyDates) === 1 ? '' : 's'} — +1 pawprint.`;
   });
   const saveButton = document.querySelector('#daily-save');
   saveButton.addEventListener('click', () => {
@@ -129,6 +190,10 @@ function renderQuiz() {
       if (!button) return;
       const correct = Number(button.dataset.option) === question.answer;
       if (correct) score += 1;
+      const progress = readProgress();
+      addPawprint(progress, progress.completedChallenges, `quiz-${questionIndex}`);
+      saveProgress(progress);
+      renderProgress();
       shell.querySelectorAll('.quiz-option').forEach((option) => { option.disabled = true; option.classList.toggle('is-correct', Number(option.dataset.option) === question.answer); });
       if (!correct) button.classList.add('is-wrong');
       shell.querySelector('.quiz-feedback').textContent = `${correct ? 'Correct. ' : 'Not quite. '}${question.explanation}`;
@@ -180,6 +245,11 @@ function renderSaved() {
   };
   render();
   document.querySelector('#saved-clear')?.addEventListener('click', () => { const next = readProgress(); next.favorites = []; saveProgress(next); render(); });
+  document.querySelector('#reset-progress')?.addEventListener('click', () => {
+    if (!window.confirm('Reset Daily Wag, quiz, pawprint, and saved-clue progress on this device?')) return;
+    try { localStorage.removeItem(storageKey); } catch { /* The visible page remains usable if storage is unavailable. */ }
+    window.location.reload();
+  });
 }
 
 function renderScenarios() {
