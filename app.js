@@ -18,6 +18,18 @@ const quizQuestions = [
   { image: './assets/guide-warning.png', alt: 'A dog showing a strong warning signal', question: 'A dog growls when someone reaches toward them. What does the growl provide?', options: ['Useful safety information', 'Proof the dog is bad', 'A reason to reach faster'], answer: 0, explanation: 'A warning is communication. Stop, create distance, and seek qualified support if it repeats.' }
 ];
 
+const scenarioLibrary = [
+  { title: 'A visitor arrives', tag: 'Greetings', image: './assets/guide-interested.png', alt: 'A dog standing alert and curious', look: 'Check whether your dog can sniff, blink, eat, and move away.', do: 'Use distance, a gate, and reward calm check-ins before greetings.', avoid: 'Do not force a hello or hold the dog in place.' },
+  { title: 'A child reaches toward the dog', tag: 'Family safety', image: './assets/guide-uncertain.png', alt: 'A dog turning its head away and asking for space', look: 'Head turns, lip licks, weight shifts, and closed mouths can be quiet requests.', do: 'Call the dog away and give them a protected resting place.', avoid: 'Do not allow hugging, climbing, cornering, or chasing.' },
+  { title: 'The doorbell rings', tag: 'Home routines', image: './assets/challenge-door-dashing.png', alt: 'A dog waiting on a mat behind a safety barrier', look: 'Notice arousal before opening the door and secure the exit first.', do: 'Use a gate, mat, leash, and small rewards for pauses.', avoid: 'Do not chase a dog toward an open door.' },
+  { title: 'Two dogs meet', tag: 'Dog-to-dog', image: './assets/guide-playful.png', alt: 'A dog holding a play bow', look: 'Look for loose curves, pauses, turn-taking, and the freedom to leave.', do: 'Start with space and parallel movement before closer interaction.', avoid: 'Do not force face-to-face greetings or ignore repeated escape attempts.' },
+  { title: 'A dog freezes during handling', tag: 'Grooming & care', image: './assets/guide-needs-space.png', alt: 'A dog standing still and asking for space', look: 'Freezing can mean the dog is overwhelmed, not that they agree.', do: 'Stop, soften the setup, and practice tiny touch-reward-release steps.', avoid: 'Do not continue until the dog struggles or snaps.' },
+  { title: 'A trigger appears on a walk', tag: 'Walks', image: './assets/challenge-lunging.png', alt: 'A handler creating distance from a distant dog', look: 'Watch distance, leash tension, recovery, and whether your dog can eat.', do: 'Turn away early, add distance, and reward looking back.', avoid: 'Do not wait for a full lunge before moving.' },
+  { title: 'Food bowl time', tag: 'Mealtimes', image: './assets/challenge-guarding.png', alt: 'A dog beside a food bowl while a handler gives space', look: 'Freezing, hovering, hard focus, or growling means the dog needs space.', do: 'Manage meals behind a barrier and get professional guidance for guarding.', avoid: 'Never reach into the bowl or punish the warning.' },
+  { title: 'The dog is alone', tag: 'Being home alone', image: './assets/challenge-separation.png', alt: 'A dog settling with a food puzzle while a person prepares to leave', look: 'Pacing, howling, scratching, or panic point to distress.', do: 'Practice absences shorter than panic and build up gradually.', avoid: 'Do not leave a panicked dog alone for longer to “teach” them.' },
+  { title: 'Something unsafe is on the ground', tag: 'Scavenging', image: './assets/challenge-stones-dirt.png', alt: 'A handler offering a treat trade while a dog investigates a stone', look: 'Notice what the dog finds valuable and whether eating objects is repeated.', do: 'Use secure management and teach a calm, high-value trade.', avoid: 'Do not chase, pry, or punish after the item is dropped.' }
+];
+
 function todayKey() {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
@@ -118,14 +130,61 @@ function renderQuiz() {
   }
   function showResult() {
     const progress = readProgress(); progress.quizBest = Math.max(progress.quizBest, score); saveProgress(progress); renderProgress();
-    shell.innerHTML = `<div class="quiz-result"><span class="section-kicker">Your read is getting sharper</span><h2>${score}/${quizQuestions.length}</h2><p>${score >= 5 ? 'Excellent whole-dog thinking.' : score >= 3 ? 'Good start. Keep checking context and recovery.' : 'Keep practicing—small clues add up.'}</p><button class="button" type="button" id="quiz-retry">Try again</button></div>`;
+    shell.innerHTML = `<div class="quiz-result"><span class="section-kicker">Your read is getting sharper</span><h2>${score}/${quizQuestions.length}</h2><p>${score >= 5 ? 'Excellent whole-dog thinking.' : score >= 3 ? 'Good start. Keep checking context and recovery.' : 'Keep practicing—small clues add up.'}</p><div class="habit-actions" style="justify-content:center"><button class="button" type="button" id="quiz-retry">Try again</button><button class="button secondary" type="button" id="quiz-share">Share result</button></div><p id="quiz-share-status" aria-live="polite"></p></div>`;
     shell.querySelector('#quiz-retry').addEventListener('click', () => { questionIndex = 0; score = 0; showQuestion(); });
+    shell.querySelector('#quiz-share').addEventListener('click', async () => {
+      const shareText = `I scored ${score}/${quizQuestions.length} on the WagSignals dog-reading quiz.`;
+      const status = shell.querySelector('#quiz-share-status');
+      try {
+        if (navigator.share) await navigator.share({ title: 'My WagSignals quiz result', text: shareText, url: window.location.href });
+        else await navigator.clipboard.writeText(`${shareText} ${window.location.href}`);
+        status.textContent = navigator.share ? 'Share sheet opened.' : 'Result copied to your clipboard.';
+      } catch { status.textContent = 'Sharing was cancelled.'; }
+    });
   }
   showQuestion();
+}
+
+function renderSaved() {
+  const target = document.querySelector('#saved-list');
+  if (!target) return;
+  const progress = readProgress();
+  const saved = dailyLessons.filter((lesson) => progress.favorites.includes(lesson.id));
+  const render = () => {
+    const current = readProgress();
+    const lessons = dailyLessons.filter((lesson) => current.favorites.includes(lesson.id));
+    if (!lessons.length) {
+      target.innerHTML = '<div class="empty-state"><h2>Your saved shelf is empty.</h2><p>Save a Daily Wag clue when you find one you want to revisit.</p><a class="button" href="./daily.html">Open Daily Wag</a></div>';
+      return;
+    }
+    target.innerHTML = lessons.map((lesson) => `<article class="saved-card"><img src="${lesson.image}" alt="${lesson.alt}" width="1024" height="1024" loading="lazy" decoding="async" /><div class="saved-card-body"><span class="challenge-tag">${lesson.kicker}</span><h2>${lesson.title}</h2><p>${lesson.body}</p><button class="button secondary" type="button" data-remove="${lesson.id}">Remove saved clue</button></div></article>`).join('');
+    target.querySelectorAll('[data-remove]').forEach((button) => button.addEventListener('click', () => {
+      const next = readProgress(); next.favorites = next.favorites.filter((id) => id !== button.dataset.remove); saveProgress(next); render();
+    }));
+  };
+  render();
+  document.querySelector('#saved-clear')?.addEventListener('click', () => { const next = readProgress(); next.favorites = []; saveProgress(next); render(); });
+}
+
+function renderScenarios() {
+  const target = document.querySelector('#scenario-list');
+  const search = document.querySelector('#scenario-search');
+  const count = document.querySelector('#scenario-count');
+  if (!target || !search || !count) return;
+  const render = () => {
+    const query = search.value.trim().toLowerCase();
+    const filtered = scenarioLibrary.filter((scenario) => `${scenario.title} ${scenario.tag} ${scenario.look} ${scenario.do} ${scenario.avoid}`.toLowerCase().includes(query));
+    count.textContent = `${filtered.length} scenario${filtered.length === 1 ? '' : 's'}`;
+    target.innerHTML = filtered.length ? filtered.map((scenario) => `<article class="scenario-card"><img src="${scenario.image}" alt="${scenario.alt}" width="1024" height="1024" loading="lazy" decoding="async" /><div class="scenario-card-body"><span class="scenario-tag">${scenario.tag}</span><h2>${scenario.title}</h2><p class="scenario-row"><strong>Look for</strong><span>${scenario.look}</span></p><p class="scenario-row"><strong>Try</strong><span>${scenario.do}</span></p><p class="scenario-row"><strong>Avoid</strong><span>${scenario.avoid}</span></p></div></article>`).join('') : '<div class="empty-state"><h2>No matching scenario.</h2><p>Try a word like “door,” “walk,” “food,” or “handling.”</p></div>';
+  };
+  search.addEventListener('input', render); render();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   renderProgress();
   if (document.body.dataset.page === 'daily') renderDaily();
   if (document.body.dataset.page === 'quiz') renderQuiz();
+  if (document.body.dataset.page === 'saved') renderSaved();
+  if (document.body.dataset.page === 'scenarios') renderScenarios();
+  document.querySelector('#print-sheet')?.addEventListener('click', () => window.print());
 });

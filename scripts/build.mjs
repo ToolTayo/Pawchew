@@ -7,7 +7,7 @@ const outputRoot = path.join(projectRoot, 'dist');
 
 await fs.rm(outputRoot, { recursive: true, force: true });
 await fs.mkdir(outputRoot, { recursive: true });
-for (const file of ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html', 'styles.css', 'signals.js', 'app.js']) {
+for (const file of ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html', 'saved.html', 'scenarios.html', 'cheat-sheet.html', 'styles.css', 'signals.js', 'app.js']) {
   await fs.copyFile(path.join(projectRoot, file), path.join(outputRoot, file));
 }
 await fs.copyFile(path.join(projectRoot, 'favicon.svg'), path.join(outputRoot, 'favicon.svg'));

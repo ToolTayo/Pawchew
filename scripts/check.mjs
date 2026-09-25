@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const pages = ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html'];
+const pages = ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html', 'saved.html', 'scenarios.html', 'cheat-sheet.html'];
 const requiredFiles = [
   ...pages, 'styles.css', 'signals.js', 'app.js', 'favicon.svg', 'robots.txt', 'sitemap.xml',
   'assets/dog-language-hero.png', 'assets/guide-relaxed.png', 'assets/guide-playful.png',
@@ -42,7 +42,7 @@ const requiredCopy = [
   'Loose-leash walking', 'Leave it & drop it', 'Settle on a mat', 'Cooperative handling',
   'Biting & nipping', 'Eating stones & dirt', 'Destructive chewing', 'Guarding food or toys',
   'Barking & lunging', 'Chasing animals or cars', 'Separation distress', 'Door dashing',
-  'Today’s Wag.', 'Can you read the whole pattern?', 'Daily Wag', 'Quiz'
+  'Today’s Wag.', 'Can you read the whole pattern?', 'Daily Wag', 'Quiz', 'Your saved clues', 'Real-life scenarios', 'A one-page dog-reading cheat sheet', 'Search dog scenarios', 'Print cheat sheet'
 ];
 const missingCopy = requiredCopy.filter((text) => !allHtml.includes(text));
 if (missingCopy.length) throw new Error(`Missing required guide content: ${missingCopy.join(', ')}`);
@@ -53,6 +53,10 @@ const trainingCount = (htmlByPage.get('training.html').match(/class="training-ca
 const challengeCount = (htmlByPage.get('challenges.html').match(/class="challenge-card"/g) ?? []).length;
 for (const [label, count] of [['signal', signalCount], ['behavior', behaviorCount], ['training', trainingCount], ['challenge', challengeCount]]) {
   if (count < 8) throw new Error(`Expected at least 8 ${label} cards, found ${count}.`);
+}
+
+for (const [page, selector] of [['saved.html', 'saved-list'], ['scenarios.html', 'scenario-list'], ['cheat-sheet.html', 'print-sheet']]) {
+  if (!htmlByPage.get(page).includes(`id="${selector}"`)) throw new Error(`${page} is missing ${selector}.`);
 }
 
 const navTargets = [...allHtml.matchAll(/href="\.\/([^"#]+\.html)"/g)].map((match) => match[1]);
