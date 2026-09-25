@@ -6,10 +6,10 @@ The automated project check rejects external image URLs and verifies that every 
 
 ## Image groups
 
-- `dog-language-hero.png`: original hero artwork
-- `guide-*.png`: original body-language signal illustrations
-- `behavior-*.png`: original everyday-behavior illustrations
-- `training-*.png`: original reward-based training illustrations
-- `challenge-*.png`: original challenging-behavior and solution illustrations
+- `dog-language-hero.jpg`: original hero artwork
+- `guide-*.jpg`: original body-language signal illustrations
+- `behavior-*.jpg`: original everyday-behavior illustrations
+- `training-*.jpg`: original reward-based training illustrations
+- `challenge-*.jpg`: original challenging-behavior and solution illustrations
 
 These assets are intended for use inside this WagSignals site. They are educational illustrations, not clinical or diagnostic imagery.

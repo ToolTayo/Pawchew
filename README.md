@@ -18,7 +18,9 @@ WagSignals is a static dog body-language guide. The root files are the maintaina
 
 Shared styling lives in `styles.css`; the signal reader interaction lives in `signals.js`. Image provenance is documented in `ASSET-LICENSES.md`.
 
-`app.js` powers the Daily Wag, quiz, local pawprint progress, streak, saved clue shelf, scenario search, quiz sharing, and home-page progress summary. No account is required.
+`app.js` powers the Daily Wag, quiz, local pawprint progress, streak, saved clue shelf, scenario search, quiz sharing, and device-local guide feedback. No account or feedback backend is required; nothing is sent off-device.
+
+The original illustrations are stored as optimized local JPEGs. The largest image is kept below 330 KB so the guide stays quick to load without hotlinked or third-party artwork.
 
 ## Local development
 

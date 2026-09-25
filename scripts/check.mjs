@@ -6,17 +6,17 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 const pages = ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html', 'saved.html', 'scenarios.html', 'cheat-sheet.html'];
 const requiredFiles = [
   ...pages, 'styles.css', 'signals.js', 'app.js', 'favicon.svg', 'robots.txt', 'sitemap.xml',
-  'assets/dog-language-hero.png', 'assets/guide-relaxed.png', 'assets/guide-playful.png',
-  'assets/guide-interested.png', 'assets/guide-uncertain.png', 'assets/guide-stressed.png',
-  'assets/guide-fearful.png', 'assets/guide-needs-space.png', 'assets/guide-warning.png',
-  'assets/behavior-sniffing.png', 'assets/behavior-barking.png', 'assets/behavior-chewing.png',
-  'assets/behavior-digging.png', 'assets/behavior-zoomies.png', 'assets/behavior-jumping.png',
-  'assets/behavior-pawing.png', 'assets/behavior-resting.png', 'assets/training-rewards.png',
-  'assets/training-attention.png', 'assets/training-sit-wait.png', 'assets/training-recall.png',
-  'assets/training-leash.png', 'assets/training-leave-it.png', 'assets/training-settle.png',
-  'assets/training-handling.png', 'assets/challenge-biting.png', 'assets/challenge-stones-dirt.png',
-  'assets/challenge-destruction.png', 'assets/challenge-guarding.png', 'assets/challenge-lunging.png',
-  'assets/challenge-chasing.png', 'assets/challenge-separation.png', 'assets/challenge-door-dashing.png',
+  'assets/dog-language-hero.jpg', 'assets/guide-relaxed.jpg', 'assets/guide-playful.jpg',
+  'assets/guide-interested.jpg', 'assets/guide-uncertain.jpg', 'assets/guide-stressed.jpg',
+  'assets/guide-fearful.jpg', 'assets/guide-needs-space.jpg', 'assets/guide-warning.jpg',
+  'assets/behavior-sniffing.jpg', 'assets/behavior-barking.jpg', 'assets/behavior-chewing.jpg',
+  'assets/behavior-digging.jpg', 'assets/behavior-zoomies.jpg', 'assets/behavior-jumping.jpg',
+  'assets/behavior-pawing.jpg', 'assets/behavior-resting.jpg', 'assets/training-rewards.jpg',
+  'assets/training-attention.jpg', 'assets/training-sit-wait.jpg', 'assets/training-recall.jpg',
+  'assets/training-leash.jpg', 'assets/training-leave-it.jpg', 'assets/training-settle.jpg',
+  'assets/training-handling.jpg', 'assets/challenge-biting.jpg', 'assets/challenge-stones-dirt.jpg',
+  'assets/challenge-destruction.jpg', 'assets/challenge-guarding.jpg', 'assets/challenge-lunging.jpg',
+  'assets/challenge-chasing.jpg', 'assets/challenge-separation.jpg', 'assets/challenge-door-dashing.jpg',
   'app.js'
 ];
 
