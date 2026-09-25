@@ -3,9 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const pages = ['index.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html'];
+const pages = ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html'];
 const requiredFiles = [
-  ...pages, 'styles.css', 'signals.js', 'favicon.svg',
+  ...pages, 'styles.css', 'signals.js', 'app.js', 'favicon.svg', 'robots.txt', 'sitemap.xml',
   'assets/dog-language-hero.png', 'assets/guide-relaxed.png', 'assets/guide-playful.png',
   'assets/guide-interested.png', 'assets/guide-uncertain.png', 'assets/guide-stressed.png',
   'assets/guide-fearful.png', 'assets/guide-needs-space.png', 'assets/guide-warning.png',
@@ -16,7 +16,8 @@ const requiredFiles = [
   'assets/training-leash.png', 'assets/training-leave-it.png', 'assets/training-settle.png',
   'assets/training-handling.png', 'assets/challenge-biting.png', 'assets/challenge-stones-dirt.png',
   'assets/challenge-destruction.png', 'assets/challenge-guarding.png', 'assets/challenge-lunging.png',
-  'assets/challenge-chasing.png', 'assets/challenge-separation.png', 'assets/challenge-door-dashing.png'
+  'assets/challenge-chasing.png', 'assets/challenge-separation.png', 'assets/challenge-door-dashing.png',
+  'app.js'
 ];
 
 for (const relativePath of requiredFiles) await fs.access(path.join(projectRoot, relativePath));
@@ -40,7 +41,8 @@ const requiredCopy = [
   'Resting & hiding', 'Start with rewards', 'Name & attention', 'Sit & wait', 'Come when called',
   'Loose-leash walking', 'Leave it & drop it', 'Settle on a mat', 'Cooperative handling',
   'Biting & nipping', 'Eating stones & dirt', 'Destructive chewing', 'Guarding food or toys',
-  'Barking & lunging', 'Chasing animals or cars', 'Separation distress', 'Door dashing'
+  'Barking & lunging', 'Chasing animals or cars', 'Separation distress', 'Door dashing',
+  'Today’s Wag.', 'Can you read the whole pattern?', 'Daily Wag', 'Quiz'
 ];
 const missingCopy = requiredCopy.filter((text) => !allHtml.includes(text));
 if (missingCopy.length) throw new Error(`Missing required guide content: ${missingCopy.join(', ')}`);

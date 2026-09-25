@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wagsignals.dodongking88pop.chatgpt.site/sitemap.xml

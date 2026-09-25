@@ -5,6 +5,8 @@ WagSignals is a static dog body-language guide. The root files are the maintaina
 ## Pages
 
 - `index.html` — short home page and guide picker
+- `daily.html` — date-rotating daily lesson with local progress
+- `quiz.html` — six-question whole-dog quiz with a local best score
 - `signals.html` — interactive whole-dog body-language reader
 - `behaviors.html` — illustrated everyday behavior guide
 - `training.html` — illustrated reward-based training guide
@@ -12,6 +14,8 @@ WagSignals is a static dog body-language guide. The root files are the maintaina
 - `body-map.html` — whole-body checklist and safety steps
 
 Shared styling lives in `styles.css`; the signal reader interaction lives in `signals.js`. Image provenance is documented in `ASSET-LICENSES.md`.
+
+`app.js` powers the Daily Wag, quiz, local pawprint progress, streak, saved clue state, and home-page progress summary. No account is required.
 
 ## Local development
 
