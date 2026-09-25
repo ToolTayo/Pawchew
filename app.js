@@ -145,10 +145,17 @@ function renderQuiz() {
       const shareText = `I scored ${score}/${quizQuestions.length} on the WagSignals dog-reading quiz.`;
       const status = shell.querySelector('#quiz-share-status');
       try {
-        if (navigator.share) await navigator.share({ title: 'My WagSignals quiz result', text: shareText, url: window.location.href });
-        else await navigator.clipboard.writeText(`${shareText} ${window.location.href}`);
-        status.textContent = navigator.share ? 'Share sheet opened.' : 'Result copied to your clipboard.';
-      } catch { status.textContent = 'Sharing was cancelled.'; }
+        const mobileShare = navigator.share && /Android|iPhone|iPad/i.test(navigator.userAgent);
+        if (mobileShare) {
+          await navigator.share({ title: 'My WagSignals quiz result', text: shareText, url: window.location.href });
+          status.textContent = 'Share sheet opened.';
+        } else if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(`${shareText} ${window.location.href}`);
+          status.textContent = 'Result copied to your clipboard.';
+        } else {
+          status.textContent = `${shareText} ${window.location.href}`;
+        }
+      } catch { status.textContent = 'Sharing was cancelled. You can try again or copy the result manually.'; }
     });
   }
   showQuestion();
