@@ -24,18 +24,30 @@ const mimeTypes = {
   '.ico': 'image/x-icon'
 };
 
-function safeFilePath(requestUrl) {
+async function safeFilePath(requestUrl) {
   const pathname = decodeURIComponent(new URL(requestUrl, 'http://localhost').pathname);
   const relativePath = pathname === '/' ? 'index.html' : pathname.replace(/^\/+/, '');
-  const candidate = path.resolve(root, relativePath);
-  const relative = path.relative(root, candidate);
-  if (relative.startsWith('..') || path.isAbsolute(relative)) return null;
-  return candidate;
+  const candidates = [relativePath];
+  if (pathname !== '/' && !path.extname(relativePath)) {
+    candidates.push(`${relativePath}.html`, path.join(relativePath, 'index.html'));
+  }
+  for (const candidatePath of candidates) {
+    const candidate = path.resolve(root, candidatePath);
+    const relative = path.relative(root, candidate);
+    if (relative.startsWith('..') || path.isAbsolute(relative)) continue;
+    try {
+      await fs.access(candidate);
+      return candidate;
+    } catch {
+      // Try the next safe route variant.
+    }
+  }
+  return null;
 }
 
 const server = http.createServer(async (request, response) => {
   try {
-    const filePath = safeFilePath(request.url ?? '/');
+    const filePath = await safeFilePath(request.url ?? '/');
     if (!filePath) {
       response.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
       response.end('Forbidden');
