@@ -8,6 +8,7 @@ WagSignals is a static dog body-language guide. The root files are the maintaina
 - `signals.html` — interactive whole-dog body-language reader
 - `behaviors.html` — illustrated everyday behavior guide
 - `training.html` — illustrated reward-based training guide
+- `challenges.html` — challenging behaviors with safer solutions
 - `body-map.html` — whole-body checklist and safety steps
 
 Shared styling lives in `styles.css`; the signal reader interaction lives in `signals.js`. Image provenance is documented in `ASSET-LICENSES.md`.

@@ -10,5 +10,6 @@ The automated project check rejects external image URLs and verifies that every 
 - `guide-*.png`: original body-language signal illustrations
 - `behavior-*.png`: original everyday-behavior illustrations
 - `training-*.png`: original reward-based training illustrations
+- `challenge-*.png`: original challenging-behavior and solution illustrations
 
 These assets are intended for use inside this WagSignals site. They are educational illustrations, not clinical or diagnostic imagery.
