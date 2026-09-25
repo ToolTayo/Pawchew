@@ -30,6 +30,15 @@ const scenarioLibrary = [
   { title: 'Something unsafe is on the ground', tag: 'Scavenging', image: './assets/challenge-stones-dirt.png', alt: 'A handler offering a treat trade while a dog investigates a stone', look: 'Notice what the dog finds valuable and whether eating objects is repeated.', do: 'Use secure management and teach a calm, high-value trade.', avoid: 'Do not chase, pry, or punish after the item is dropped.' }
 ];
 
+const feedbackTopics = {
+  'body-language': 'the body-language guide',
+  behaviors: 'the behaviors guide',
+  training: 'the training guide',
+  challenges: 'the challenges guide',
+  'body-map': 'the body map',
+  scenarios: 'the scenario guide'
+};
+
 function todayKey() {
   const now = new Date();
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
@@ -180,6 +189,27 @@ function renderScenarios() {
   search.addEventListener('input', render); render();
 }
 
+function renderFeedback() {
+  const topic = document.body.dataset.feedback;
+  const main = document.querySelector('main');
+  if (!topic || !main || !feedbackTopics[topic] || document.querySelector('.feedback-card')) return;
+  const card = document.createElement('section');
+  card.className = 'shell feedback-card';
+  card.setAttribute('aria-labelledby', 'feedback-title');
+  card.innerHTML = `<div><span class="section-kicker">Help us keep it clear</span><h2 id="feedback-title">Was ${feedbackTopics[topic]} useful today?</h2><p>This one-tap response stays on this device. It does not send personal information.</p></div><div class="feedback-actions"><button class="button" type="button" data-feedback-choice="yes">Yes, helpful</button><button class="button secondary" type="button" data-feedback-choice="no">Not quite</button></div><p class="feedback-status" aria-live="polite"></p>`;
+  main.append(card);
+  const status = card.querySelector('.feedback-status');
+  card.querySelectorAll('[data-feedback-choice]').forEach((button) => button.addEventListener('click', () => {
+    try {
+      const responses = JSON.parse(localStorage.getItem('wagsignals.feedback.v1') || '{}');
+      responses[topic] = button.dataset.feedbackChoice;
+      localStorage.setItem('wagsignals.feedback.v1', JSON.stringify(responses));
+    } catch { /* Private browsing can deny storage; the visible response still works. */ }
+    card.querySelectorAll('button').forEach((choice) => { choice.disabled = true; });
+    status.textContent = button.dataset.feedbackChoice === 'yes' ? 'Thank you — glad it helped.' : 'Thanks — we’ll keep this guide clearer and more practical.';
+  }));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderProgress();
   if (document.body.dataset.page === 'daily') renderDaily();
@@ -187,4 +217,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.body.dataset.page === 'saved') renderSaved();
   if (document.body.dataset.page === 'scenarios') renderScenarios();
   document.querySelector('#print-sheet')?.addEventListener('click', () => window.print());
+  renderFeedback();
 });
