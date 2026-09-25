@@ -22,7 +22,15 @@ const requiredFiles = [
   'assets/behavior-zoomies.png',
   'assets/behavior-jumping.png',
   'assets/behavior-pawing.png',
-  'assets/behavior-resting.png'
+  'assets/behavior-resting.png',
+  'assets/training-rewards.png',
+  'assets/training-attention.png',
+  'assets/training-sit-wait.png',
+  'assets/training-recall.png',
+  'assets/training-leash.png',
+  'assets/training-leave-it.png',
+  'assets/training-settle.png',
+  'assets/training-handling.png'
 ];
 
 for (const relativePath of requiredFiles) {
@@ -41,9 +49,11 @@ for (const reference of references) {
 const requiredCopy = [
   'eyes', 'ears', 'mouth', 'body', 'tail', 'movement', 'context', 'Movement', 'Situation / context',
   'Relaxed / happy', 'Ready to play', 'Interested / alert', 'Not so sure',
-  'Stressed / anxious', 'Fearful', 'Needs space', 'Strong warning'
-  , 'Sniffing & exploring', 'Barking & vocalizing', 'Chewing & shredding', 'Digging',
-  'Zoomies', 'Jumping up', 'Pawing & nudging', 'Resting & hiding'
+  'Stressed / anxious', 'Fearful', 'Needs space', 'Strong warning',
+  'Sniffing & exploring', 'Barking & vocalizing', 'Chewing & shredding', 'Digging',
+  'Zoomies', 'Jumping up', 'Pawing & nudging', 'Resting & hiding',
+  'Start with rewards', 'Name & attention', 'Sit & wait', 'Come when called',
+  'Loose-leash walking', 'Leave it & drop it', 'Settle on a mat', 'Cooperative handling'
 ];
 const missingCopy = requiredCopy.filter((text) => !html.includes(text));
 if (missingCopy.length) throw new Error(`Missing required body-language content: ${missingCopy.join(', ')}`);
@@ -52,5 +62,7 @@ const signalCount = (html.match(/data-signal=/g) ?? []).length;
 if (signalCount < 8) throw new Error(`Expected at least 8 signal cards, found ${signalCount}.`);
 const behaviorCount = (html.match(/class="behavior-card"/g) ?? []).length;
 if (behaviorCount < 8) throw new Error(`Expected at least 8 behavior cards, found ${behaviorCount}.`);
+const trainingCount = (html.match(/class="training-card"/g) ?? []).length;
+if (trainingCount < 8) throw new Error(`Expected at least 8 training cards, found ${trainingCount}.`);
 
-console.log(`Checked ${requiredFiles.length} required files, ${references.length} local references, ${signalCount} signal cards, and ${behaviorCount} behavior cards.`);
+console.log(`Checked ${requiredFiles.length} required files, ${references.length} local references, ${signalCount} signal cards, ${behaviorCount} behavior cards, and ${trainingCount} training cards.`);
