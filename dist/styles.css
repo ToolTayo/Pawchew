@@ -90,6 +90,8 @@ h1, h2, h3, p { margin-top: 0; }
 .daily-card .section-kicker { color: var(--sun); }
 .daily-note { margin: 18px 0; padding: 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 14px; background: rgba(255,255,255,0.05); }
 .daily-note strong { display: block; margin-bottom: 4px; color: white; }
+.daily-related { margin: 14px 0 0; }
+.daily-related .text-link { color: var(--sun); }
 .daily-question { margin: 18px 0 0; padding-top: 17px; border-top: 1px solid rgba(255,255,255,0.15); }
 .daily-question h3 { margin: 0 0 10px; font-size: 16px; }
 .daily-options { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -179,6 +181,16 @@ h1, h2, h3, p { margin-top: 0; }
 .signal-card:nth-child(4) .signal-icon { background: #fbd2c9; }
 .signal-card h2, .signal-card h3 { margin: 0 34px 4px 0; font-size: 17px; letter-spacing: -0.03em; }
 .signal-card p { margin: 0; color: var(--ink-soft); font-size: 14px; line-height: 1.35; }
+.library-tools { display: grid; gap: 14px; margin-bottom: 20px; }
+.library-tools .scenario-search { width: min(100%, 620px); }
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-button { min-height: 40px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-2); color: var(--ink); font: inherit; font-size: 14px; font-weight: 750; cursor: pointer; }
+.filter-button:hover, .filter-button:focus-visible { border-color: var(--coral); outline: 3px solid var(--sun); outline-offset: 2px; }
+.filter-button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: white; }
+.library-count { margin: 0; color: var(--ink-soft); font-size: 14px; }
+.signal-category { display: block; margin: 0 0 5px; color: var(--coral-dark); font-size: 11px; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
+.read-related { margin-top: 18px !important; }
+.read-related .text-link { color: var(--sun); }
 .read-panel { display: grid; grid-template-columns: minmax(220px, 0.72fr) 0.92fr 1.3fr; gap: 32px; align-items: start; margin-top: 18px; padding: 32px; border-radius: var(--radius-lg); background: var(--ink); color: white; }
 .read-visual { min-width: 0; }
 .read-visual img { width: 100%; height: clamp(170px, 18vw, 240px); object-fit: contain; border-radius: 16px; background: #f4efe4; }

@@ -25,6 +25,9 @@ for (const relativePath of requiredFiles) await fs.access(path.join(projectRoot,
 const htmlByPage = new Map();
 for (const page of pages) htmlByPage.set(page, await fs.readFile(path.join(projectRoot, page), 'utf8'));
 const allHtml = [...htmlByPage.values()].join('\n');
+const appSource = await fs.readFile(path.join(projectRoot, 'app.js'), 'utf8');
+const signalsSource = await fs.readFile(path.join(projectRoot, 'signals.js'), 'utf8');
+const allSource = `${allHtml}\n${appSource}\n${signalsSource}`;
 const references = [...allHtml.matchAll(/(?:src|href)="([^"]+)"/g)]
   .map((match) => match[1].split(/[?#]/)[0])
   .filter((reference) => reference && !reference.startsWith('#') && !/^(https?:|data:|mailto:|javascript:)/i.test(reference));
@@ -32,6 +35,11 @@ for (const reference of references) await fs.access(path.resolve(projectRoot, re
 
 const externalImageRefs = [...allHtml.matchAll(/<img[^>]+src="([^"]+)"/g)].map((match) => match[1]).filter((src) => /^(https?:)?\/\//i.test(src));
 if (externalImageRefs.length) throw new Error(`External image references are not allowed: ${externalImageRefs.join(', ')}`);
+
+const scriptAssetRefs = [...allSource.matchAll(/(?:image|src):\s*['"]([^'"]+)['"]/g)]
+  .map((match) => match[1].split(/[?#]/)[0])
+  .filter((reference) => reference.startsWith('./'));
+for (const reference of new Set(scriptAssetRefs)) await fs.access(path.resolve(projectRoot, reference.replace(/^\.\//, '')));
 
 const requiredCopy = [
   'eyes', 'ears', 'mouth', 'body', 'tail', 'movement', 'context', 'Situation / context',
@@ -44,14 +52,19 @@ const requiredCopy = [
   'Barking & lunging', 'Chasing animals or cars', 'Separation distress', 'Door dashing',
   'Today’s Wag.', 'Can you read the whole pattern?', 'Daily Wag', 'Quiz', 'Your saved clues', 'Real-life scenarios', 'A one-page dog-reading cheat sheet', 'Search dog scenarios', 'Print cheat sheet'
 ];
-const missingCopy = requiredCopy.filter((text) => !allHtml.includes(text));
+const missingCopy = requiredCopy.filter((text) => !allSource.includes(text));
 if (missingCopy.length) throw new Error(`Missing required guide content: ${missingCopy.join(', ')}`);
 
-const signalCount = (htmlByPage.get('signals.html').match(/data-signal=/g) ?? []).length;
+const signalCount = (signalsSource.match(/category:\s*['"]/g) ?? []).length;
 const behaviorCount = (htmlByPage.get('behaviors.html').match(/class="behavior-card"/g) ?? []).length;
 const trainingCount = (htmlByPage.get('training.html').match(/class="training-card"/g) ?? []).length;
 const challengeCount = (htmlByPage.get('challenges.html').match(/class="challenge-card"/g) ?? []).length;
-for (const [label, count] of [['signal', signalCount], ['behavior', behaviorCount], ['training', trainingCount], ['challenge', challengeCount]]) {
+const quizInitialBlock = appSource.match(/const quizQuestions = \[(.*?)\];\s*\n\nObject\.assign/s)?.[1] ?? '';
+const quizAddedBlock = appSource.match(/quizQuestions\.push\((.*?)\n\);/s)?.[1] ?? '';
+const quizCount = (quizInitialBlock.match(/\{\s*image:/g) ?? []).length + (quizAddedBlock.match(/\{\s*id:/g) ?? []).length;
+if (quizCount !== 20) throw new Error(`Expected exactly 20 visual quiz challenges, found ${quizCount}.`);
+if (signalCount < 30) throw new Error(`Expected at least 30 body-language library entries, found ${signalCount}.`);
+for (const [label, count] of [['behavior', behaviorCount], ['training', trainingCount], ['challenge', challengeCount]]) {
   if (count < 8) throw new Error(`Expected at least 8 ${label} cards, found ${count}.`);
 }
 
@@ -62,4 +75,4 @@ for (const [page, selector] of [['saved.html', 'saved-list'], ['scenarios.html',
 const navTargets = [...allHtml.matchAll(/href="\.\/([^"#]+\.html)"/g)].map((match) => match[1]);
 for (const target of new Set(navTargets)) await fs.access(path.join(projectRoot, target));
 
-console.log(`Checked ${requiredFiles.length} required files, ${references.length} local references, ${pages.length} pages, ${signalCount} signal cards, ${behaviorCount} behavior cards, ${trainingCount} training cards, ${challengeCount} challenge cards, and ${externalImageRefs.length} external image references.`);
+console.log(`Checked ${requiredFiles.length} required files, ${references.length} HTML references, ${new Set(scriptAssetRefs).size} script asset references, ${pages.length} pages, ${quizCount} quiz challenges, ${signalCount} body-language entries, ${behaviorCount} behavior cards, ${trainingCount} training cards, ${challengeCount} challenge cards, and ${externalImageRefs.length} external image references.`);
