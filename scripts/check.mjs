@@ -8,7 +8,7 @@ const requiredFiles = [
   ...pages, 'styles.css', 'signals.js', 'app.js', 'favicon.svg', 'robots.txt', 'sitemap.xml',
   'assets/dog-language-hero.jpg', 'assets/guide-relaxed.jpg', 'assets/guide-playful.jpg',
   'assets/guide-interested.jpg', 'assets/guide-uncertain.jpg', 'assets/guide-stressed.jpg',
-  'assets/guide-fearful.jpg', 'assets/guide-needs-space.jpg', 'assets/guide-warning.jpg',
+  'assets/guide-fearful.jpg', 'assets/guide-tucked-tail.jpg', 'assets/guide-needs-space.jpg', 'assets/guide-warning.jpg',
   'assets/behavior-sniffing.jpg', 'assets/behavior-barking.jpg', 'assets/behavior-chewing.jpg',
   'assets/behavior-digging.jpg', 'assets/behavior-zoomies.jpg', 'assets/behavior-jumping.jpg',
   'assets/behavior-pawing.jpg', 'assets/behavior-resting.jpg', 'assets/training-rewards.jpg',
@@ -41,6 +41,11 @@ const scriptAssetRefs = [...allSource.matchAll(/(?:image|src):\s*['"]([^'"]+)['"
   .filter((reference) => reference.startsWith('./'));
 for (const reference of new Set(scriptAssetRefs)) await fs.access(path.resolve(projectRoot, reference.replace(/^\.\//, '')));
 
+const signalKeys = new Set([...signalsSource.matchAll(/^\s{2}(?:'([^']+)'|([a-z0-9-]+)):\s*\{/gm)].map((match) => match[1] ?? match[2]));
+const signalLinks = [...allSource.matchAll(/signals\.html\?signal=([a-z0-9-]+)/g)].map((match) => match[1]);
+const brokenSignalLinks = [...new Set(signalLinks.filter((key) => !signalKeys.has(key)))];
+if (brokenSignalLinks.length) throw new Error(`Broken signal links: ${brokenSignalLinks.join(', ')}`);
+
 const requiredCopy = [
   'eyes', 'ears', 'mouth', 'body', 'tail', 'movement', 'context', 'Situation / context',
   'Relaxed / happy', 'Ready to play', 'Interested / alert', 'Not so sure', 'Stressed / anxious',
@@ -63,10 +68,15 @@ const quizInitialBlock = appSource.match(/const quizQuestions = \[(.*?)\];\s*\n\
 const quizAddedBlock = appSource.match(/quizQuestions\.push\((.*?)\n\);/s)?.[1] ?? '';
 const quizCount = (quizInitialBlock.match(/\{\s*image:/g) ?? []).length + (quizAddedBlock.match(/\{\s*id:/g) ?? []).length;
 if (quizCount !== 20) throw new Error(`Expected exactly 20 visual quiz challenges, found ${quizCount}.`);
-if (signalCount < 30) throw new Error(`Expected at least 30 body-language library entries, found ${signalCount}.`);
+if (signalCount !== 40) throw new Error(`Expected exactly 40 body-language library entries, found ${signalCount}.`);
 for (const [label, count] of [['behavior', behaviorCount], ['training', trainingCount], ['challenge', challengeCount]]) {
   if (count < 8) throw new Error(`Expected at least 8 ${label} cards, found ${count}.`);
 }
+
+const quizAltLeakTerms = /\b(?:wag|tail|ears?|eye|white|paw|pant|freeze|hackles?|growl|bark|lung|guard|approach|tuck|mouth|lip)\b/i;
+const quizAlts = [...`${quizInitialBlock}\n${quizAddedBlock}`.matchAll(/alt:\s*'([^']+)'/g)].map((match) => match[1]);
+const leakedQuizAlts = quizAlts.filter((alt) => quizAltLeakTerms.test(alt));
+if (leakedQuizAlts.length) throw new Error(`Quiz alt text reveals answer clues: ${leakedQuizAlts.join(' | ')}`);
 
 for (const [page, selector] of [['saved.html', 'saved-list'], ['scenarios.html', 'scenario-list'], ['cheat-sheet.html', 'print-sheet']]) {
   if (!htmlByPage.get(page).includes(`id="${selector}"`)) throw new Error(`${page} is missing ${selector}.`);
