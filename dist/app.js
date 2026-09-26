@@ -1,21 +1,21 @@
 const storageKey = 'wagsignals.progress.v1';
 
 const dailyLessons = [
-  { id: 'soft-eyes', kicker: 'Body language', title: 'Soft eyes are an invitation to slow down.', body: 'Blinking, relaxed eyes and a loose body often mean your dog can stay present and make choices.', notice: 'Look for the whole pattern—not just the eyes.', try: 'Let your dog approach, sniff, or move away without pressure.', image: './assets/guide-relaxed.jpg', alt: 'A golden retriever sitting with a relaxed body and soft eyes', question: 'Which clue helps confirm a relaxed read?', options: ['Loose movement and easy breathing', 'A fast stiff wag only', 'A fixed stare'], answer: 0, explanation: 'Relaxation is a cluster: soft eyes, flexible movement, and the ability to disengage.' },
-  { id: 'play-bow', kicker: 'Body language', title: 'A play bow is an invitation, not a command.', body: 'A low front end and raised hips can invite play when the face and movement stay loose.', notice: 'Good play includes pauses and the freedom to opt out.', try: 'Offer a short game, then give everyone a break.', image: './assets/guide-playful.jpg', alt: 'A small dog holding a clear play bow with its front legs down and hips raised', question: 'What makes play safer?', options: ['Chasing without pauses', 'Give-and-take with easy breaks', 'Holding a dog in place'], answer: 1, explanation: 'Healthy play has turn-taking, pauses, and room for each dog to leave.' },
-  { id: 'sniff-break', kicker: 'Everyday behavior', title: 'A sniff break can be useful enrichment.', body: 'Sniffing gives dogs information and can help them settle. A walk does not need to be fast to be valuable.', notice: 'Sudden frantic sniffing can also release pressure.', try: 'Let your dog investigate safe smells before moving on.', image: './assets/behavior-sniffing.jpg', alt: 'A dog sniffing grass in a sunny park', question: 'What is a helpful response to calm sniffing?', options: ['Allow safe time to explore', 'Pull away every time', 'Assume the dog is disobedient'], answer: 0, explanation: 'Sniffing is normal information gathering and often a calming outlet.' },
-  { id: 'space-signal', kicker: 'Safety', title: 'A freeze is a reason to add space.', body: 'Stillness, a tight mouth, hard focus, or a body leaning away can be a quiet stop sign.', notice: 'Freezing is not proof that a dog is calm.', try: 'Stop reaching, turn sideways, and create a clear exit.', image: './assets/guide-needs-space.jpg', alt: 'A dog standing still and asking for space', question: 'What should happen first?', options: ['More touching', 'More distance', 'A louder command'], answer: 1, explanation: 'Distance lowers pressure and gives the dog a chance to recover.' },
-  { id: 'trade-safe', kicker: 'Challenges', title: 'A calm trade beats a chase.', body: 'If a dog has something unsafe, offer something better and make giving it up feel safe.', notice: 'Do not pry objects from a worried dog’s mouth.', try: 'Keep high-value treats ready and return to the game when the trade is done.', image: './assets/challenge-stones-dirt.jpg', alt: 'A handler offering a treat trade while a dog investigates a stone outdoors', question: 'What is the safest first move?', options: ['Chase and grab', 'Offer a better trade and add distance', 'Scold after the dog drops it'], answer: 1, explanation: 'A trade protects trust and reduces the chance of guarding or a frantic chase.' },
-  { id: 'mat-settle', kicker: 'Training', title: 'Settling is a skill worth practicing.', body: 'A predictable mat can give your dog a safe place to rest while normal life happens around them.', notice: 'The goal is choice and soft muscles, not forced stillness.', try: 'Reward a lowered head, relaxed breathing, and choosing to stay.', image: './assets/training-settle.jpg', alt: 'A dog resting on a mat beside a seated handler', question: 'What should you reward?', options: ['Only a perfect long stay', 'Small signs of softening and rest', 'A dog that cannot move'], answer: 1, explanation: 'Reinforcing tiny moments of calm builds a useful, voluntary settle.' }
+  { id: 'soft-eyes', kicker: 'Body language', title: 'Soft eyes are an invitation to slow down.', body: 'Blinking, relaxed eyes and a loose body often mean your dog can stay present and make choices.', notice: 'Look for the whole pattern—not just the eyes.', try: 'Let your dog approach, sniff, or move away without pressure.', image: './assets/guide-relaxed.webp', alt: 'A golden retriever sitting with a relaxed body and soft eyes', question: 'Which clue helps confirm a relaxed read?', options: ['Loose movement and easy breathing', 'A fast stiff wag only', 'A fixed stare'], answer: 0, explanation: 'Relaxation is a cluster: soft eyes, flexible movement, and the ability to disengage.' },
+  { id: 'play-bow', kicker: 'Body language', title: 'A play bow is an invitation, not a command.', body: 'A low front end and raised hips can invite play when the face and movement stay loose.', notice: 'Good play includes pauses and the freedom to opt out.', try: 'Offer a short game, then give everyone a break.', image: './assets/guide-playful.webp', alt: 'A small dog holding a clear play bow with its front legs down and hips raised', question: 'What makes play safer?', options: ['Chasing without pauses', 'Give-and-take with easy breaks', 'Holding a dog in place'], answer: 1, explanation: 'Healthy play has turn-taking, pauses, and room for each dog to leave.' },
+  { id: 'sniff-break', kicker: 'Everyday behavior', title: 'A sniff break can be useful enrichment.', body: 'Sniffing gives dogs information and can help them settle. A walk does not need to be fast to be valuable.', notice: 'Sudden frantic sniffing can also release pressure.', try: 'Let your dog investigate safe smells before moving on.', image: './assets/behavior-sniffing.webp', alt: 'A dog sniffing grass in a sunny park', question: 'What is a helpful response to calm sniffing?', options: ['Allow safe time to explore', 'Pull away every time', 'Assume the dog is disobedient'], answer: 0, explanation: 'Sniffing is normal information gathering and often a calming outlet.' },
+  { id: 'space-signal', kicker: 'Safety', title: 'A freeze is a reason to add space.', body: 'Stillness, a tight mouth, hard focus, or a body leaning away can be a quiet stop sign.', notice: 'Freezing is not proof that a dog is calm.', try: 'Stop reaching, turn sideways, and create a clear exit.', image: './assets/guide-needs-space.webp', alt: 'A dog standing still and asking for space', question: 'What should happen first?', options: ['More touching', 'More distance', 'A louder command'], answer: 1, explanation: 'Distance lowers pressure and gives the dog a chance to recover.' },
+  { id: 'trade-safe', kicker: 'Challenges', title: 'A calm trade beats a chase.', body: 'If a dog has something unsafe, offer something better and make giving it up feel safe.', notice: 'Do not pry objects from a worried dog’s mouth.', try: 'Keep high-value treats ready and return to the game when the trade is done.', image: './assets/challenge-stones-dirt.webp', alt: 'A handler offering a treat trade while a dog investigates a stone outdoors', question: 'What is the safest first move?', options: ['Chase and grab', 'Offer a better trade and add distance', 'Scold after the dog drops it'], answer: 1, explanation: 'A trade protects trust and reduces the chance of guarding or a frantic chase.' },
+  { id: 'mat-settle', kicker: 'Training', title: 'Settling is a skill worth practicing.', body: 'A predictable mat can give your dog a safe place to rest while normal life happens around them.', notice: 'The goal is choice and soft muscles, not forced stillness.', try: 'Reward a lowered head, relaxed breathing, and choosing to stay.', image: './assets/training-settle.webp', alt: 'A dog resting on a mat beside a seated handler', question: 'What should you reward?', options: ['Only a perfect long stay', 'Small signs of softening and rest', 'A dog that cannot move'], answer: 1, explanation: 'Reinforcing tiny moments of calm builds a useful, voluntary settle.' }
 ];
 
 const quizQuestions = [
-  { image: './assets/guide-stressed.jpg', alt: 'Dog sitting outdoors in a park', question: 'A dog is lip licking and looking tense in a busy park. What is the kindest first step?', options: ['Add distance and lower stimulation', 'Force a greeting', 'Ignore every signal'], answer: 0, explanation: 'A tense face and repeated lip licking call for less pressure and more predictability. Also consider heat, food, and health.', },
-  { image: './assets/guide-playful.jpg', alt: 'Dog in an outdoor pose on grass', question: 'Which pattern most supports a play invitation?', options: ['Loose movement with pauses', 'A frozen hard stare', 'A tight mouth and retreat'], answer: 0, explanation: 'Play is bouncy and flexible, with room for both dogs to opt in or out.' },
-  { image: './assets/challenge-guarding.jpg', alt: 'Dog indoors near a bowl while a person stands back', question: 'A dog freezes over a food bowl. What should you do?', options: ['Reach into the bowl', 'Give space and manage the setup', 'Punish the growl'], answer: 1, explanation: 'Freezing is information. Distance and professional guidance are safer than confrontation.' },
-  { image: './assets/training-leash.jpg', alt: 'Dog walking beside a person outdoors', question: 'What should earn a reward during loose-leash practice?', options: ['A slack leash and check-in', 'A tighter pull', 'Ignoring the handler'], answer: 0, explanation: 'Reward the behavior you want repeated: slack, connection, and easy movement.' },
-  { image: './assets/challenge-separation.jpg', alt: 'Dog resting indoors on a mat near a food puzzle', question: 'What helps separation distress?', options: ['Practice absences shorter than panic', 'Leave for a long time immediately', 'Punish vocalizing afterward'], answer: 0, explanation: 'Gradual practice below the dog’s panic threshold is safer and more teachable.' },
-  { image: './assets/guide-warning.jpg', alt: 'Dog standing outdoors with a tense posture', question: 'A dog growls when someone reaches toward them. What does the growl provide?', options: ['Useful safety information', 'Proof the dog is bad', 'A reason to reach faster'], answer: 0, explanation: 'A warning is communication. Stop, create distance, and seek qualified support if it repeats.' }
+  { image: './assets/guide-stressed.webp', alt: 'Dog sitting outdoors in a park', question: 'A dog is lip licking and looking tense in a busy park. What is the kindest first step?', options: ['Add distance and lower stimulation', 'Force a greeting', 'Ignore every signal'], answer: 0, explanation: 'A tense face and repeated lip licking call for less pressure and more predictability. Also consider heat, food, and health.', },
+  { image: './assets/guide-playful.webp', alt: 'Dog in an outdoor pose on grass', question: 'Which pattern most supports a play invitation?', options: ['Loose movement with pauses', 'A frozen hard stare', 'A tight mouth and retreat'], answer: 0, explanation: 'Play is bouncy and flexible, with room for both dogs to opt in or out.' },
+  { image: './assets/challenge-guarding.webp', alt: 'Dog indoors near a bowl while a person stands back', question: 'A dog freezes over a food bowl. What should you do?', options: ['Reach into the bowl', 'Give space and manage the setup', 'Punish the growl'], answer: 1, explanation: 'Freezing is information. Distance and professional guidance are safer than confrontation.' },
+  { image: './assets/training-leash.webp', alt: 'Dog walking beside a person outdoors', question: 'What should earn a reward during loose-leash practice?', options: ['A slack leash and check-in', 'A tighter pull', 'Ignoring the handler'], answer: 0, explanation: 'Reward the behavior you want repeated: slack, connection, and easy movement.' },
+  { image: './assets/challenge-separation.webp', alt: 'Dog resting indoors on a mat near a food puzzle', question: 'What helps separation distress?', options: ['Practice absences shorter than panic', 'Leave for a long time immediately', 'Punish vocalizing afterward'], answer: 0, explanation: 'Gradual practice below the dog’s panic threshold is safer and more teachable.' },
+  { image: './assets/guide-warning.webp', alt: 'Dog standing outdoors with a tense posture', question: 'A dog growls when someone reaches toward them. What does the growl provide?', options: ['Useful safety information', 'Proof the dog is bad', 'A reason to reach faster'], answer: 0, explanation: 'A warning is communication. Stop, create distance, and seek qualified support if it repeats.' }
 ];
 
 Object.assign(quizQuestions[0], { id: 'stress-cluster', level: 'Beginner', category: 'Stressed / anxious', clues: 'Lip licking and a tense face appear while the dog is sitting in a busy park.', action: 'Lower stimulation, add distance, and check whether the dog can settle.', related: ['Read stress patterns', './signals.html?signal=stressed-pattern'] });
@@ -26,32 +26,32 @@ Object.assign(quizQuestions[4], { id: 'separation-panic', level: 'Intermediate',
 Object.assign(quizQuestions[5], { id: 'growl-information', level: 'Intermediate', category: 'Warning', clues: 'The growl appears when someone reaches toward the dog.', action: 'Stop, make space, and arrange qualified behavior and veterinary support if it repeats.', related: ['Read growling', './signals.html?signal=growling'] });
 
 quizQuestions.push(
-  { id: 'tight-wag', level: 'Intermediate', category: 'Alert / interested', image: './assets/guide-interested.jpg', alt: 'Dog standing outdoors and looking toward a butterfly', question: 'A dog holds its tail high, keeps its mouth closed, and leans toward a butterfly. What is the safest read?', options: ['Activated and needing more context', 'Definitely happy and ready to greet', 'Calm because the tail is raised'], answer: 0, explanation: 'A high tail and forward weight show activation, not a guaranteed friendly feeling. A still image cannot tell you how fast a tail is moving, so check stiffness, distance, and recovery.', clues: 'The tail is held high, the mouth is closed, and the weight is forward.', action: 'Pause the approach and give the dog room to observe or disengage.', related: ['Read high-tail activation', './signals.html?signal=fast-tight-wag'] },
-  { id: 'whale-eye', level: 'Intermediate', category: 'Uncertain', image: './assets/guide-stressed.jpg', alt: 'Dog sitting outdoors and looking to the side', question: 'A dog turns its head away while the eye stays wide with white showing. What should you check next?', options: ['Whether the dog can move away and soften', 'Whether to hold the head still', 'Whether visible white always means aggression'], answer: 0, explanation: 'Visible eye white can be a worry clue in context. Check the exit route, mouth, ears, and the pressure around the dog.', clues: 'The head turns away, the eye is wide, and the face looks tense.', action: 'Stop reaching and create space without cornering the dog.', related: ['Learn visible eye whites', './signals.html?signal=whale-eye'] },
-  { id: 'ears-back', level: 'Beginner', category: 'Fearful', image: './assets/guide-fearful.jpg', alt: 'Dog crouching near an indoor doorway', question: 'A dog has ears back, a low body, and a tucked tail during a greeting. What is the kindest first move?', options: ['Increase distance and stop the greeting', 'Lean over for a hug', 'Call the dog closer repeatedly'], answer: 0, explanation: 'That cluster may be consistent with fear. More control and less pressure are safer than forced contact.', clues: 'Ears are back, the body is low, and the tail is tucked.', action: 'Turn sideways, add distance, and protect the dog’s escape route.', related: ['Read ears pulled back', './signals.html?signal=ears-back'] },
-  { id: 'head-turn', level: 'Beginner', category: 'Uncertain', image: './assets/guide-uncertain.jpg', alt: 'Dog outdoors in a paused stance', question: 'During petting, a dog turns their head away and lifts one paw. What might that combination be saying?', options: ['The interaction may be too intense', 'The dog is asking you to hold tighter', 'The dog has agreed to keep going'], answer: 0, explanation: 'Head turns and paw lifts can be quiet conflict or uncertainty signals. Respecting early signals prevents escalation.', clues: 'The head points away and one paw pauses in the air.', action: 'Pause touch and let the dog choose whether to return.', related: ['Read the paw lift', './signals.html?signal=paw-lift'] },
-  { id: 'stress-panting', level: 'Intermediate', category: 'Stressed / anxious', image: './assets/guide-stressed.jpg', alt: 'Dog sitting outdoors in a park', question: 'A dog is lip licking and panting in a busy park without obvious exercise. What should you avoid assuming?', options: ['That panting must mean happiness', 'That the setting may be stressful', 'That recovery and other clues matter'], answer: 0, explanation: 'Panting can reflect heat, exercise, stress, pain, medication, or illness. The setting and recovery matter.', clues: 'There is no obvious exercise in the scene, and panting appears with a tongue flick and tension.', action: 'Lower pressure, offer shade and water, and get veterinary help for a sudden or intense change.', related: ['Read panting in context', './signals.html?signal=panting-context'] },
-  { id: 'freeze-not-calm', level: 'Intermediate', category: 'Needs space', image: './assets/guide-needs-space.jpg', alt: 'Dog standing outdoors in a still posture', question: 'A dog becomes completely still when a hand reaches over their head. What should you do first?', options: ['Stop and create an exit', 'Pet faster so they get used to it', 'Assume they are calm because they are quiet'], answer: 0, explanation: 'A freeze can be a stop signal, not consent. Stop adding pressure before the dog needs a bigger warning.', clues: 'Movement stops, the mouth tightens, and the hand is still above the dog.', action: 'Withdraw the hand, turn sideways, and let the dog move away.', related: ['Read freezing', './signals.html?signal=freeze'] },
-  { id: 'raised-hackles', level: 'Advanced', category: 'Alert / interested', image: './assets/guide-warning.jpg', alt: 'Dog standing outdoors with a tense posture', question: 'Raised fur appears along a dog’s back. Which interpretation is most accurate?', options: ['The dog is aroused; the reason needs context', 'The dog is definitely aggressive', 'The dog is definitely relaxed'], answer: 0, explanation: 'Raised hackles show activation, not one emotion. Check the trigger, mouth, eyes, movement, and recovery.', clues: 'Hair is lifted along the back, but the image alone cannot tell you why.', action: 'Increase space and watch whether the whole body softens or intensifies.', related: ['Read raised hackles', './signals.html?signal=raised-hackles'] },
-  { id: 'growl-not-bad', level: 'Beginner', category: 'Warning', image: './assets/guide-warning.jpg', alt: 'Dog standing outdoors with a tense posture', question: 'What is a growl most useful for telling you?', options: ['The situation is too much or too close', 'The dog deserves punishment', 'You should reach in quickly'], answer: 0, explanation: 'A growl is valuable safety information. Punishing it can remove the warning without changing the discomfort.', clues: 'The dog is rigid, focused, and vocalizing as someone approaches.', action: 'Stop, create distance, and seek help for repeated or high-risk warnings.', related: ['Read growling', './signals.html?signal=growling'] },
-  { id: 'barking-context', level: 'Intermediate', category: 'Frustrated / overwhelmed', image: './assets/behavior-barking.jpg', alt: 'Dog outdoors facing a distant van', question: 'A dog barks at a van, then cannot settle. What should you inspect before choosing a response?', options: ['Trigger, distance, rhythm, and recovery', 'Only the volume of the bark', 'Whether to punish every sound'], answer: 0, explanation: 'Barking has many functions. The body, trigger, distance, and recovery help show whether the dog is alert, frustrated, afraid, or asking for help.', clues: 'The dog is oriented toward movement and stays activated after it passes.', action: 'Add distance and reward a calm look back when the dog can still think.', related: ['Explore barking with body clues', './signals.html?signal=barking'] },
-  { id: 'lunge-distance', level: 'Advanced', category: 'Frustrated / overwhelmed', image: './assets/challenge-lunging.jpg', alt: 'Dog outdoors on leash with a person creating space', question: 'A dog lunges toward another dog on leash. What is the safest immediate goal?', options: ['Create distance before asking for learning', 'Hold the leash tighter and move closer', 'Wait until the dog is at full intensity'], answer: 0, explanation: 'Learning is difficult at full arousal. Distance and secure management come before training around the trigger.', clues: 'The leash is tight, front feet drive forward, and the dog is vocalizing.', action: 'Turn away early, create space, and work below the reaction threshold.', related: ['Read lunging', './signals.html?signal=lunging'] },
-  { id: 'guarding-space', level: 'Advanced', category: 'Needs space', image: './assets/challenge-guarding.jpg', alt: 'Dog indoors near a bowl while a person gives space', question: 'A dog freezes over a bowl and watches a person closely. What should the person avoid?', options: ['Reaching into the bowl', 'Giving space behind a barrier', 'Getting a professional trade plan'], answer: 0, explanation: 'A guarding freeze is an early warning. Space and management protect everyone while a qualified plan is built.', clues: 'The dog hovers over the bowl, stops moving, and tracks the approaching person.', action: 'Back away and manage meals without testing the warning.', related: ['Read guarding freeze', './signals.html?signal=guarding-freeze'] },
-  { id: 'approach-retreat', level: 'Advanced', category: 'Uncertain', image: './assets/guide-uncertain.jpg', alt: 'Dog outdoors pausing and looking to the side', question: 'A dog investigates a visitor, then pauses with a head turn and one paw lifted. What does that pattern suggest?', options: ['Interest mixed with uncertainty', 'Permanent consent to pet', 'A need to lure the dog closer'], answer: 0, explanation: 'An approach followed by a pause or look-away can show information gathering while the dog still needs safety and control.', clues: 'The dog pauses, turns its head, and holds one paw up while monitoring the visitor.', action: 'Stay still, add space, and let the dog choose the pace.', related: ['Read approach and pause', './signals.html?signal=approach-retreat'] },
-  { id: 'voluntary-approach', level: 'Beginner', category: 'Relaxed / comfortable', image: './assets/guide-relaxed.jpg', alt: 'Relaxed dog sitting outdoors with a loose body', question: 'A dog chooses to sit near you with a loose body, then turns away when you reach. What is the best response?', options: ['Pause and let the dog choose again', 'Hold the dog for more petting', 'Assume sitting nearby means yes forever'], answer: 0, explanation: 'Sharing space is useful information, but consent is ongoing. A turn-away can be a request for a break.', clues: 'The dog is relaxed nearby, then turns away when contact is offered.', action: 'Stop reaching and invite another choice rather than restraining the dog.', related: ['Read choosing to stay near', './signals.html?signal=moving-closer'] },
-  { id: 'low-tail-baseline', level: 'Advanced', category: 'Relaxed / comfortable', image: './assets/guide-uncertain.jpg', alt: 'Dog outdoors with a soft head turn', question: 'A dog has a low tail but a loose body, soft mouth, and easy movement. What is the best conclusion?', options: ['Compare it with the dog’s normal baseline and whole pattern', 'The dog must be afraid', 'Tail position alone tells you the feeling'], answer: 0, explanation: 'Tail carriage varies by anatomy and individual. A low tail matters most when it changes from baseline or clusters with other clues.', clues: 'The tail is low, but the mouth and body are not obviously tense.', action: 'Watch changes, movement, and recovery instead of labeling the tail alone.', related: ['Learn tail and breed differences', './signals.html?signal=low-tail'] }
+  { id: 'tight-wag', level: 'Intermediate', category: 'Alert / interested', image: './assets/guide-interested.webp', alt: 'Dog standing outdoors and looking toward a butterfly', question: 'A dog holds its tail high, keeps its mouth closed, and leans toward a butterfly. What is the safest read?', options: ['Activated and needing more context', 'Definitely happy and ready to greet', 'Calm because the tail is raised'], answer: 0, explanation: 'A high tail and forward weight show activation, not a guaranteed friendly feeling. A still image cannot tell you how fast a tail is moving, so check stiffness, distance, and recovery.', clues: 'The tail is held high, the mouth is closed, and the weight is forward.', action: 'Pause the approach and give the dog room to observe or disengage.', related: ['Read high-tail activation', './signals.html?signal=fast-tight-wag'] },
+  { id: 'whale-eye', level: 'Intermediate', category: 'Uncertain', image: './assets/guide-stressed.webp', alt: 'Dog sitting outdoors and looking to the side', question: 'A dog turns its head away while the eye stays wide with white showing. What should you check next?', options: ['Whether the dog can move away and soften', 'Whether to hold the head still', 'Whether visible white always means aggression'], answer: 0, explanation: 'Visible eye white can be a worry clue in context. Check the exit route, mouth, ears, and the pressure around the dog.', clues: 'The head turns away, the eye is wide, and the face looks tense.', action: 'Stop reaching and create space without cornering the dog.', related: ['Learn visible eye whites', './signals.html?signal=whale-eye'] },
+  { id: 'ears-back', level: 'Beginner', category: 'Fearful', image: './assets/guide-fearful.webp', alt: 'Dog crouching near an indoor doorway', question: 'A dog has ears back, a low body, and a tucked tail during a greeting. What is the kindest first move?', options: ['Increase distance and stop the greeting', 'Lean over for a hug', 'Call the dog closer repeatedly'], answer: 0, explanation: 'That cluster may be consistent with fear. More control and less pressure are safer than forced contact.', clues: 'Ears are back, the body is low, and the tail is tucked.', action: 'Turn sideways, add distance, and protect the dog’s escape route.', related: ['Read ears pulled back', './signals.html?signal=ears-back'] },
+  { id: 'head-turn', level: 'Beginner', category: 'Uncertain', image: './assets/guide-uncertain.webp', alt: 'Dog outdoors in a paused stance', question: 'During petting, a dog turns their head away and lifts one paw. What might that combination be saying?', options: ['The interaction may be too intense', 'The dog is asking you to hold tighter', 'The dog has agreed to keep going'], answer: 0, explanation: 'Head turns and paw lifts can be quiet conflict or uncertainty signals. Respecting early signals prevents escalation.', clues: 'The head points away and one paw pauses in the air.', action: 'Pause touch and let the dog choose whether to return.', related: ['Read the paw lift', './signals.html?signal=paw-lift'] },
+  { id: 'stress-panting', level: 'Intermediate', category: 'Stressed / anxious', image: './assets/guide-stressed.webp', alt: 'Dog sitting outdoors in a park', question: 'A dog is lip licking and panting in a busy park without obvious exercise. What should you avoid assuming?', options: ['That panting must mean happiness', 'That the setting may be stressful', 'That recovery and other clues matter'], answer: 0, explanation: 'Panting can reflect heat, exercise, stress, pain, medication, or illness. The setting and recovery matter.', clues: 'There is no obvious exercise in the scene, and panting appears with a tongue flick and tension.', action: 'Lower pressure, offer shade and water, and get veterinary help for a sudden or intense change.', related: ['Read panting in context', './signals.html?signal=panting-context'] },
+  { id: 'freeze-not-calm', level: 'Intermediate', category: 'Needs space', image: './assets/guide-needs-space.webp', alt: 'Dog standing outdoors in a still posture', question: 'A dog becomes completely still when a hand reaches over their head. What should you do first?', options: ['Stop and create an exit', 'Pet faster so they get used to it', 'Assume they are calm because they are quiet'], answer: 0, explanation: 'A freeze can be a stop signal, not consent. Stop adding pressure before the dog needs a bigger warning.', clues: 'Movement stops, the mouth tightens, and the hand is still above the dog.', action: 'Withdraw the hand, turn sideways, and let the dog move away.', related: ['Read freezing', './signals.html?signal=freeze'] },
+  { id: 'raised-hackles', level: 'Advanced', category: 'Alert / interested', image: './assets/guide-warning.webp', alt: 'Dog standing outdoors with a tense posture', question: 'Raised fur appears along a dog’s back. Which interpretation is most accurate?', options: ['The dog is aroused; the reason needs context', 'The dog is definitely aggressive', 'The dog is definitely relaxed'], answer: 0, explanation: 'Raised hackles show activation, not one emotion. Check the trigger, mouth, eyes, movement, and recovery.', clues: 'Hair is lifted along the back, but the image alone cannot tell you why.', action: 'Increase space and watch whether the whole body softens or intensifies.', related: ['Read raised hackles', './signals.html?signal=raised-hackles'] },
+  { id: 'growl-not-bad', level: 'Beginner', category: 'Warning', image: './assets/guide-warning.webp', alt: 'Dog standing outdoors with a tense posture', question: 'What is a growl most useful for telling you?', options: ['The situation is too much or too close', 'The dog deserves punishment', 'You should reach in quickly'], answer: 0, explanation: 'A growl is valuable safety information. Punishing it can remove the warning without changing the discomfort.', clues: 'The dog is rigid, focused, and vocalizing as someone approaches.', action: 'Stop, create distance, and seek help for repeated or high-risk warnings.', related: ['Read growling', './signals.html?signal=growling'] },
+  { id: 'barking-context', level: 'Intermediate', category: 'Frustrated / overwhelmed', image: './assets/behavior-barking.webp', alt: 'Dog outdoors facing a distant van', question: 'A dog barks at a van, then cannot settle. What should you inspect before choosing a response?', options: ['Trigger, distance, rhythm, and recovery', 'Only the volume of the bark', 'Whether to punish every sound'], answer: 0, explanation: 'Barking has many functions. The body, trigger, distance, and recovery help show whether the dog is alert, frustrated, afraid, or asking for help.', clues: 'The dog is oriented toward movement and stays activated after it passes.', action: 'Add distance and reward a calm look back when the dog can still think.', related: ['Explore barking with body clues', './signals.html?signal=barking'] },
+  { id: 'lunge-distance', level: 'Advanced', category: 'Frustrated / overwhelmed', image: './assets/challenge-lunging.webp', alt: 'Dog outdoors on leash with a person creating space', question: 'A dog lunges toward another dog on leash. What is the safest immediate goal?', options: ['Create distance before asking for learning', 'Hold the leash tighter and move closer', 'Wait until the dog is at full intensity'], answer: 0, explanation: 'Learning is difficult at full arousal. Distance and secure management come before training around the trigger.', clues: 'The leash is tight, front feet drive forward, and the dog is vocalizing.', action: 'Turn away early, create space, and work below the reaction threshold.', related: ['Read lunging', './signals.html?signal=lunging'] },
+  { id: 'guarding-space', level: 'Advanced', category: 'Needs space', image: './assets/challenge-guarding.webp', alt: 'Dog indoors near a bowl while a person gives space', question: 'A dog freezes over a bowl and watches a person closely. What should the person avoid?', options: ['Reaching into the bowl', 'Giving space behind a barrier', 'Getting a professional trade plan'], answer: 0, explanation: 'A guarding freeze is an early warning. Space and management protect everyone while a qualified plan is built.', clues: 'The dog hovers over the bowl, stops moving, and tracks the approaching person.', action: 'Back away and manage meals without testing the warning.', related: ['Read guarding freeze', './signals.html?signal=guarding-freeze'] },
+  { id: 'approach-retreat', level: 'Advanced', category: 'Uncertain', image: './assets/guide-uncertain.webp', alt: 'Dog outdoors pausing and looking to the side', question: 'A dog investigates a visitor, then pauses with a head turn and one paw lifted. What does that pattern suggest?', options: ['Interest mixed with uncertainty', 'Permanent consent to pet', 'A need to lure the dog closer'], answer: 0, explanation: 'An approach followed by a pause or look-away can show information gathering while the dog still needs safety and control.', clues: 'The dog pauses, turns its head, and holds one paw up while monitoring the visitor.', action: 'Stay still, add space, and let the dog choose the pace.', related: ['Read approach and pause', './signals.html?signal=approach-retreat'] },
+  { id: 'voluntary-approach', level: 'Beginner', category: 'Relaxed / comfortable', image: './assets/guide-relaxed.webp', alt: 'Relaxed dog sitting outdoors with a loose body', question: 'A dog chooses to sit near you with a loose body, then turns away when you reach. What is the best response?', options: ['Pause and let the dog choose again', 'Hold the dog for more petting', 'Assume sitting nearby means yes forever'], answer: 0, explanation: 'Sharing space is useful information, but consent is ongoing. A turn-away can be a request for a break.', clues: 'The dog is relaxed nearby, then turns away when contact is offered.', action: 'Stop reaching and invite another choice rather than restraining the dog.', related: ['Read choosing to stay near', './signals.html?signal=moving-closer'] },
+  { id: 'low-tail-baseline', level: 'Advanced', category: 'Relaxed / comfortable', image: './assets/guide-uncertain.webp', alt: 'Dog outdoors with a soft head turn', question: 'A dog has a low tail but a loose body, soft mouth, and easy movement. What is the best conclusion?', options: ['Compare it with the dog’s normal baseline and whole pattern', 'The dog must be afraid', 'Tail position alone tells you the feeling'], answer: 0, explanation: 'Tail carriage varies by anatomy and individual. A low tail matters most when it changes from baseline or clusters with other clues.', clues: 'The tail is low, but the mouth and body are not obviously tense.', action: 'Watch changes, movement, and recovery instead of labeling the tail alone.', related: ['Learn tail and breed differences', './signals.html?signal=low-tail'] }
 );
 
 const scenarioLibrary = [
-  { title: 'A visitor arrives', tag: 'Greetings', image: './assets/guide-interested.jpg', alt: 'A dog standing alert and curious', look: 'Check whether your dog can sniff, blink, eat, and move away.', do: 'Use distance, a gate, and reward calm check-ins before greetings.', avoid: 'Do not force a hello or hold the dog in place.' },
-  { title: 'A child reaches toward the dog', tag: 'Family safety', image: './assets/guide-uncertain.jpg', alt: 'A dog turning its head away and asking for space', look: 'Head turns, lip licks, weight shifts, and closed mouths can be quiet requests.', do: 'Call the dog away and give them a protected resting place.', avoid: 'Do not allow hugging, climbing, cornering, or chasing.' },
-  { title: 'The doorbell rings', tag: 'Home routines', image: './assets/challenge-door-dashing.jpg', alt: 'A dog waiting on a mat behind a safety barrier', look: 'Notice arousal before opening the door and secure the exit first.', do: 'Use a gate, mat, leash, and small rewards for pauses.', avoid: 'Do not chase a dog toward an open door.' },
-  { title: 'Two dogs meet', tag: 'Dog-to-dog', image: './assets/guide-playful.jpg', alt: 'A dog holding a play bow', look: 'Look for loose curves, pauses, turn-taking, and the freedom to leave.', do: 'Start with space and parallel movement before closer interaction.', avoid: 'Do not force face-to-face greetings or ignore repeated escape attempts.' },
-  { title: 'A dog freezes during handling', tag: 'Grooming & care', image: './assets/guide-needs-space.jpg', alt: 'A dog standing still and asking for space', look: 'Freezing can mean the dog is overwhelmed, not that they agree.', do: 'Stop, soften the setup, and practice tiny touch-reward-release steps.', avoid: 'Do not continue until the dog struggles or snaps.' },
-  { title: 'A trigger appears on a walk', tag: 'Walks', image: './assets/challenge-lunging.jpg', alt: 'A handler creating distance from a distant dog', look: 'Watch distance, leash tension, recovery, and whether your dog can eat.', do: 'Turn away early, add distance, and reward looking back.', avoid: 'Do not wait for a full lunge before moving.' },
-  { title: 'Food bowl time', tag: 'Mealtimes', image: './assets/challenge-guarding.jpg', alt: 'A dog beside a food bowl while a handler gives space', look: 'Freezing, hovering, hard focus, or growling means the dog needs space.', do: 'Manage meals behind a barrier and get professional guidance for guarding.', avoid: 'Never reach into the bowl or punish the warning.' },
-  { title: 'The dog is alone', tag: 'Being home alone', image: './assets/challenge-separation.jpg', alt: 'A dog settling with a food puzzle while a person prepares to leave', look: 'Pacing, howling, scratching, or panic point to distress.', do: 'Practice absences shorter than panic and build up gradually.', avoid: 'Do not leave a panicked dog alone for longer to “teach” them.' },
-  { title: 'Something unsafe is on the ground', tag: 'Scavenging', image: './assets/challenge-stones-dirt.jpg', alt: 'A handler offering a treat trade while a dog investigates a stone', look: 'Notice what the dog finds valuable and whether eating objects is repeated.', do: 'Use secure management and teach a calm, high-value trade.', avoid: 'Do not chase, pry, or punish after the item is dropped.' }
+  { title: 'A visitor arrives', tag: 'Greetings', image: './assets/guide-interested.webp', alt: 'A dog standing alert and curious', look: 'Check whether your dog can sniff, blink, eat, and move away.', do: 'Use distance, a gate, and reward calm check-ins before greetings.', avoid: 'Do not force a hello or hold the dog in place.' },
+  { title: 'A child reaches toward the dog', tag: 'Family safety', image: './assets/guide-uncertain.webp', alt: 'A dog turning its head away and asking for space', look: 'Head turns, lip licks, weight shifts, and closed mouths can be quiet requests.', do: 'Call the dog away and give them a protected resting place.', avoid: 'Do not allow hugging, climbing, cornering, or chasing.' },
+  { title: 'The doorbell rings', tag: 'Home routines', image: './assets/challenge-door-dashing.webp', alt: 'A dog waiting on a mat behind a safety barrier', look: 'Notice arousal before opening the door and secure the exit first.', do: 'Use a gate, mat, leash, and small rewards for pauses.', avoid: 'Do not chase a dog toward an open door.' },
+  { title: 'Two dogs meet', tag: 'Dog-to-dog', image: './assets/guide-playful.webp', alt: 'A dog holding a play bow', look: 'Look for loose curves, pauses, turn-taking, and the freedom to leave.', do: 'Start with space and parallel movement before closer interaction.', avoid: 'Do not force face-to-face greetings or ignore repeated escape attempts.' },
+  { title: 'A dog freezes during handling', tag: 'Grooming & care', image: './assets/guide-needs-space.webp', alt: 'A dog standing still and asking for space', look: 'Freezing can mean the dog is overwhelmed, not that they agree.', do: 'Stop, soften the setup, and practice tiny touch-reward-release steps.', avoid: 'Do not continue until the dog struggles or snaps.' },
+  { title: 'A trigger appears on a walk', tag: 'Walks', image: './assets/challenge-lunging.webp', alt: 'A handler creating distance from a distant dog', look: 'Watch distance, leash tension, recovery, and whether your dog can eat.', do: 'Turn away early, add distance, and reward looking back.', avoid: 'Do not wait for a full lunge before moving.' },
+  { title: 'Food bowl time', tag: 'Mealtimes', image: './assets/challenge-guarding.webp', alt: 'A dog beside a food bowl while a handler gives space', look: 'Freezing, hovering, hard focus, or growling means the dog needs space.', do: 'Manage meals behind a barrier and get professional guidance for guarding.', avoid: 'Never reach into the bowl or punish the warning.' },
+  { title: 'The dog is alone', tag: 'Being home alone', image: './assets/challenge-separation.webp', alt: 'A dog settling with a food puzzle while a person prepares to leave', look: 'Pacing, howling, scratching, or panic point to distress.', do: 'Practice absences shorter than panic and build up gradually.', avoid: 'Do not leave a panicked dog alone for longer to “teach” them.' },
+  { title: 'Something unsafe is on the ground', tag: 'Scavenging', image: './assets/challenge-stones-dirt.webp', alt: 'A handler offering a treat trade while a dog investigates a stone', look: 'Notice what the dog finds valuable and whether eating objects is repeated.', do: 'Use secure management and teach a calm, high-value trade.', avoid: 'Do not chase, pry, or punish after the item is dropped.' }
 ];
 
 const feedbackTopics = {
@@ -318,6 +318,222 @@ function renderFeedback() {
   }));
 }
 
+function currentVoicePage() {
+  const declaredPage = document.body.dataset.page;
+  if (declaredPage) return declaredPage;
+  const file = window.location.pathname.split('/').pop() || 'index.html';
+  return file.replace(/\.html$/, '') || 'home';
+}
+
+function voiceTextFromSelectors(root, selectors) {
+  if (!root) return '';
+  const seen = new Set();
+  const parts = [];
+  for (const selector of selectors) {
+    root.querySelectorAll(selector).forEach((node) => {
+      const value = node.textContent.replace(/\s+/g, ' ').trim();
+      if (!value || seen.has(value)) return;
+      seen.add(value);
+      parts.push(value);
+    });
+  }
+  const text = parts.join('. ').replace(/\. ([.!?])/g, '$1');
+  return text.length > 1100 ? `${text.slice(0, 1097).replace(/\s+\S*$/, '')}…` : text;
+}
+
+function splitVoiceText(text) {
+  const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [];
+  const chunks = [];
+  let current = '';
+  sentences.forEach((sentence) => {
+    const clean = sentence.trim();
+    if (!clean) return;
+    if (current && `${current} ${clean}`.length > 220) {
+      chunks.push(current);
+      current = '';
+    }
+    if (clean.length > 220) {
+      clean.split(/\s+/).forEach((word) => {
+        if (current && `${current} ${word}`.length > 220) {
+          chunks.push(current);
+          current = '';
+        }
+        current = current ? `${current} ${word}` : word;
+      });
+    } else {
+      current = current ? `${current} ${clean}` : clean;
+    }
+  });
+  if (current) chunks.push(current);
+  return chunks;
+}
+
+function createVoiceController(toolbar) {
+  const playStop = toolbar.querySelector('[data-voice-stop]');
+  const rate = toolbar.querySelector('[data-voice-rate]');
+  const status = toolbar.querySelector('[data-voice-status]');
+  const supported = typeof window.speechSynthesis === 'object' && typeof window.SpeechSynthesisUtterance === 'function';
+  let voice = null;
+  let activeButton = null;
+  let activeLabel = '';
+  let chunks = [];
+  let chunkIndex = 0;
+  let runId = 0;
+  let speaking = false;
+  let pausedByUser = false;
+
+  const updateButton = (button, text, pressed = false) => {
+    if (!button) return;
+    button.querySelector('[data-voice-button-text]').textContent = text;
+    button.setAttribute('aria-label', `${text} ${button.dataset.voiceLabel}`);
+    button.setAttribute('aria-pressed', String(pressed));
+    button.classList.toggle('is-speaking', pressed);
+  };
+  const resetButton = (button) => updateButton(button, '▶ Listen', false);
+  const setIdle = (message = 'Choose Listen on any section. WagSignals sends no audio to a server.') => {
+    speaking = false;
+    pausedByUser = false;
+    resetButton(activeButton);
+    activeButton = null;
+    activeLabel = '';
+    playStop.hidden = true;
+    status.textContent = message;
+  };
+  const chooseVoice = () => {
+    if (!supported) return;
+    const voices = window.speechSynthesis.getVoices();
+    const english = voices.filter((item) => /^en(-|_)/i.test(item.lang));
+    const localEnglish = english.filter((item) => item.localService);
+    const pool = localEnglish.length ? localEnglish : english;
+    const natural = pool.filter((item) => /natural|neural|enhanced|premium|microsoft|google/i.test(item.name));
+    const warm = /aria|jenny|samantha|zira|sara|libby|hazel|karen|moira/i;
+    voice = natural.find((item) => warm.test(item.name)) || natural[0] || pool[0] || voices[0] || null;
+  };
+  const updatePlaying = () => {
+    updateButton(activeButton, pausedByUser ? '▶ Resume' : 'Ⅱ Pause', true);
+    playStop.hidden = false;
+  };
+  const speakChunk = (id) => {
+    if (id !== runId || chunkIndex >= chunks.length) {
+      if (id === runId) setIdle('Finished. Choose another section whenever you like.');
+      return;
+    }
+    const utterance = new window.SpeechSynthesisUtterance(chunks[chunkIndex]);
+    if (voice) { utterance.voice = voice; utterance.lang = voice.lang; }
+    else utterance.lang = 'en-US';
+    utterance.rate = Number(rate.value);
+    utterance.pitch = 1;
+    utterance.volume = 0.95;
+    status.textContent = `Listening to ${activeLabel} · point ${chunkIndex + 1} of ${chunks.length}…`;
+    utterance.onend = () => { if (id !== runId) return; chunkIndex += 1; speakChunk(id); };
+    utterance.onerror = () => { if (id === runId) setIdle('Voice playback stopped. Press Listen to try again.'); };
+    window.speechSynthesis.speak(utterance);
+    updatePlaying();
+  };
+  const read = (button, label, getText) => {
+    if (!supported) return;
+    if (activeButton === button && speaking) {
+      pausedByUser = !pausedByUser;
+      try {
+        if (pausedByUser) window.speechSynthesis.pause();
+        else window.speechSynthesis.resume();
+      } catch { /* Some embedded browsers expose speech but not pause/resume. */ }
+      updatePlaying();
+      return;
+    }
+    if (activeButton) resetButton(activeButton);
+    window.speechSynthesis.cancel();
+    chunks = splitVoiceText(getText());
+    if (!chunks.length) {
+      status.textContent = 'This section has no text available to read.';
+      return;
+    }
+    runId += 1;
+    chunkIndex = 0;
+    speaking = true;
+    pausedByUser = false;
+    activeButton = button;
+    activeLabel = label;
+    speakChunk(runId);
+  };
+
+  if (!supported) {
+    status.textContent = 'Voice playback is not available in this browser. Try a browser with built-in speech support.';
+  } else {
+    chooseVoice();
+    window.speechSynthesis.addEventListener?.('voiceschanged', chooseVoice);
+  }
+  playStop.addEventListener('click', () => {
+    runId += 1;
+    window.speechSynthesis.cancel();
+    setIdle('Stopped. Choose another section whenever you like.');
+  });
+  return {
+    bind(button, label, getText) {
+      button.dataset.voiceLabel = label;
+      button.querySelector('[data-voice-button-text]').textContent = '▶ Listen';
+      button.setAttribute('aria-label', `Listen to ${label}`);
+      button.setAttribute('aria-pressed', 'false');
+      if (!supported) button.disabled = true;
+      button.addEventListener('click', () => read(button, label, getText));
+    }
+  };
+}
+
+function createVoiceButton(label) {
+  const button = document.createElement('button');
+  button.className = 'voice-button button secondary';
+  button.type = 'button';
+  button.dataset.voiceControl = '';
+  button.innerHTML = '<span data-voice-button-text>▶ Listen</span>';
+  button.setAttribute('aria-label', `Listen to ${label}`);
+  return button;
+}
+
+function addVoiceButton(container, root, label, selectors, controller) {
+  if (!container || !root || container.querySelector('[data-voice-control]')) return;
+  const button = createVoiceButton(label);
+  container.append(button);
+  controller.bind(button, label, () => voiceTextFromSelectors(root, selectors));
+}
+
+function initVoiceReader() {
+  const page = currentVoicePage() === 'index' ? 'home' : currentVoicePage();
+  const main = document.querySelector('main');
+  const anchor = main?.querySelector('.home-hero, .page-hero');
+  if (!main || !anchor || page === 'quiz' || main.querySelector('[data-voice-toolbar]')) return;
+
+  const toolbar = document.createElement('section');
+  toolbar.className = 'shell voice-toolbar';
+  toolbar.dataset.voiceToolbar = '';
+  toolbar.setAttribute('aria-label', 'Listen to this guide');
+  toolbar.innerHTML = '<div class="voice-toolbar-copy"><span class="section-kicker">Listen by section</span><strong>Short audio, one idea at a time.</strong></div><div class="voice-toolbar-actions"><button class="button secondary" type="button" data-voice-intro><span data-voice-button-text>▶ Intro</span></button><button class="button secondary" type="button" data-voice-stop hidden>Stop</button><label class="voice-speed" for="voice-rate">Speed<select id="voice-rate" data-voice-rate aria-label="Voice speed"><option value="0.9">Calm</option><option value="0.98" selected>Normal</option><option value="1.08">Quick</option></select></label></div><p class="voice-status" data-voice-status role="status" aria-live="polite">Choose Listen on any section. WagSignals sends no audio to a server.</p>';
+  anchor.after(toolbar);
+
+  const controller = createVoiceController(toolbar);
+  const introRoot = main.querySelector('.home-hero, .page-hero');
+  const introButton = toolbar.querySelector('[data-voice-intro]');
+  if (page === 'home') introButton.remove();
+  else controller.bind(introButton, 'the introduction', () => voiceTextFromSelectors(introRoot, ['h1', '.page-hero-inner > div:first-child > p']));
+
+  if (page === 'home') addVoiceButton(main.querySelector('.home-copy'), main.querySelector('.home-hero'), 'the homepage welcome', ['.home-copy h1', '.home-copy > p:first-of-type'], controller);
+  if (page === 'daily') addVoiceButton(main.querySelector('.daily-card > div:nth-child(2)'), main.querySelector('.daily-card'), 'today’s lesson', ['#daily-title', '#daily-body', '.daily-note', '#daily-question-title'], controller);
+  if (page === 'signals') addVoiceButton(main.querySelector('.read-panel > div:nth-child(2)'), main.querySelector('.read-panel'), 'this body-language clue', ['h2', '.read-panel > div > p', '.read-list strong', '.read-list span'], controller);
+  if (page === 'behaviors') main.querySelectorAll('.behavior-card').forEach((card) => addVoiceButton(card.querySelector('.behavior-card-body'), card, 'this behavior', ['h2', '.behavior-card-body > p', '.behavior-note'], controller));
+  if (page === 'training') main.querySelectorAll('.training-card').forEach((card) => addVoiceButton(card.querySelector('.training-card-body'), card, 'this training skill', ['h2', '.training-card-body > p', '.training-note'], controller));
+  if (page === 'challenges') main.querySelectorAll('.challenge-card').forEach((card) => addVoiceButton(card.querySelector('.challenge-card-body'), card, 'this challenge solution', ['h2', '.challenge-card-body > p', '.challenge-note'], controller));
+  if (page === 'body-map') {
+    addVoiceButton(main.querySelector('.body-map > div'), main.querySelector('.body-map'), 'the body map', ['h2', '.body-map > div > p', '.map-list strong', '.map-list span'], controller);
+    addVoiceButton(main.querySelector('.pause-card > div'), main.querySelector('.pause-card'), 'the space steps', ['h2', '.pause-card > div > p', '.pause-step strong', '.pause-step span'], controller);
+  }
+  if (page === 'saved') main.querySelectorAll('.saved-card').forEach((card) => addVoiceButton(card.querySelector('.saved-card-body'), card, 'this saved clue', ['h2', '.saved-card-body > p'], controller));
+  if (page === 'scenarios') main.querySelectorAll('.scenario-card').forEach((card) => addVoiceButton(card.querySelector('.scenario-card-body'), card, 'this scenario', ['h2', '.scenario-card .scenario-row'], controller));
+  if (page === 'cheat-sheet') {
+    addVoiceButton(main.querySelector('.cheat-sheet-heading'), main.querySelector('.cheat-sheet-heading'), 'the whole-dog scan', ['h2', 'p'], controller);
+    addVoiceButton(main.querySelector('.cheat-safety'), main.querySelector('.cheat-safety'), 'the space safety steps', ['h2', 'li'], controller);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderProgress();
   if (document.body.dataset.page === 'daily') renderDaily();
@@ -326,4 +542,5 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.body.dataset.page === 'scenarios') renderScenarios();
   document.querySelector('#print-sheet')?.addEventListener('click', () => window.print());
   renderFeedback();
+  window.requestAnimationFrame(initVoiceReader);
 });

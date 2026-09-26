@@ -15,12 +15,13 @@ WagSignals is a static dog body-language guide. The root files are the maintaina
 - `saved.html` — local shelf for Daily Wag clues
 - `scenarios.html` — searchable real-life situations and next steps
 - `cheat-sheet.html` — print-friendly whole-dog reminder
+- `sources-safety.html` — safety boundaries and reputable further reading
 
 Shared styling lives in `styles.css`; the signal reader interaction lives in `signals.js`. Image provenance is documented in `ASSET-LICENSES.md`.
 
 `app.js` powers the Daily Wag, quiz, local pawprint progress, streak, saved clue shelf, scenario search, quiz sharing, and device-local guide feedback. No account or feedback backend is required; nothing is sent off-device.
 
-The original illustrations are stored as optimized local JPEGs. The largest image is kept below 330 KB so the guide stays quick to load without hotlinked or third-party artwork.
+The original illustrations are retained as source JPEGs and delivered in production as resized WebP files. The production build excludes the source JPEGs, keeping the optimized image set local and avoiding hotlinked or third-party artwork.
 
 ## Local development
 
@@ -39,3 +40,15 @@ npm run preview
 ```
 
 `npm run preview` serves the built `dist/` directory at [http://localhost:4173](http://localhost:4173).
+
+## Public release metadata
+
+Builds are private/no-index by default so a temporary preview cannot be mistaken for the final public website. When the permanent public domain is known, build the release artifact with the final HTTPS origin:
+
+```powershell
+$env:PUBLIC_SITE_ORIGIN = 'https://your-final-domain.example'
+$env:PUBLIC_SITE_INDEXABLE = 'true'
+npm run build
+```
+
+That build adds canonical URLs, Open Graph URLs, an indexable `robots.txt`, and a sitemap for the final origin. Do not set `PUBLIC_SITE_INDEXABLE=true` for a private preview.

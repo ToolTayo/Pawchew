@@ -3,20 +3,20 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const pages = ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html', 'saved.html', 'scenarios.html', 'cheat-sheet.html'];
+const pages = ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html', 'saved.html', 'scenarios.html', 'cheat-sheet.html', 'sources-safety.html'];
 const requiredFiles = [
   ...pages, 'styles.css', 'signals.js', 'app.js', 'favicon.svg', 'robots.txt', 'sitemap.xml',
-  'assets/dog-language-hero.jpg', 'assets/guide-relaxed.jpg', 'assets/guide-playful.jpg',
-  'assets/guide-interested.jpg', 'assets/guide-uncertain.jpg', 'assets/guide-stressed.jpg',
-  'assets/guide-fearful.jpg', 'assets/guide-tucked-tail.jpg', 'assets/guide-needs-space.jpg', 'assets/guide-warning.jpg',
-  'assets/behavior-sniffing.jpg', 'assets/behavior-barking.jpg', 'assets/behavior-chewing.jpg',
-  'assets/behavior-digging.jpg', 'assets/behavior-zoomies.jpg', 'assets/behavior-jumping.jpg',
-  'assets/behavior-pawing.jpg', 'assets/behavior-resting.jpg', 'assets/training-rewards.jpg',
-  'assets/training-attention.jpg', 'assets/training-sit-wait.jpg', 'assets/training-recall.jpg',
-  'assets/training-leash.jpg', 'assets/training-leave-it.jpg', 'assets/training-settle.jpg',
-  'assets/training-handling.jpg', 'assets/challenge-biting.jpg', 'assets/challenge-stones-dirt.jpg',
-  'assets/challenge-destruction.jpg', 'assets/challenge-guarding.jpg', 'assets/challenge-lunging.jpg',
-  'assets/challenge-chasing.jpg', 'assets/challenge-separation.jpg', 'assets/challenge-door-dashing.jpg',
+  'assets/dog-language-hero.webp', 'assets/guide-relaxed.webp', 'assets/guide-playful.webp',
+  'assets/guide-interested.webp', 'assets/guide-uncertain.webp', 'assets/guide-stressed.webp',
+  'assets/guide-fearful.webp', 'assets/guide-tucked-tail.webp', 'assets/guide-needs-space.webp', 'assets/guide-warning.webp',
+  'assets/behavior-sniffing.webp', 'assets/behavior-barking.webp', 'assets/behavior-chewing.webp',
+  'assets/behavior-digging.webp', 'assets/behavior-zoomies.webp', 'assets/behavior-jumping.webp',
+  'assets/behavior-pawing.webp', 'assets/behavior-resting.webp', 'assets/training-rewards.webp',
+  'assets/training-attention.webp', 'assets/training-sit-wait.webp', 'assets/training-recall.webp',
+  'assets/training-leash.webp', 'assets/training-leave-it.webp', 'assets/training-settle.webp',
+  'assets/training-handling.webp', 'assets/challenge-biting.webp', 'assets/challenge-stones-dirt.webp',
+  'assets/challenge-destruction.webp', 'assets/challenge-guarding.webp', 'assets/challenge-lunging.webp',
+  'assets/challenge-chasing.webp', 'assets/challenge-separation.webp', 'assets/challenge-door-dashing.webp',
   'app.js'
 ];
 
@@ -55,10 +55,11 @@ const requiredCopy = [
   'Loose-leash walking', 'Leave it & drop it', 'Settle on a mat', 'Cooperative handling',
   'Biting & nipping', 'Eating stones & dirt', 'Destructive chewing', 'Guarding food or toys',
   'Barking & lunging', 'Chasing animals or cars', 'Separation distress', 'Door dashing',
-  'Today’s Wag.', 'Can you read the whole pattern?', 'Daily Wag', 'Quiz', 'Your saved clues', 'Real-life scenarios', 'A one-page dog-reading cheat sheet', 'Search dog scenarios', 'Print cheat sheet'
+  'Today’s Wag.', 'Can you read the whole pattern?', 'Daily Wag', 'Quiz', 'Your saved clues', 'Real-life scenarios', 'A one-page dog-reading cheat sheet', 'Search dog scenarios', 'Print cheat sheet', 'Sources &amp; safety', 'Useful guidance, careful boundaries.'
 ];
 const missingCopy = requiredCopy.filter((text) => !allSource.includes(text));
 if (missingCopy.length) throw new Error(`Missing required guide content: ${missingCopy.join(', ')}`);
+if (/chatgpt\.site|dodongking88pop/i.test(allSource)) throw new Error('Source files must not hard-code a private preview domain.');
 
 const signalCount = (signalsSource.match(/category:\s*['"]/g) ?? []).length;
 const behaviorCount = (htmlByPage.get('behaviors.html').match(/class="behavior-card"/g) ?? []).length;
@@ -78,7 +79,7 @@ const quizAlts = [...`${quizInitialBlock}\n${quizAddedBlock}`.matchAll(/alt:\s*'
 const leakedQuizAlts = quizAlts.filter((alt) => quizAltLeakTerms.test(alt));
 if (leakedQuizAlts.length) throw new Error(`Quiz alt text reveals answer clues: ${leakedQuizAlts.join(' | ')}`);
 
-for (const [page, selector] of [['saved.html', 'saved-list'], ['scenarios.html', 'scenario-list'], ['cheat-sheet.html', 'print-sheet']]) {
+for (const [page, selector] of [['saved.html', 'saved-list'], ['scenarios.html', 'scenario-list'], ['cheat-sheet.html', 'print-sheet'], ['sources-safety.html', 'source-list']]) {
   if (!htmlByPage.get(page).includes(`id="${selector}"`)) throw new Error(`${page} is missing ${selector}.`);
 }
 
