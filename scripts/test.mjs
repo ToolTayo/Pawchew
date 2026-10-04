@@ -13,6 +13,7 @@ const challengesSource = await fs.readFile(new URL('../challenges.js', import.me
 const data = new Map();
 const context = vm.createContext({
   console,
+  URL,
   document: { addEventListener() {} },
   localStorage: { getItem: (key) => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) }
 });
@@ -42,6 +43,13 @@ assert.equal(run('dailyLessons.length'), 6);
 const scenarioSearchable = Array.from(run('scenarioLibrary.map(scenario => `${scenario.title} ${scenario.tag} ${scenario.look} ${scenario.do} ${scenario.avoid}`.toLowerCase())'));
 for (const term of ['child', 'unsafe', 'food', 'walk', 'alone', 'doorbell']) assert.ok(scenarioSearchable.some((scenario) => scenario.includes(term)), `Challenge scenario deep-link search should find “${term}”.`);
 assert.match(source, /requestedSearch\.slice\(0, 80\)/, 'Scenario deep links should bound and safely initialize their search text');
+const scenarioUrl = run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html?keep=1#list', ' eating rocks ')`);
+assert.equal(scenarioUrl.searchParams.get('search'), ' eating rocks ', 'Typed scenario searches should be serializable into a back/refresh-safe URL');
+assert.equal(scenarioUrl.searchParams.get('keep'), '1', 'Updating the scenario query should preserve unrelated parameters');
+assert.equal(scenarioUrl.hash, '#list', 'Updating the scenario query should preserve the current fragment');
+assert.equal(run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html?search=old', '   ').searchParams.has('search')`), false, 'Clearing scenario search should clear the URL query');
+assert.equal(run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html', 'x'.repeat(100)).searchParams.get('search').length`), 80, 'Scenario search deep links should remain bounded');
+assert.match(source, /history\.replaceState\(history\.state, '', scenarioSearchUrl\(window\.location\.href, search\.value\)\)/, 'Scenario search state should survive browser Back and refresh');
 for (const [query, expectedTitle] of [
   ['my dog bites me', null],
   ["won't give toy back", 'Food bowl time'],
@@ -183,7 +191,22 @@ unavailableReader.toggle();
 assert.equal(unavailableReader.getState().supported, false, 'Speech limitations should not imply speech support');
 assert.equal(unavailableReader.getState().state, 'idle', 'Unsupported speech should leave the written lesson available without fake playback');
 assert.ok(trainingHooks.splitGuidedSpeech('word '.repeat(100)).every((chunk) => chunk.length <= 220), 'Long text should be split into safe utterance lengths');
-assert.match(trainingSource, /window\.addEventListener\('pagehide', destroyReader/, 'Leaving the page must cleanly stop lesson speech');
+function verifyPageHideLifecycle(controllerSource, label) {
+  const listener = controllerSource.match(/window\.addEventListener\('pagehide', (\(event\) => \{\s*if \(event\.persisted\) reader\?\.stop\(\);\s*else destroyReader\(\);\s*\})\);/);
+  assert.ok(listener, `${label} must distinguish a cached page from one being discarded`);
+  let stops = 0;
+  let destroys = 0;
+  const handlePageHide = vm.runInNewContext(listener[1], {
+    reader: { stop() { stops += 1; } },
+    destroyReader() { destroys += 1; }
+  });
+  handlePageHide({ persisted: true });
+  assert.equal(stops, 1, `${label} speech should stop while the page enters the back/forward cache`);
+  assert.equal(destroys, 0, `${label} reader state should survive a cached history return`);
+  handlePageHide({ persisted: false });
+  assert.equal(destroys, 1, `${label} should still destroy the reader when the page is discarded`);
+}
+verifyPageHideLifecycle(trainingSource, 'Training');
 assert.match(source, /page === 'quiz' \|\| page === 'training' \|\| page === 'challenges'/, 'The old per-card reader must not duplicate the shared Training or Challenge reader');
 assert.match(trainingSource, /WagSignalsSectionReader\.create\(/, 'Training must use the shared reader controller');
 assert.doesNotMatch(trainingSource, /function createTrainingReader|function splitTrainingSpeech/, 'Training must not keep a private duplicate speech controller');
@@ -219,7 +242,7 @@ assert.match(challengesSource, /window\.addEventListener\('popstate'/, 'Challeng
 assert.match(challengesSource, /reader\?\.destroy\(\)/, 'Changing guides and leaving a page must cancel speech');
 assert.match(challengesSource, /WagSignalsSectionReader\.create\(/, 'Challenge speech must use the shared reader controller');
 assert.match(challengesSource, /data-reader-section/, 'Challenge content must be divided into navigable speech sections');
-assert.match(challengesSource, /pagehide/, 'Leaving a challenge page must stop speech');
+verifyPageHideLifecycle(challengesSource, 'Challenges');
 assert.match(challengesSource, /querySelector\('#guide'\)/, 'Direct challenge routes should render into the real #guide fragment target');
 assert.match(challengeDataSource, /\.\/sources-safety\.html#source-list/, 'Challenge guides should connect to the existing Sources & safety material');
 const stylesheet = await fs.readFile(new URL('../styles.css', import.meta.url), 'utf8');

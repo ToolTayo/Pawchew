@@ -272,7 +272,10 @@
     if (id) history.replaceState(history.state, '', location.pathname);
     showIndex({ restoreFocus: true });
   });
-  window.addEventListener('pagehide', destroyReader);
+  window.addEventListener('pagehide', (event) => {
+    if (event.persisted) reader?.stop();
+    else destroyReader();
+  });
   document.addEventListener('wagsignals:stop-audio', () => reader?.stop());
 
   const initialGuide = new URL(location.href).searchParams.get('guide');

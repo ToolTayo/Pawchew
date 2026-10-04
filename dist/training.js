@@ -277,7 +277,10 @@
     if (id && showLesson(id)) return;
     showIndex({ restoreFocus: true });
   });
-  window.addEventListener('pagehide', destroyReader, { once: true });
+  window.addEventListener('pagehide', (event) => {
+    if (event.persisted) reader?.stop();
+    else destroyReader();
+  });
   document.addEventListener('wagsignals:stop-audio', () => reader?.stop());
 
   const initialLesson = new URL(location.href).searchParams.get('lesson');

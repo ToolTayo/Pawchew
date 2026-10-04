@@ -58,6 +58,13 @@ const scenarioStopWords = new Set(['a', 'an', 'and', 'are', 'at', 'back', 'be', 
 function searchTerms(value) {
   return String(value ?? '').toLowerCase().replace(/[’']/g, '').match(/[a-z0-9]+/g)?.filter((word) => word.length > 1 && !scenarioStopWords.has(word)) || [];
 }
+function scenarioSearchUrl(currentHref, query) {
+  const url = new URL(currentHref);
+  const value = String(query ?? '').slice(0, 80);
+  if (value.trim()) url.searchParams.set('search', value);
+  else url.searchParams.delete('search');
+  return url;
+}
 function findScenarioMatches(query) {
   const terms = searchTerms(query);
   if (!terms.length) return query.trim() ? [] : scenarioLibrary;
@@ -343,7 +350,12 @@ function renderScenarios() {
     target.innerHTML = filtered.length ? filtered.map((scenario) => `<article class="scenario-card"><img src="${scenario.image}" alt="${scenario.alt}" width="1024" height="1024" loading="lazy" decoding="async" /><div class="scenario-card-body"><span class="scenario-tag">${scenario.tag}</span><h2>${scenario.title}</h2><p class="scenario-row"><strong>Look for</strong><span>${scenario.look}</span></p><p class="scenario-row"><strong>Try</strong><span>${scenario.do}</span></p><p class="scenario-row"><strong>Avoid</strong><span>${scenario.avoid}</span></p>${query && scenario.next ? `<a class="scenario-next" href="${scenario.next[1]}">${scenario.next[0]} →</a>` : ''}</div></article>`).join('') : fallback ? `<div class="empty-state"><h2>For biting or nipping</h2><p>Start with the safety-first guide, especially if someone may be hurt.</p><a class="button secondary" href="${fallback[1]}">${fallback[0]} →</a></div>` : '<div class="empty-state"><h2>No matching scenario.</h2><p>Try a word like “door,” “walk,” “food,” or “handling.”</p></div>';
     document.dispatchEvent(new Event('wagsignals:content-updated'));
   };
-  search.addEventListener('input', render); render();
+  search.addEventListener('input', () => {
+    if (search.value.length > 80) search.value = search.value.slice(0, 80);
+    history.replaceState(history.state, '', scenarioSearchUrl(window.location.href, search.value));
+    render();
+  });
+  render();
 }
 
 function renderFeedback() {
