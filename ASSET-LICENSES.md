@@ -10,6 +10,7 @@ The automated project check rejects external image URLs and verifies that every 
 - `guide-*.webp`: original body-language signal illustrations
 - `behavior-*.webp`: original everyday-behavior illustrations
 - `training-*.webp`: original reward-based training illustrations
+- `training-potty.webp` and `training-socialization.webp`: original generated puppy-training scenes, resized and encoded as WebP for delivery
 - `challenge-*.webp`: original challenging-behavior and solution illustrations
 
 These assets are intended for use inside this WagSignals site. They are educational illustrations, not clinical or diagnostic imagery.

@@ -1,0 +1,11 @@
+node_modules/
+
+# Local credentials and environment-specific configuration
+.env
+.env.*
+!.env.example
+
+# Tool and operating-system noise
+*.log
+.DS_Store
+Thumbs.db

@@ -13,11 +13,11 @@ const signalContent = {
   'lip-licking': { category: 'Mouth', kicker: 'Mouth', title: 'Lip licking', summary: 'A quick tongue flick can be normal after food, but repeated lip licking in a tense moment may release pressure.', image: './assets/guide-stressed.webp', alt: 'Dog showing a visible tongue flick with shifting ears in a park', see: 'A quick tongue flick, often paired with a head turn, ears back, or a closed mouth.', check: 'What happened just before it, repetition, posture, and whether food or nausea is involved.', meaning: 'In a social or handling context, it may be a stress or conflict signal.', avoid: 'Do not assume every lick means guilt, hunger, or disobedience.', response: 'Pause the interaction and give the dog a lower-pressure option.', help: 'Ask a veterinarian about frequent licking with drooling, nausea, pain, or appetite changes.', related: ['Read stress patterns', './signals.html?signal=stressed-pattern'] },
   'panting-context': { category: 'Mouth', kicker: 'Mouth', title: 'Panting in context', summary: 'Panting can cool a dog after effort, but stress, pain, heat, medication, and illness can also cause it.', image: './assets/guide-relaxed.webp', alt: 'Golden retriever with an open mouth after activity in a sunny park', see: 'Fast breathing or an open mouth that continues after the obvious reason has passed.', check: 'Heat, exercise, fear, pain signs, gums, posture, and how quickly the dog recovers.', meaning: 'The meaning is uncertain without the setting and the dog’s baseline.', avoid: 'Do not label panting as happiness or anxiety from one still image.', response: 'Offer water, shade, rest, and distance from a stressful trigger.', help: 'Contact a veterinarian promptly for unexplained, intense, or sudden panting.', related: ['Read stressed / anxious', './signals.html?signal=stressed-pattern'] },
   'teeth-display': { category: 'Mouth', kicker: 'Mouth & warning', title: 'Teeth display', summary: 'Showing teeth is a clear request for more distance when paired with tension or a hard focus.', image: './assets/guide-warning.webp', alt: 'Dog showing teeth with a rigid body and hard focus', see: 'Lifted lips expose teeth, often with a tight mouth, stillness, or growl.', check: 'Whole posture, tail, eyes, distance, guarding context, and the dog’s exit route.', meaning: 'The dog is communicating that the situation is too intense or unsafe for them.', avoid: 'Do not punish, corner, grab, or test the warning.', response: 'Stop approaching, create distance, and move people or animals away safely.', help: 'Get qualified behavior and veterinary support for repeated or high-risk warning signals.', related: ['Read strong warnings', './signals.html?signal=growling'] },
-  'loose-tail': { category: 'Tail', kicker: 'Tail', title: 'Loose tail movement', summary: 'A broad, flexible tail movement is more useful when read with a soft body and easy recovery.', image: './assets/guide-playful.webp', alt: 'Dog with a visibly loose tail and a springy play posture', see: 'Tail moves in a broad, flexible arc while the body remains wiggly.', check: 'Tail height, speed, spine, mouth, eyes, and whether the dog can disengage.', meaning: 'This combination may fit play or friendly excitement, not a guaranteed yes to interaction.', avoid: 'Do not translate “wagging” into “happy” without reading the rest of the dog.', response: 'Allow pauses and choices; invite interaction rather than forcing it.', help: 'Seek support when tail movement comes with stiffness, guarding, or sudden behavior change.', related: ['Read the play bow', './signals.html?signal=play-bow'] },
+  'loose-tail': { category: 'Tail', kicker: 'Tail', title: 'Loose tail movement', summary: 'A broad, flexible tail movement is more useful when read with a soft body and easy recovery.', image: './assets/guide-playful.webp', alt: 'Dog with a visibly loose tail and a springy play posture', see: 'Tail moves in a broad, flexible arc while the body remains wiggly.', check: 'Tail height, speed, spine, mouth, eyes, and whether the dog can disengage.', meaning: 'This combination may fit play or friendly excitement, not a guaranteed yes to interaction.', avoid: 'Do not translate “wagging” into “happy” without reading the rest of the dog.', response: 'Allow pauses and choices; invite interaction rather than forcing it.', help: 'Seek support when tail movement comes with stiffness, guarding, or sudden behavior change.', related: ['Read the play bow', './signals.html?signal=play-bow'], searchTerms: ['tail wag', 'tail wagging', 'wagging tail', 'tail wag means happy', 'tail wag always happy'] },
   'low-tail': { category: 'Tail', kicker: 'Tail', title: 'Low tail', summary: 'A low tail may show uncertainty, relaxation, fatigue, or an individual’s normal carriage.', image: './assets/guide-uncertain.webp', alt: 'Dog with a low tail and uncertain head turn', see: 'Tail carried lower than the dog’s usual baseline without necessarily being tucked.', check: 'Eyes, ears, weight shift, mouth, movement, and what just changed.', meaning: 'It may be a small request for space when paired with avoidance or a smaller body.', avoid: 'Do not compare tail height across breeds with different natural carriage.', response: 'Slow down and give the dog a choice to move away or investigate.', help: 'Ask a veterinarian about sudden tail carriage changes or pain near the back or tail.', related: ['Learn the dog’s baseline', './body-map.html'] },
   'tucked-tail': { category: 'Tail', kicker: 'Tail', title: 'Tucked tail', summary: 'A tail pulled tightly under the body often appears with fear, strong uncertainty, or a need to escape.', image: './assets/guide-tucked-tail.webp', alt: 'Small dog crouched with its tail clearly curled tightly under its belly', see: 'Tail curls visibly under the belly and is held tightly between or against the hind legs.', check: 'Crouch, ears, eyes, trembling, hiding, and whether the dog can get away.', meaning: 'The cluster may be consistent with fear or a high need for safety.', avoid: 'Do not pull the tail out, approach faster, or force a greeting.', response: 'Increase distance and give access to a quiet protected place.', help: 'Seek reward-based behavior support; contact a veterinarian if fear is sudden or pain-related.', related: ['Read fearful signals', './signals.html?signal=crouching'] },
   'high-stiff-tail': { category: 'Tail', kicker: 'Tail', title: 'High, stiff tail', summary: 'A tail held high and rigid can signal arousal or tension; it is not a universal sign of confidence.', image: './assets/guide-warning.webp', alt: 'Dog with a high rigid tail, stiff body, and warning expression', see: 'Tail held high with little flexible movement, sometimes paired with a rigid spine.', check: 'Hard stare, mouth tension, weight, hackles, trigger, and recovery.', meaning: 'The dog may be highly aroused, guarding, or preparing to increase distance.', avoid: 'Do not approach because the tail is up or assume the dog is dominant.', response: 'Create distance and remove pressure without grabbing or scolding.', help: 'Get professional help when stiffness repeats or appears around people, dogs, food, or handling.', related: ['Read the warning combination', './signals.html?signal=warning-combination'] },
-  'fast-tight-wag': { category: 'Tail', kicker: 'Tail', title: 'High tail, activated body', summary: 'A raised tail and forward weight can show activation; a still image cannot tell you how fast the tail is moving.', image: './assets/guide-interested.webp', alt: 'Alert dog with an upright tail while watching a butterfly', see: 'Tail is held high while the head and weight point toward something interesting.', check: 'Body stiffness, eyes, mouth, distance, and whether the dog can turn away.', meaning: 'The dog is activated; context tells you whether that activation is playful, worried, or defensive.', avoid: 'Do not say “the tail is up, so it is safe,” and do not infer speed from a still image.', response: 'Lower intensity and look for a softening or voluntary disengagement.', help: 'Seek guidance for recurring high arousal or unsafe reactions.', related: ['Read high-tail activation', './signals.html?signal=weight-forward'] },
+  'fast-tight-wag': { category: 'Tail', kicker: 'Tail', title: 'High tail, activated body', summary: 'A raised tail and forward weight can show activation; a still image cannot tell you how fast the tail is moving.', image: './assets/guide-interested.webp', alt: 'Alert dog with an upright tail while watching a butterfly', see: 'Tail is held high while the head and weight point toward something interesting.', check: 'Body stiffness, eyes, mouth, distance, and whether the dog can turn away.', meaning: 'The dog is activated; context tells you whether that activation is playful, worried, or defensive.', avoid: 'Do not say “the tail is up, so it is safe,” and do not infer speed from a still image.', response: 'Lower intensity and look for a softening or voluntary disengagement.', help: 'Seek guidance for recurring high arousal or unsafe reactions.', related: ['Read high-tail activation', './signals.html?signal=weight-forward'], searchTerms: ['tight tail wag', 'fast tail wag', 'tail wag means happy', 'wagging tail safe'] },
   'loose-posture': { category: 'Body', kicker: 'Body & posture', title: 'Loose posture', summary: 'Flexible muscles, a curved body, and easy movement make a more comfortable-looking pattern.', image: './assets/guide-relaxed.webp', alt: 'Golden retriever sitting with a loose body, soft eyes, and relaxed tail', see: 'Muscles look soft, weight shifts easily, and the body can wiggle or curve.', check: 'Face, ears, tail, breathing, and whether the dog can choose to leave.', meaning: 'The combination may be consistent with comfort in that setting.', avoid: 'Do not freeze the dog into one label; comfort can change quickly with context.', response: 'Keep choices open and reward calm check-ins without demanding contact.', help: 'Ask a veterinarian about sudden stiffness, weakness, or reluctance to move.', related: ['Read the relaxed pattern', './signals.html?signal=soft-eyes'] },
   'play-bow': { category: 'Body', kicker: 'Body & posture', title: 'Ready to play: play bow', summary: 'A lowered front with raised hips can invite play when the body and movement stay loose.', image: './assets/guide-playful.webp', alt: 'Small dog holding a clear play bow with front legs down and hips raised', see: 'Front end lowers while the hips stay up, often with a wiggly body or bouncy recovery.', check: 'Pauses, turn-taking, loose mouth, and freedom for both dogs to leave.', meaning: 'This pattern is more consistent with an invitation than a demand when both dogs stay flexible.', avoid: 'Do not assume every lowered front is play; it can also be a stretch or distance-making signal.', response: 'Offer a short game and build in easy breaks.', help: 'Get help if play repeatedly becomes one-sided, frightening, or unsafe.', related: ['Read playful movement', './signals.html?signal=bouncy-movement'] },
   'weight-forward': { category: 'Body', kicker: 'Body & posture', title: 'Weight forward', summary: 'A body leaning toward something shows attention or arousal, not a complete emotional diagnosis.', image: './assets/guide-interested.webp', alt: 'Beagle standing with weight forward while noticing a butterfly', see: 'Chest and weight shift toward a sound, object, person, or animal.', check: 'Ears, tail, mouth, stiffness, distance, and ability to look away.', meaning: 'The dog may be curious, excited, frustrated, or concerned depending on the trigger.', avoid: 'Do not confuse forward weight with permission to approach.', response: 'Keep enough distance for the dog to observe and return attention to you.', help: 'Seek help if forward movement becomes lunging or difficult to interrupt safely.', related: ['Read interested / alert', './signals.html?signal=ears-forward'] },
@@ -44,6 +44,17 @@ Object.assign(signalContent, {
   'warning-combination': { category: 'Warnings', kicker: 'Whole-body pattern', title: 'Strong warning: the whole pattern', summary: 'Stiffness, hard focus, tight mouth, and vocal or teeth signals mean pressure is too high.', image: './assets/guide-warning.webp', alt: 'Dog showing a stiff body, hard focus, raised hackles, and visible teeth', see: 'Rigid posture, hard eyes, a tight mouth, raised fur, growling, snarling, snapping, or lunging.', check: 'Distance, trigger, exit route, and whether people or animals can move away safely.', meaning: 'The dog is communicating a high need for space; the image cannot predict exactly what they will do next.', avoid: 'Do not punish, corner, grab, stare at, or test a warning.', response: 'Stop pressure and create distance while managing the environment safely.', help: 'Seek qualified behavior and veterinary support for repeated, sudden, or high-risk warnings.', related: ['Read freezing', './signals.html?signal=freeze'] }
 });
 
+const signalSearchStopWords = new Set(['a', 'about', 'always', 'am', 'an', 'and', 'are', 'as', 'be', 'because', 'did', 'does', 'dont', 'for', 'from', 'how', 'i', 'if', 'in', 'is', 'it', 'its', 'know', 'me', 'mean', 'means', 'my', 'of', 'on', 'or', 'so', 'the', 'their', 'them', 'they', 'theyre', 'to', 'was', 'what', 'when', 'why', 'will', 'with', 'you', 'your']);
+function signalQueryTerms(value) {
+  return String(value ?? '').toLowerCase().replace(/[’']/g, '').match(/[a-z0-9]+/g)?.filter((word) => word.length > 1 && !signalSearchStopWords.has(word)) || [];
+}
+function signalSearchMatches(key, signal, query) {
+  const terms = signalQueryTerms(query);
+  if (!terms.length) return !query.trim();
+  const searchable = signalQueryTerms(`${key} ${signal.category} ${signal.title} ${signal.summary} ${signal.see} ${signal.check} ${signal.meaning} ${signal.avoid} ${(signal.searchTerms || []).join(' ')}`);
+  return terms.every((term) => searchable.some((word) => word.includes(term) || term.includes(word)));
+}
+
 const categories = ['All', 'Face', 'Ears', 'Mouth', 'Tail', 'Body', 'Movement', 'Warnings'];
 const grid = document.getElementById('signal-grid');
 const filters = document.getElementById('signal-filters');
@@ -57,12 +68,20 @@ const list = document.getElementById('read-list');
 const related = document.getElementById('read-related');
 let activeCategory = 'All';
 let activeKey = 'soft-eyes';
+const dialog = document.getElementById('signal-dialog');
+const clearFilters = document.getElementById('signal-clear');
+const previous = document.getElementById('signal-prev');
+const next = document.getElementById('signal-next');
+const pageLabel = document.getElementById('signal-page');
+const pageSize = 8;
+let pageIndex = 0;
 
 function renderFilters() {
   filters.innerHTML = categories.map((category) => `<button class="filter-button" type="button" aria-pressed="${String(activeCategory === category)}" data-category="${category}">${category}</button>`).join('');
   filters.querySelectorAll('[data-category]').forEach((button) => button.addEventListener('click', () => {
     activeCategory = button.dataset.category;
-    renderFilters();
+    pageIndex = 0;
+    filters.querySelectorAll('button').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
     renderCards();
   }));
 }
@@ -71,18 +90,23 @@ function renderCards() {
   const query = search.value.trim().toLowerCase();
   const entries = Object.entries(signalContent).filter(([key, signal]) => {
     const matchesCategory = activeCategory === 'All' || signal.category === activeCategory;
-    const searchable = `${key} ${signal.category} ${signal.title} ${signal.summary} ${signal.see} ${signal.check} ${signal.meaning}`.toLowerCase();
-    return matchesCategory && searchable.includes(query);
+    return matchesCategory && signalSearchMatches(key, signal, query);
   });
-  count.textContent = `${entries.length} clue${entries.length === 1 ? '' : 's'} shown · ${Object.keys(signalContent).length} total`;
-  grid.innerHTML = entries.length ? entries.map(([key, signal], index) => `<button class="signal-card" type="button" aria-pressed="${String(key === activeKey)}" data-signal="${key}"><img class="signal-thumb" src="${signal.image}" alt="${signal.alt}" width="1024" height="1024" loading="${index < 4 ? 'eager' : 'lazy'}" decoding="async" /><span class="signal-icon" aria-hidden="true">${signal.category === 'Warnings' ? '⚠' : signal.category === 'Face' ? '◉' : signal.category === 'Tail' ? '≈' : signal.category === 'Movement' ? '↗' : '✦'}</span><span class="signal-category">${signal.category}</span><h2>${signal.title}</h2><p>${signal.summary}</p></button>`).join('') : '<div class="empty-state"><h2>No matching clue.</h2><p>Try “tail,” “ears,” “licking,” “freeze,” “play,” or “growl.”</p></div>';
+  const pageCount = Math.max(1, Math.ceil(entries.length / pageSize));
+  pageIndex = Math.min(pageIndex, pageCount - 1);
+  const visible = entries.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize);
+  count.textContent = entries.length ? `Showing ${pageIndex * pageSize + 1}–${pageIndex * pageSize + visible.length} of ${entries.length} clues` : 'No matching clues';
+  pageLabel.textContent = `Page ${pageIndex + 1} of ${pageCount}`;
+  previous.disabled = pageIndex === 0; next.disabled = pageIndex === pageCount - 1;
+  previous.parentElement.hidden = pageCount === 1;
+  clearFilters.hidden = !query && activeCategory === 'All';
+  grid.innerHTML = visible.length ? visible.map(([key, signal], index) => `<button class="signal-card" type="button" aria-haspopup="dialog" aria-controls="signal-dialog" data-signal="${key}"><img class="signal-thumb" src="${signal.image}" alt="" width="768" height="768" loading="${index < 4 ? 'eager' : 'lazy'}" decoding="async" /><span class="signal-card-copy"><span class="signal-category">${signal.category}</span><span class="signal-card-title">${signal.title}</span><span class="signal-card-summary">${signal.summary}</span></span></button>`).join('') : '<div class="empty-state"><h2>No matching clue.</h2><p>Try “tail,” “ears,” “licking,” “freeze,” “play,” or “growl,” or clear your filters.</p></div>';
   grid.querySelectorAll('[data-signal]').forEach((card) => card.addEventListener('click', () => selectSignal(card.dataset.signal)));
 }
 
 function selectSignal(key) {
   const signal = signalContent[key] || signalContent['soft-eyes'];
   activeKey = key;
-  grid.querySelectorAll('[data-signal]').forEach((card) => card.setAttribute('aria-pressed', String(card.dataset.signal === key)));
   kicker.textContent = signal.kicker;
   title.textContent = signal.title;
   summary.textContent = signal.summary;
@@ -90,10 +114,26 @@ function selectSignal(key) {
   readImage.alt = signal.alt;
   list.innerHTML = [['What you might see', signal.see], ['Check with it', signal.check], ['What it may mean', signal.meaning], ['Don’t assume', signal.avoid], ['Kind response', signal.response], ['Get support if', signal.help]].map(([label, copy]) => `<li><strong>${label}</strong><span>${copy}</span></li>`).join('');
   related.innerHTML = signal.related ? `<a class="text-link" href="${signal.related[1]}">${signal.related[0]} →</a>` : '';
+  document.dispatchEvent(new Event('wagsignals:stop-audio'));
+  const url = new URL(window.location.href); url.searchParams.set('signal', activeKey);
+  history.replaceState(null, '', url);
+  if (!dialog.open) dialog.showModal();
+  dialog.scrollTop = 0;
 }
 
-search.addEventListener('input', renderCards);
+document.getElementById('signal-close').addEventListener('click', () => dialog.close());
+dialog.addEventListener('click', (event) => { if (event.target === dialog) { const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close(); } });
+dialog.addEventListener('close', () => {
+  document.dispatchEvent(new Event('wagsignals:stop-audio'));
+  const url = new URL(window.location.href); url.searchParams.delete('signal'); history.replaceState(null, '', url);
+  const card = grid.querySelector(`[data-signal="${activeKey}"]`);
+  (card || search).focus({ preventScroll: true });
+});
+clearFilters.addEventListener('click', () => { search.value = ''; activeCategory = 'All'; pageIndex = 0; renderFilters(); renderCards(); search.focus(); });
+previous.addEventListener('click', () => { pageIndex -= 1; renderCards(); count.focus(); });
+next.addEventListener('click', () => { pageIndex += 1; renderCards(); count.focus(); });
+search.addEventListener('input', () => { pageIndex = 0; renderCards(); });
 renderFilters();
 renderCards();
 const requested = new URLSearchParams(window.location.search).get('signal');
-selectSignal(requested && signalContent[requested] ? requested : 'soft-eyes');
+if (requested && signalContent[requested]) selectSignal(requested);

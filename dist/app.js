@@ -43,16 +43,34 @@ quizQuestions.push(
 );
 
 const scenarioLibrary = [
-  { title: 'A visitor arrives', tag: 'Greetings', image: './assets/guide-interested.webp', alt: 'A dog standing alert and curious', look: 'Check whether your dog can sniff, blink, eat, and move away.', do: 'Use distance, a gate, and reward calm check-ins before greetings.', avoid: 'Do not force a hello or hold the dog in place.' },
-  { title: 'A child reaches toward the dog', tag: 'Family safety', image: './assets/guide-uncertain.webp', alt: 'A dog turning its head away and asking for space', look: 'Head turns, lip licks, weight shifts, and closed mouths can be quiet requests.', do: 'Call the dog away and give them a protected resting place.', avoid: 'Do not allow hugging, climbing, cornering, or chasing.' },
-  { title: 'The doorbell rings', tag: 'Home routines', image: './assets/challenge-door-dashing.webp', alt: 'A dog waiting on a mat behind a safety barrier', look: 'Notice arousal before opening the door and secure the exit first.', do: 'Use a gate, mat, leash, and small rewards for pauses.', avoid: 'Do not chase a dog toward an open door.' },
-  { title: 'Two dogs meet', tag: 'Dog-to-dog', image: './assets/guide-playful.webp', alt: 'A dog holding a play bow', look: 'Look for loose curves, pauses, turn-taking, and the freedom to leave.', do: 'Start with space and parallel movement before closer interaction.', avoid: 'Do not force face-to-face greetings or ignore repeated escape attempts.' },
-  { title: 'A dog freezes during handling', tag: 'Grooming & care', image: './assets/guide-needs-space.webp', alt: 'A dog standing still and asking for space', look: 'Freezing can mean the dog is overwhelmed, not that they agree.', do: 'Stop, soften the setup, and practice tiny touch-reward-release steps.', avoid: 'Do not continue until the dog struggles or snaps.' },
-  { title: 'A trigger appears on a walk', tag: 'Walks', image: './assets/challenge-lunging.webp', alt: 'A handler creating distance from a distant dog', look: 'Watch distance, leash tension, recovery, and whether your dog can eat.', do: 'Turn away early, add distance, and reward looking back.', avoid: 'Do not wait for a full lunge before moving.' },
-  { title: 'Food bowl time', tag: 'Mealtimes', image: './assets/challenge-guarding.webp', alt: 'A dog beside a food bowl while a handler gives space', look: 'Freezing, hovering, hard focus, or growling means the dog needs space.', do: 'Manage meals behind a barrier and get professional guidance for guarding.', avoid: 'Never reach into the bowl or punish the warning.' },
-  { title: 'The dog is alone', tag: 'Being home alone', image: './assets/challenge-separation.webp', alt: 'A dog settling with a food puzzle while a person prepares to leave', look: 'Pacing, howling, scratching, or panic point to distress.', do: 'Practice absences shorter than panic and build up gradually.', avoid: 'Do not leave a panicked dog alone for longer to “teach” them.' },
-  { title: 'Something unsafe is on the ground', tag: 'Scavenging', image: './assets/challenge-stones-dirt.webp', alt: 'A handler offering a treat trade while a dog investigates a stone', look: 'Notice what the dog finds valuable and whether eating objects is repeated.', do: 'Use secure management and teach a calm, high-value trade.', avoid: 'Do not chase, pry, or punish after the item is dropped.' }
+  { title: 'A visitor arrives', tag: 'Greetings', image: './assets/guide-interested.webp', alt: 'A dog standing alert and curious', look: 'Check whether your dog can sniff, blink, eat, and move away.', do: 'Use distance, a gate, and reward calm check-ins before greetings.', avoid: 'Do not force a hello or hold the dog in place.', keywords: ['visitor fear', 'scared of visitors', 'guest arrives', 'stranger at home'], next: ['Read approach and pause', './signals.html?signal=approach-retreat'] },
+  { title: 'A child reaches toward the dog', tag: 'Family safety', image: './assets/guide-uncertain.webp', alt: 'A dog turning its head away and asking for space', look: 'Head turns, lip licks, weight shifts, and closed mouths can be quiet requests.', do: 'Call the dog away and give them a protected resting place.', avoid: 'Do not allow hugging, climbing, cornering, or chasing.', keywords: ['child reaches', 'kid hugs dog', 'child hugs dog', 'child touches dog'], next: ['Read freezing', './signals.html?signal=freeze'] },
+  { title: 'The doorbell rings', tag: 'Home routines', image: './assets/challenge-door-dashing.webp', alt: 'A dog waiting on a mat behind a safety barrier', look: 'Notice arousal before opening the door and secure the exit first.', do: 'Use a gate, mat, leash, and small rewards for pauses.', avoid: 'Do not chase a dog toward an open door.', keywords: ['runs out door', 'door dash', 'door dashing', 'bolts out door', 'doorbell'], next: ['Prevent door dashing', './challenges.html?guide=door-dashing#guide'] },
+  { title: 'Two dogs meet', tag: 'Dog-to-dog', image: './assets/guide-playful.webp', alt: 'A dog holding a play bow', look: 'Look for loose curves, pauses, turn-taking, and the freedom to leave.', do: 'Start with space and parallel movement before closer interaction.', avoid: 'Do not force face-to-face greetings or ignore repeated escape attempts.', keywords: ['dogs meet', 'meeting another dog', 'barks at dogs', 'dog greeting'], next: ['Read the play bow', './signals.html?signal=play-bow'] },
+  { title: 'A dog freezes during handling', tag: 'Grooming & care', image: './assets/guide-needs-space.webp', alt: 'A dog standing still and asking for space', look: 'Freezing can mean the dog is overwhelmed, not that they agree.', do: 'Stop, soften the setup, and practice tiny touch-reward-release steps.', avoid: 'Do not continue until the dog struggles or snaps.', keywords: ['freeze during petting', 'scared of grooming', 'dog hates nail trim'], next: ['Practice cooperative handling', './training.html?lesson=cooperative-handling#lesson'] },
+  { title: 'A trigger appears on a walk', tag: 'Walks', image: './assets/challenge-lunging.webp', alt: 'A handler creating distance from a distant dog', look: 'Watch distance, leash tension, recovery, and whether your dog can eat.', do: 'Turn away early, add distance, and reward looking back.', avoid: 'Do not wait for a full lunge before moving.', keywords: ['pulling leash', 'leash pulling', 'pulls on walks', 'barks at dogs', 'lunging at dogs'], next: ['Read barking & lunging', './challenges.html?guide=barking-lunging#guide'] },
+  { title: 'Food bowl time', tag: 'Mealtimes', image: './assets/challenge-guarding.webp', alt: 'A dog beside a food bowl while a handler gives space', look: 'Freezing, hovering, hard focus, or growling means the dog needs space.', do: 'Manage meals behind a barrier and get professional guidance for guarding.', avoid: 'Never reach into the bowl or punish the warning.', keywords: ['wont give toy back', 'give toy back', 'guarding toy', 'takes toy and runs', 'food guarding'], next: ['Give space around food and toys', './challenges.html?guide=resource-guarding#guide'] },
+  { title: 'The dog is alone', tag: 'Being home alone', image: './assets/challenge-separation.webp', alt: 'A dog settling with a food puzzle while a person prepares to leave', look: 'Pacing, howling, scratching, or panic point to distress.', do: 'Practice absences shorter than panic and build up gradually.', avoid: 'Do not leave a panicked dog alone for longer to “teach” them.', keywords: ['home alone', 'separation anxiety', 'alone and howling'], next: ['Read separation distress', './challenges.html?guide=separation-distress#guide'] },
+  { title: 'Something unsafe is on the ground', tag: 'Scavenging', image: './assets/challenge-stones-dirt.webp', alt: 'A handler offering a treat trade while a dog investigates a stone', look: 'Notice what the dog finds valuable and whether eating objects is repeated.', do: 'Use secure management and teach a calm, high-value trade.', avoid: 'Do not chase, pry, or punish after the item is dropped.', keywords: ['eating rocks', 'eating stones', 'eating dirt', 'eats things outside', 'eats things off ground'], next: ['Read eating stones & dirt', './challenges.html?guide=stones-dirt#guide'] }
 ];
+
+const scenarioStopWords = new Set(['a', 'an', 'and', 'are', 'at', 'back', 'be', 'can', 'do', 'does', 'for', 'from', 'get', 'how', 'i', 'if', 'in', 'is', 'it', 'me', 'my', 'of', 'on', 'or', 'the', 'their', 'them', 'they', 'to', 'was', 'we', 'what', 'when', 'with', 'would', 'you', 'your']);
+function searchTerms(value) {
+  return String(value ?? '').toLowerCase().replace(/[’']/g, '').match(/[a-z0-9]+/g)?.filter((word) => word.length > 1 && !scenarioStopWords.has(word)) || [];
+}
+function findScenarioMatches(query) {
+  const terms = searchTerms(query);
+  if (!terms.length) return query.trim() ? [] : scenarioLibrary;
+  return scenarioLibrary.filter((scenario) => {
+    const searchable = searchTerms(`${scenario.title} ${scenario.tag} ${scenario.look} ${scenario.do} ${scenario.avoid} ${(scenario.keywords || []).join(' ')}`);
+    return terms.every((term) => searchable.some((word) => word.includes(term) || term.includes(word)));
+  });
+}
+function findScenarioGuideFallback(query) {
+  return /\b(?:bite|bites|biting|bitten|nip|nips|nipped|nipping|snap|snaps|snapped|snapping)\b/i.test(query)
+    ? ['Read the biting & nipping guide', './challenges.html?guide=biting-nipping#guide']
+    : null;
+}
 
 const feedbackTopics = {
   'body-language': 'the body-language guide',
@@ -69,7 +87,9 @@ function todayKey() {
 }
 
 function isDateKey(value) {
-  return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(new Date(`${value}T12:00:00`).getTime());
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
 }
 
 function uniqueStrings(value) {
@@ -113,8 +133,10 @@ function dayDifference(first, second) {
 }
 
 function currentStreak(dates) {
-  const sorted = [...new Set(dates)].sort().reverse();
+  const today = todayKey();
+  const sorted = [...new Set(dates)].filter((date) => date <= today).sort().reverse();
   if (!sorted.length) return 0;
+  if (dayDifference(sorted[0], today) > 1) return 0;
   let streak = 1;
   for (let index = 1; index < sorted.length; index += 1) {
     if (dayDifference(sorted[index], sorted[index - 1]) !== 1) break;
@@ -153,7 +175,8 @@ function renderProgress() {
 }
 
 function renderDaily() {
-  const index = Math.floor(Date.now() / 86400000) % dailyLessons.length;
+  const now = new Date();
+  const index = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000) % dailyLessons.length;
   const lesson = dailyLessons[index];
   const relatedLessons = { 'soft-eyes': ['Read soft eyes in the library', './signals.html?signal=soft-eyes'], 'play-bow': ['Read the play bow', './signals.html?signal=play-bow'], 'sniff-break': ['Explore sniffing behavior', './behaviors.html'], 'space-signal': ['Read freezing and space', './signals.html?signal=freeze'], 'trade-safe': ['See safer challenge solutions', './challenges.html'], 'mat-settle': ['Practice settling', './training.html'] };
   const progress = readProgress();
@@ -169,7 +192,7 @@ function renderDaily() {
   image.alt = lesson.alt;
   document.querySelector('#daily-question-title').textContent = lesson.question;
   const options = document.querySelector('#daily-options');
-  options.innerHTML = lesson.options.map((option, optionIndex) => `<button class="daily-option" type="button" data-option="${optionIndex}">${option}</button>`).join('');
+  options.innerHTML = orderedQuizOptions(lesson).map((option) => `<button class="daily-option" type="button" data-option="${option.index}">${option.text}</button>`).join('');
   const feedback = document.querySelector('#daily-feedback');
   options.addEventListener('click', (event) => {
     const button = event.target.closest('[data-option]');
@@ -178,7 +201,7 @@ function renderDaily() {
     options.querySelectorAll('button').forEach((option) => { option.disabled = true; option.classList.toggle('is-correct', Number(option.dataset.option) === lesson.answer); });
     if (!correct) button.classList.add('is-wrong');
     feedback.textContent = correct ? `Yes — ${lesson.explanation}` : `Not quite. ${lesson.explanation}`;
-    document.querySelector('#daily-learn').disabled = false;
+    document.querySelector('#daily-learn').disabled = readProgress().dailyDates.includes(todayKey());
   });
   const learned = progress.dailyDates.includes(todayKey());
   const learnButton = document.querySelector('#daily-learn');
@@ -187,22 +210,36 @@ function renderDaily() {
   learnButton.addEventListener('click', () => {
     const next = readProgress();
     const date = todayKey();
+    let earned = false;
     if (!next.dailyDates.includes(date)) {
       next.dailyDates.push(date);
       next.lastDailyCompletion = date;
       next.longestStreak = Math.max(next.longestStreak, getLongestStreak(next.dailyDates));
-      addPawprint(next, next.learnedClues, lesson.id);
+      earned = addPawprint(next, next.learnedClues, lesson.id);
     }
     saveProgress(next); renderProgress(); learnButton.disabled = true; learnButton.textContent = 'Learned today ✓';
-    document.querySelector('#daily-status').textContent = `Nice work. Your streak is now ${currentStreak(next.dailyDates)} day${currentStreak(next.dailyDates) === 1 ? '' : 's'} — +1 pawprint.`;
+    document.querySelector('#daily-status').textContent = `Nice work. Your streak is now ${currentStreak(next.dailyDates)} day${currentStreak(next.dailyDates) === 1 ? '' : 's'}.${earned ? ' +1 pawprint for a new clue.' : ' A useful refresher—this clue already earned its pawprint.'}`;
   });
   const saveButton = document.querySelector('#daily-save');
+  saveButton.textContent = progress.favorites.includes(lesson.id) ? 'Saved ✓' : 'Save clue';
+  saveButton.setAttribute('aria-pressed', String(progress.favorites.includes(lesson.id)));
   saveButton.addEventListener('click', () => {
     const next = readProgress();
     const saved = next.favorites.includes(lesson.id);
     next.favorites = saved ? next.favorites.filter((item) => item !== lesson.id) : [...next.favorites, lesson.id];
     saveProgress(next); saveButton.textContent = saved ? 'Save clue' : 'Saved ✓';
+    saveButton.setAttribute('aria-pressed', String(!saved));
   });
+}
+
+function orderedQuizOptions(question, random = Math.random) {
+  // Shuffle answer presentation without changing answer IDs or saved challenge IDs.
+  const options = question.options.map((text, index) => ({ text, index }));
+  for (let index = options.length - 1; index > 0; index -= 1) {
+    const other = Math.floor(random() * (index + 1));
+    [options[index], options[other]] = [options[other], options[index]];
+  }
+  return options;
 }
 
 function renderQuiz() {
@@ -211,7 +248,7 @@ function renderQuiz() {
   let score = 0;
   function showQuestion() {
     const question = quizQuestions[questionIndex];
-    shell.innerHTML = `<div class="quiz-progress"><span>Challenge ${questionIndex + 1} of ${quizQuestions.length}</span><span>${question.level || 'Whole-dog read'} · ${question.category || 'Body language'}</span></div><div class="quiz-track"><span style="width:${((questionIndex + 1) / quizQuestions.length) * 100}%"></span></div><article class="quiz-card"><img src="${question.image}" alt="${question.alt}" width="1024" height="1024" /><div><span class="section-kicker">Look for the whole pattern</span><h2>${question.question}</h2><div class="quiz-options">${question.options.map((option, optionIndex) => `<button class="quiz-option" type="button" data-option="${optionIndex}">${option}</button>`).join('')}</div><p class="quiz-feedback" aria-live="polite"></p></div></article>`;
+      shell.innerHTML = `<div class="quiz-progress"><span>Challenge ${questionIndex + 1} of ${quizQuestions.length}</span><span>${question.level || 'Whole-dog read'} · ${question.category || 'Body language'}</span></div><div class="quiz-track"><span style="width:${((questionIndex + 1) / quizQuestions.length) * 100}%"></span></div><article class="quiz-card"><img src="${question.image}" alt="${question.alt}" width="768" height="768" /><div><span class="section-kicker">Look for the whole pattern</span><h2>${question.question}</h2><div class="quiz-options">${orderedQuizOptions(question).map((option) => `<button class="quiz-option" type="button" data-option="${option.index}">${option.text}</button>`).join('')}</div><p class="quiz-feedback" aria-live="polite"></p></div></article>`;
     shell.querySelector('.quiz-options').addEventListener('click', (event) => {
       const button = event.target.closest('[data-option]');
       if (!button) return;
@@ -228,7 +265,7 @@ function renderQuiz() {
       breakdown.className = 'quiz-breakdown';
       breakdown.innerHTML = `<p><strong>Visible clues</strong>${question.clues || question.explanation}</p><p><strong>Kind next step</strong>${question.action || 'Pause, lower pressure, and check the whole dog before acting.'}</p>${question.related ? `<a class="text-link" href="${question.related[1]}">${question.related[0]} →</a>` : ''}`;
       const next = document.createElement('button'); next.className = 'button'; next.type = 'button'; next.textContent = questionIndex === quizQuestions.length - 1 ? 'See my result' : 'Next question'; next.style.marginTop = '8px';
-      next.addEventListener('click', () => { questionIndex += 1; if (questionIndex < quizQuestions.length) showQuestion(); else showResult(); });
+      next.addEventListener('click', () => { questionIndex += 1; if (questionIndex < quizQuestions.length) showQuestion(); else showResult(); const heading = shell.querySelector('h2'); heading.tabIndex = -1; heading.focus(); });
       shell.querySelector('.quiz-feedback').after(breakdown, next);
     }, { once: true });
   }
@@ -260,11 +297,11 @@ function renderQuiz() {
 function renderSaved() {
   const target = document.querySelector('#saved-list');
   if (!target) return;
-  const progress = readProgress();
-  const saved = dailyLessons.filter((lesson) => progress.favorites.includes(lesson.id));
   const render = () => {
+    document.dispatchEvent(new Event('wagsignals:stop-audio'));
     const current = readProgress();
     const lessons = dailyLessons.filter((lesson) => current.favorites.includes(lesson.id));
+    document.querySelector('#saved-clear').disabled = !lessons.length;
     if (!lessons.length) {
       target.innerHTML = '<div class="empty-state"><h2>Your saved shelf is empty.</h2><p>Save a Daily Wag clue when you find one you want to revisit.</p><a class="button" href="./daily.html">Open Daily Wag</a></div>';
       return;
@@ -272,10 +309,17 @@ function renderSaved() {
     target.innerHTML = lessons.map((lesson) => `<article class="saved-card"><img src="${lesson.image}" alt="${lesson.alt}" width="1024" height="1024" loading="lazy" decoding="async" /><div class="saved-card-body"><span class="challenge-tag">${lesson.kicker}</span><h2>${lesson.title}</h2><p>${lesson.body}</p><button class="button secondary" type="button" data-remove="${lesson.id}">Remove saved clue</button></div></article>`).join('');
     target.querySelectorAll('[data-remove]').forEach((button) => button.addEventListener('click', () => {
       const next = readProgress(); next.favorites = next.favorites.filter((id) => id !== button.dataset.remove); saveProgress(next); render();
+      const focusTarget = target.querySelector('button, a');
+      focusTarget?.focus();
     }));
+    document.dispatchEvent(new Event('wagsignals:content-updated'));
   };
   render();
-  document.querySelector('#saved-clear')?.addEventListener('click', () => { const next = readProgress(); next.favorites = []; saveProgress(next); render(); });
+  document.querySelector('#saved-clear')?.addEventListener('click', () => {
+    if (!window.confirm('Remove all saved clues from this device? Your pawprints and quiz progress will stay.')) return;
+    const next = readProgress(); next.favorites = []; saveProgress(next); render();
+    target.querySelector('a')?.focus();
+  });
   document.querySelector('#reset-progress')?.addEventListener('click', () => {
     if (!window.confirm('Reset Daily Wag, quiz, pawprint, and saved-clue progress on this device?')) return;
     try { localStorage.removeItem(storageKey); } catch { /* The visible page remains usable if storage is unavailable. */ }
@@ -288,11 +332,16 @@ function renderScenarios() {
   const search = document.querySelector('#scenario-search');
   const count = document.querySelector('#scenario-count');
   if (!target || !search || !count) return;
+  const requestedSearch = new URLSearchParams(window.location.search).get('search');
+  if (requestedSearch && !search.value) search.value = requestedSearch.slice(0, 80);
   const render = () => {
+    document.dispatchEvent(new Event('wagsignals:stop-audio'));
     const query = search.value.trim().toLowerCase();
-    const filtered = scenarioLibrary.filter((scenario) => `${scenario.title} ${scenario.tag} ${scenario.look} ${scenario.do} ${scenario.avoid}`.toLowerCase().includes(query));
+    const filtered = findScenarioMatches(query);
     count.textContent = `${filtered.length} scenario${filtered.length === 1 ? '' : 's'}`;
-    target.innerHTML = filtered.length ? filtered.map((scenario) => `<article class="scenario-card"><img src="${scenario.image}" alt="${scenario.alt}" width="1024" height="1024" loading="lazy" decoding="async" /><div class="scenario-card-body"><span class="scenario-tag">${scenario.tag}</span><h2>${scenario.title}</h2><p class="scenario-row"><strong>Look for</strong><span>${scenario.look}</span></p><p class="scenario-row"><strong>Try</strong><span>${scenario.do}</span></p><p class="scenario-row"><strong>Avoid</strong><span>${scenario.avoid}</span></p></div></article>`).join('') : '<div class="empty-state"><h2>No matching scenario.</h2><p>Try a word like “door,” “walk,” “food,” or “handling.”</p></div>';
+    const fallback = !filtered.length && findScenarioGuideFallback(query);
+    target.innerHTML = filtered.length ? filtered.map((scenario) => `<article class="scenario-card"><img src="${scenario.image}" alt="${scenario.alt}" width="1024" height="1024" loading="lazy" decoding="async" /><div class="scenario-card-body"><span class="scenario-tag">${scenario.tag}</span><h2>${scenario.title}</h2><p class="scenario-row"><strong>Look for</strong><span>${scenario.look}</span></p><p class="scenario-row"><strong>Try</strong><span>${scenario.do}</span></p><p class="scenario-row"><strong>Avoid</strong><span>${scenario.avoid}</span></p>${query && scenario.next ? `<a class="scenario-next" href="${scenario.next[1]}">${scenario.next[0]} →</a>` : ''}</div></article>`).join('') : fallback ? `<div class="empty-state"><h2>For biting or nipping</h2><p>Start with the safety-first guide, especially if someone may be hurt.</p><a class="button secondary" href="${fallback[1]}">${fallback[0]} →</a></div>` : '<div class="empty-state"><h2>No matching scenario.</h2><p>Try a word like “door,” “walk,” “food,” or “handling.”</p></div>';
+    document.dispatchEvent(new Event('wagsignals:content-updated'));
   };
   search.addEventListener('input', render); render();
 }
@@ -304,17 +353,27 @@ function renderFeedback() {
   const card = document.createElement('section');
   card.className = 'shell feedback-card';
   card.setAttribute('aria-labelledby', 'feedback-title');
-  card.innerHTML = `<div><span class="section-kicker">Help us keep it clear</span><h2 id="feedback-title">Was ${feedbackTopics[topic]} useful today?</h2><p>This one-tap response stays on this device. It does not send personal information.</p></div><div class="feedback-actions"><button class="button" type="button" data-feedback-choice="yes">Yes, helpful</button><button class="button secondary" type="button" data-feedback-choice="no">Not quite</button></div><p class="feedback-status" aria-live="polite"></p>`;
+  card.innerHTML = `<div><h2 id="feedback-title">Was ${feedbackTopics[topic]} useful?</h2><p>A personal check-in, saved on this device only—not sent to the WagSignals team.</p></div><div class="feedback-actions"><button class="button secondary" type="button" data-feedback-choice="yes" aria-pressed="false">Yes, helpful</button><button class="button secondary" type="button" data-feedback-choice="no" aria-pressed="false">Not yet</button></div><p class="feedback-status" aria-live="polite"></p>`;
   main.append(card);
   const status = card.querySelector('.feedback-status');
+  const showChoice = (value, stored = true) => {
+    card.querySelectorAll('[data-feedback-choice]').forEach((choice) => choice.setAttribute('aria-pressed', String(choice.dataset.feedbackChoice === value)));
+    status.textContent = value === 'yes' ? `${stored ? 'Saved on this device.' : 'Not saved: browser storage is unavailable.'} Glad it helped.` : `${stored ? 'Saved on this device.' : 'Not saved: browser storage is unavailable.'} Try a real-life scenario for a concrete example.`;
+    if (value === 'no') {
+      const link = document.createElement('a'); link.href = './scenarios.html'; link.textContent = ' Browse scenarios'; status.append(link);
+    }
+  };
+  try { const value = JSON.parse(localStorage.getItem('wagsignals.feedback.v1') || '{}')?.[topic]; if (value === 'yes' || value === 'no') showChoice(value); } catch { /* A check-in is optional. */ }
   card.querySelectorAll('[data-feedback-choice]').forEach((button) => button.addEventListener('click', () => {
+    let stored = false;
     try {
-      const responses = JSON.parse(localStorage.getItem('wagsignals.feedback.v1') || '{}');
+      const raw = JSON.parse(localStorage.getItem('wagsignals.feedback.v1') || '{}');
+      const responses = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : {};
       responses[topic] = button.dataset.feedbackChoice;
       localStorage.setItem('wagsignals.feedback.v1', JSON.stringify(responses));
+      stored = true;
     } catch { /* Private browsing can deny storage; the visible response still works. */ }
-    card.querySelectorAll('button').forEach((choice) => { choice.disabled = true; });
-    status.textContent = button.dataset.feedbackChoice === 'yes' ? 'Thank you — glad it helped.' : 'Thanks — we’ll keep this guide clearer and more practical.';
+    showChoice(button.dataset.feedbackChoice, stored);
   }));
 }
 
@@ -329,16 +388,16 @@ function voiceTextFromSelectors(root, selectors) {
   if (!root) return '';
   const seen = new Set();
   const parts = [];
-  for (const selector of selectors) {
-    root.querySelectorAll(selector).forEach((node) => {
-      const value = node.textContent.replace(/\s+/g, ' ').trim();
-      if (!value || seen.has(value)) return;
-      seen.add(value);
-      parts.push(value);
-    });
-  }
+  // One combined query preserves reading order: each label stays with its explanation.
+  root.querySelectorAll(selectors.join(', ')).forEach((node) => {
+    if (node.closest('details:not([open])')) return;
+    const value = node.textContent.replace(/\s+/g, ' ').trim();
+    if (!value || seen.has(value)) return;
+    seen.add(value);
+    parts.push(value);
+  });
   const text = parts.join('. ').replace(/\. ([.!?])/g, '$1');
-  return text.length > 1100 ? `${text.slice(0, 1097).replace(/\s+\S*$/, '')}…` : text;
+  return text;
 }
 
 function splitVoiceText(text) {
@@ -368,6 +427,15 @@ function splitVoiceText(text) {
   return chunks;
 }
 
+function chooseEnglishVoice(voices) {
+  const english = voices.filter((item) => /^en(-|_)/i.test(item.lang));
+  const localEnglish = english.filter((item) => item.localService);
+  const pool = localEnglish.length ? localEnglish : english;
+  const natural = pool.filter((item) => /natural|neural|enhanced|premium|microsoft|google/i.test(item.name));
+  const warm = /aria|jenny|samantha|zira|sara|libby|hazel|karen|moira/i;
+  return natural.find((item) => warm.test(item.name)) || natural[0] || pool[0] || null;
+}
+
 function createVoiceController(toolbar) {
   const playStop = toolbar.querySelector('[data-voice-stop]');
   const rate = toolbar.querySelector('[data-voice-rate]');
@@ -385,12 +453,13 @@ function createVoiceController(toolbar) {
   const updateButton = (button, text, pressed = false) => {
     if (!button) return;
     button.querySelector('[data-voice-button-text]').textContent = text;
-    button.setAttribute('aria-label', `${text} ${button.dataset.voiceLabel}`);
+    const action = text.replace(/^[▶Ⅱ]\s*/, '');
+    button.setAttribute('aria-label', `${action}${action === 'Listen' ? ' to' : ''} ${button.dataset.voiceLabel}`);
     button.setAttribute('aria-pressed', String(pressed));
     button.classList.toggle('is-speaking', pressed);
   };
   const resetButton = (button) => updateButton(button, '▶ Listen', false);
-  const setIdle = (message = 'Choose Listen on any section. WagSignals sends no audio to a server.') => {
+  const setIdle = (message = '') => {
     speaking = false;
     pausedByUser = false;
     resetButton(activeButton);
@@ -398,16 +467,11 @@ function createVoiceController(toolbar) {
     activeLabel = '';
     playStop.hidden = true;
     status.textContent = message;
+    status.hidden = !message;
   };
   const chooseVoice = () => {
     if (!supported) return;
-    const voices = window.speechSynthesis.getVoices();
-    const english = voices.filter((item) => /^en(-|_)/i.test(item.lang));
-    const localEnglish = english.filter((item) => item.localService);
-    const pool = localEnglish.length ? localEnglish : english;
-    const natural = pool.filter((item) => /natural|neural|enhanced|premium|microsoft|google/i.test(item.name));
-    const warm = /aria|jenny|samantha|zira|sara|libby|hazel|karen|moira/i;
-    voice = natural.find((item) => warm.test(item.name)) || natural[0] || pool[0] || voices[0] || null;
+    voice = chooseEnglishVoice(window.speechSynthesis.getVoices());
   };
   const updatePlaying = () => {
     updateButton(activeButton, pausedByUser ? '▶ Resume' : 'Ⅱ Pause', true);
@@ -425,6 +489,7 @@ function createVoiceController(toolbar) {
     utterance.pitch = 1;
     utterance.volume = 0.95;
     status.textContent = `Listening to ${activeLabel} · point ${chunkIndex + 1} of ${chunks.length}…`;
+    status.hidden = false;
     utterance.onend = () => { if (id !== runId) return; chunkIndex += 1; speakChunk(id); };
     utterance.onerror = () => { if (id === runId) setIdle('Voice playback stopped. Press Listen to try again.'); };
     window.speechSynthesis.speak(utterance);
@@ -442,13 +507,13 @@ function createVoiceController(toolbar) {
       return;
     }
     if (activeButton) resetButton(activeButton);
+    runId += 1;
     window.speechSynthesis.cancel();
     chunks = splitVoiceText(getText());
     if (!chunks.length) {
       status.textContent = 'This section has no text available to read.';
       return;
     }
-    runId += 1;
     chunkIndex = 0;
     speaking = true;
     pausedByUser = false;
@@ -459,15 +524,19 @@ function createVoiceController(toolbar) {
 
   if (!supported) {
     status.textContent = 'Voice playback is not available in this browser. Try a browser with built-in speech support.';
+    status.hidden = false;
   } else {
     chooseVoice();
     window.speechSynthesis.addEventListener?.('voiceschanged', chooseVoice);
   }
-  playStop.addEventListener('click', () => {
+  const stop = () => {
     runId += 1;
-    window.speechSynthesis.cancel();
-    setIdle('Stopped. Choose another section whenever you like.');
-  });
+    if (supported) window.speechSynthesis.cancel();
+    setIdle();
+  };
+  playStop.addEventListener('click', stop);
+  document.addEventListener('wagsignals:stop-audio', stop);
+  window.addEventListener('pagehide', stop);
   return {
     bind(button, label, getText) {
       button.dataset.voiceLabel = label;
@@ -501,40 +570,109 @@ function initVoiceReader() {
   const page = currentVoicePage() === 'index' ? 'home' : currentVoicePage();
   const main = document.querySelector('main');
   const anchor = main?.querySelector('.home-hero, .page-hero');
-  if (!main || !anchor || page === 'quiz' || main.querySelector('[data-voice-toolbar]')) return;
+  if (!main || !anchor || page === 'quiz' || page === 'training' || page === 'challenges' || main.querySelector('[data-voice-toolbar]')) return;
 
   const toolbar = document.createElement('section');
   toolbar.className = 'shell voice-toolbar';
   toolbar.dataset.voiceToolbar = '';
   toolbar.setAttribute('aria-label', 'Listen to this guide');
-  toolbar.innerHTML = '<div class="voice-toolbar-copy"><span class="section-kicker">Listen by section</span><strong>Short audio, one idea at a time.</strong></div><div class="voice-toolbar-actions"><button class="button secondary" type="button" data-voice-intro><span data-voice-button-text>▶ Intro</span></button><button class="button secondary" type="button" data-voice-stop hidden>Stop</button><label class="voice-speed" for="voice-rate">Speed<select id="voice-rate" data-voice-rate aria-label="Voice speed"><option value="0.9">Calm</option><option value="0.98" selected>Normal</option><option value="1.08">Quick</option></select></label></div><p class="voice-status" data-voice-status role="status" aria-live="polite">Choose Listen on any section. WagSignals sends no audio to a server.</p>';
-  anchor.after(toolbar);
+  toolbar.innerHTML = '<div class="voice-toolbar-actions"><button class="button secondary" type="button" data-voice-intro><span data-voice-button-text>▶ Listen</span></button><button class="button secondary" type="button" data-voice-stop hidden>Stop audio</button><details class="voice-settings"><summary>Audio options</summary><div><label class="voice-speed" for="voice-rate">Speed<select id="voice-rate" data-voice-rate aria-label="Voice speed"><option value="0.9">Calm</option><option value="0.98" selected>Normal</option><option value="1.08">Quick</option></select></label><p>Listen to one section at a time. Voice quality depends on your browser and device. Some device voices use an online speech service.</p></div></details></div><p class="voice-status" data-voice-status role="status" aria-live="polite" hidden></p>';
+  if (page === 'home') { toolbar.classList.remove('shell'); main.querySelector('.home-copy').append(toolbar); }
+  else anchor.after(toolbar);
 
   const controller = createVoiceController(toolbar);
   const introRoot = main.querySelector('.home-hero, .page-hero');
   const introButton = toolbar.querySelector('[data-voice-intro]');
-  if (page === 'home') introButton.remove();
-  else controller.bind(introButton, 'the introduction', () => voiceTextFromSelectors(introRoot, ['h1', '.page-hero-inner > div:first-child > p']));
-
-  if (page === 'home') addVoiceButton(main.querySelector('.home-copy'), main.querySelector('.home-hero'), 'the homepage welcome', ['.home-copy h1', '.home-copy > p:first-of-type'], controller);
+  controller.bind(introButton, page === 'home' ? 'the homepage welcome' : 'the introduction', () => voiceTextFromSelectors(introRoot, ['h1', '.page-hero-inner > div:first-child > p', '.home-copy > p:first-of-type']));
   if (page === 'daily') addVoiceButton(main.querySelector('.daily-card > div:nth-child(2)'), main.querySelector('.daily-card'), 'today’s lesson', ['#daily-title', '#daily-body', '.daily-note', '#daily-question-title'], controller);
   if (page === 'signals') addVoiceButton(main.querySelector('.read-panel > div:nth-child(2)'), main.querySelector('.read-panel'), 'this body-language clue', ['h2', '.read-panel > div > p', '.read-list strong', '.read-list span'], controller);
-  if (page === 'behaviors') main.querySelectorAll('.behavior-card').forEach((card) => addVoiceButton(card.querySelector('.behavior-card-body'), card, 'this behavior', ['h2', '.behavior-card-body > p', '.behavior-note'], controller));
-  if (page === 'training') main.querySelectorAll('.training-card').forEach((card) => addVoiceButton(card.querySelector('.training-card-body'), card, 'this training skill', ['h2', '.training-card-body > p', '.training-note'], controller));
-  if (page === 'challenges') main.querySelectorAll('.challenge-card').forEach((card) => addVoiceButton(card.querySelector('.challenge-card-body'), card, 'this challenge solution', ['h2', '.challenge-card-body > p', '.challenge-note'], controller));
+  if (page === 'behaviors') main.querySelectorAll('.behavior-card').forEach((card) => addVoiceButton(card.querySelector('.behavior-card-body'), card, 'this behavior', ['h2', '.behavior-card-body > p', '.behavior-note', '.learning-details[open] li', '.learning-details[open] p'], controller));
+  if (page === 'training') main.querySelectorAll('.training-card').forEach((card) => addVoiceButton(card.querySelector('.training-card-body'), card, 'this training skill', ['h2', '.training-card-body > p', '.training-note', '.learning-details[open] li', '.learning-details[open] p'], controller));
   if (page === 'body-map') {
     addVoiceButton(main.querySelector('.body-map > div'), main.querySelector('.body-map'), 'the body map', ['h2', '.body-map > div > p', '.map-list strong', '.map-list span'], controller);
     addVoiceButton(main.querySelector('.pause-card > div'), main.querySelector('.pause-card'), 'the space steps', ['h2', '.pause-card > div > p', '.pause-step strong', '.pause-step span'], controller);
   }
-  if (page === 'saved') main.querySelectorAll('.saved-card').forEach((card) => addVoiceButton(card.querySelector('.saved-card-body'), card, 'this saved clue', ['h2', '.saved-card-body > p'], controller));
-  if (page === 'scenarios') main.querySelectorAll('.scenario-card').forEach((card) => addVoiceButton(card.querySelector('.scenario-card-body'), card, 'this scenario', ['h2', '.scenario-card .scenario-row'], controller));
+  const bindDynamicCards = () => {
+    if (page === 'saved') main.querySelectorAll('.saved-card').forEach((card) => addVoiceButton(card.querySelector('.saved-card-body'), card, 'this saved clue', ['h2', '.saved-card-body > p'], controller));
+    if (page === 'scenarios') main.querySelectorAll('.scenario-card').forEach((card) => addVoiceButton(card.querySelector('.scenario-card-body'), card, 'this scenario', ['h2', '.scenario-card .scenario-row'], controller));
+  };
+  bindDynamicCards();
+  document.addEventListener('wagsignals:content-updated', bindDynamicCards);
   if (page === 'cheat-sheet') {
     addVoiceButton(main.querySelector('.cheat-sheet-heading'), main.querySelector('.cheat-sheet-heading'), 'the whole-dog scan', ['h2', 'p'], controller);
     addVoiceButton(main.querySelector('.cheat-safety'), main.querySelector('.cheat-safety'), 'the space safety steps', ['h2', 'li'], controller);
   }
 }
 
+function initNavigation() {
+  const header = document.querySelector('.topbar');
+  const nav = header?.querySelector('.nav');
+  if (!nav) return;
+  nav.id = 'main-navigation';
+  const toggle = document.createElement('button');
+  toggle.type = 'button'; toggle.className = 'nav-toggle'; toggle.textContent = 'Menu';
+  toggle.setAttribute('aria-controls', nav.id); toggle.setAttribute('aria-expanded', 'false');
+  nav.before(toggle);
+  header.classList.add('nav-ready');
+  const more = nav.querySelector('.nav-more');
+  const close = (restoreFocus = false) => {
+    toggle.setAttribute('aria-expanded', 'false');
+    header.classList.remove('nav-open');
+    if (more) more.open = false;
+    if (restoreFocus) toggle.focus();
+  };
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open)); header.classList.toggle('nav-open', open);
+    if (more) more.open = open;
+  });
+  document.addEventListener('click', (event) => { if (!header.contains(event.target)) close(); });
+  header.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (header.classList.contains('nav-open')) close(true);
+    else if (more?.open) { more.open = false; more.querySelector('summary').focus(); }
+  });
+  window.matchMedia('(max-width: 1020px)').addEventListener?.('change', () => close());
+}
+
+function initGuideJump() {
+  if (document.body.dataset.page === 'challenges') return;
+  const cards = [...document.querySelectorAll('.behavior-card, .training-card, .challenge-card')];
+  if (!cards.length) return;
+  const toolbar = document.createElement('div'); toolbar.className = 'guide-jump';
+  const label = document.createElement('label'); label.htmlFor = 'guide-topic'; label.textContent = 'Find a topic';
+  const select = document.createElement('select'); select.id = 'guide-topic';
+  select.add(new Option(`Choose from ${cards.length} topics`, ''));
+  cards.forEach((card) => {
+    const heading = card.querySelector('h2');
+    card.id ||= heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '');
+    heading.tabIndex = -1;
+    select.add(new Option(heading.textContent, card.id));
+  });
+  select.addEventListener('change', () => {
+    const card = cards.find((item) => item.id === select.value);
+    if (card) {
+      const module = card.closest('.training-module');
+      if (module) module.open = true;
+      card.scrollIntoView({ block: 'start' });
+      card.querySelector('h2').focus({ preventScroll: true });
+    }
+  });
+  toolbar.append(label, select);
+  const firstModule = cards[0].closest('.training-module');
+  if (firstModule) firstModule.before(toolbar);
+  else cards[0].parentElement.before(toolbar);
+  const requestedId = window.location.hash.slice(1);
+  const requestedCard = cards.find((card) => card.id === requestedId);
+  if (requestedCard) window.requestAnimationFrame(() => {
+    requestedCard.scrollIntoView({ block: 'start' });
+    requestedCard.querySelector('h2')?.focus({ preventScroll: true });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  initNavigation();
+  initGuideJump();
   renderProgress();
   if (document.body.dataset.page === 'daily') renderDaily();
   if (document.body.dataset.page === 'quiz') renderQuiz();

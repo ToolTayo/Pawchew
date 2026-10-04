@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const outputRoot = path.join(projectRoot, 'dist');
@@ -17,7 +18,13 @@ const siteOrigin = normalizeOrigin(process.env.PUBLIC_SITE_ORIGIN);
 const indexable = process.env.PUBLIC_SITE_INDEXABLE === 'true';
 if (indexable && !siteOrigin) throw new Error('PUBLIC_SITE_INDEXABLE=true requires PUBLIC_SITE_ORIGIN.');
 const routeFor = (page) => page === 'index.html' ? '/' : `/${page}`;
+const assetVersions = new Map();
+for (const file of ['styles.css', 'app.js', 'signals.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js']) {
+  assetVersions.set(file, createHash('sha256').update(await fs.readFile(path.join(projectRoot, file))).digest('hex').slice(0, 12));
+}
 const decorateHtml = (html, page) => {
+  // Changed assets get new production URLs, even when a manual version bump is missed.
+  html = html.replace(/(styles\.css|app\.js|signals\.js|training-data\.js|guided-reader\.js|training\.js|challenge-data\.js|challenges\.js)\?v=[\w-]+/g, (_, file) => `${file}?v=${assetVersions.get(file)}`);
   const title = html.match(/<title>(.*?)<\/title>/)?.[1] ?? 'WagSignals';
   const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
   const tags = [
@@ -25,11 +32,20 @@ const decorateHtml = (html, page) => {
     `<meta property="og:title" content="${title}" />`,
     `<meta property="og:description" content="${description}" />`,
     '<meta property="og:type" content="website" />',
-    '<meta name="twitter:card" content="summary" />'
+    '<meta property="og:site_name" content="WagSignals" />',
+    `<meta name="twitter:card" content="${siteOrigin ? 'summary_large_image' : 'summary'}" />`
   ];
   if (siteOrigin) {
     const canonical = `${siteOrigin}${routeFor(page)}`;
-    tags.push(`<link rel="canonical" href="${canonical}" />`, `<meta property="og:url" content="${canonical}" />`);
+    const previewImage = `${siteOrigin}/assets/dog-language-hero.webp`;
+    tags.push(
+      `<link rel="canonical" href="${canonical}" />`,
+      `<meta property="og:url" content="${canonical}" />`,
+      `<meta property="og:image" content="${previewImage}" />`,
+      '<meta property="og:image:alt" content="Friendly dogs in a sunny park, illustrating WagSignals dog body-language guidance" />',
+      `<meta name="twitter:image" content="${previewImage}" />`,
+      '<meta name="twitter:image:alt" content="Friendly dogs in a sunny park" />'
+    );
   }
   return html.replace('</head>', `    ${tags.join('\n    ')}\n  </head>`);
 };
@@ -40,7 +56,7 @@ for (const file of pages) {
   const html = await fs.readFile(path.join(projectRoot, file), 'utf8');
   await fs.writeFile(path.join(outputRoot, file), decorateHtml(html, file));
 }
-for (const file of ['styles.css', 'signals.js', 'app.js']) {
+for (const file of ['styles.css', 'signals.js', 'app.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js']) {
   await fs.copyFile(path.join(projectRoot, file), path.join(outputRoot, file));
 }
 await fs.copyFile(path.join(projectRoot, 'favicon.svg'), path.join(outputRoot, 'favicon.svg'));
@@ -57,4 +73,4 @@ await fs.cp(path.join(projectRoot, 'assets'), path.join(outputRoot, 'assets'), {
   filter: (source) => !/\.(?:jpe?g)$/i.test(source)
 });
 
-console.log('Built static site into dist/.');
+console.log(`Built static site into dist/ (${indexable ? 'indexable' : 'no-index'}${siteOrigin ? `; ${siteOrigin}` : ''}).`);

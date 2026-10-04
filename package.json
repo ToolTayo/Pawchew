@@ -8,6 +8,8 @@
     "dev": "node scripts/serve.mjs --root . --port 3000",
     "build": "node scripts/build.mjs",
     "preview": "node scripts/serve.mjs --root dist --port 4173",
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "test": "node scripts/test.mjs",
+    "smoke": "node scripts/smoke.mjs"
   }
 }

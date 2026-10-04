@@ -7,7 +7,7 @@
     <meta name="description" content="A practical guide to reading the whole dog: eyes, ears, mouth, posture, tail, movement, and context." />
     <title>Body language guide — WagSignals</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="stylesheet" href="./styles.css?v=7" />
+    <link rel="stylesheet" href="./styles.css?v=10" />
   </head>
   <body data-feedback="body-language">
     <a class="skip-link" href="#main">Skip to main content</a>
@@ -39,19 +39,24 @@
         <div class="library-tools">
           <label class="sr-only" for="signal-search">Search body-language clues</label>
           <input class="scenario-search" id="signal-search" type="search" placeholder="Search tail, ears, licking, freeze…" autocomplete="off" />
-          <div class="filter-row" id="signal-filters" aria-label="Filter body-language clues"></div>
-          <p class="library-count" id="signal-count" aria-live="polite"></p>
+          <div class="filter-row" id="signal-filters" role="group" aria-label="Filter body-language clues"></div>
+          <div class="library-summary"><p class="library-count" id="signal-count" aria-live="polite" tabindex="-1"></p><button class="filter-button" id="signal-clear" type="button" hidden>Clear filters</button></div>
         </div>
         <div class="signal-grid" id="signal-grid"></div>
-        <div class="read-panel" aria-live="polite">
-          <div class="read-visual"><img id="read-image" src="./assets/guide-relaxed.webp" alt="A golden retriever sitting with a relaxed body and soft eyes" width="1024" height="1024" loading="eager" decoding="async" /></div>
+        <nav class="library-pagination" aria-label="Clue pages"><button class="button secondary" id="signal-prev" type="button">Previous</button><span id="signal-page"></span><button class="button secondary" id="signal-next" type="button">Next</button></nav>
+        <dialog class="signal-dialog" id="signal-dialog" aria-labelledby="read-title">
+        <div class="dialog-bar"><span>Read the whole dog · add context</span><button class="button secondary" id="signal-close" type="button" autofocus>Close clue</button></div>
+        <div class="read-panel">
+          <div class="read-visual"><img id="read-image" src="./assets/guide-relaxed.webp" alt="A golden retriever sitting with a relaxed body and soft eyes" width="768" height="768" loading="eager" decoding="async" /></div>
           <div><span class="section-kicker" id="read-kicker">A softer read</span><h2 id="read-title">Loose usually means comfortable.</h2><p id="read-summary">A relaxed dog can still be alert or excited. Look for easy movement and the ability to choose what happens next.</p><p class="read-related" id="read-related"></p></div>
           <ul class="read-list" id="read-list"><li><strong>What you might see</strong><span>Soft eyes, a wiggly middle, and a mouth that rests open or gently closed.</span></li><li><strong>Check with it</strong><span>Can the dog sniff, blink, eat, move away, or choose to pause?</span></li><li><strong>What it may mean</strong><span>In this context, the combination is more consistent with comfort.</span></li><li><strong>Don’t assume</strong><span>A wag only tells you the tail is moving—not whether the feeling is happy.</span></li><li><strong>Kind response</strong><span>Keep the moment predictable and let the dog choose what happens next.</span></li><li><strong>Get support if</strong><span>The change is sudden, persistent, painful, or paired with a safety concern.</span></li></ul>
         </div>
+        </dialog>
+        <noscript><p>The interactive library needs JavaScript. You can still use the <a href="./body-map.html">whole-dog checklist</a> or <a href="./cheat-sheet.html">printable guide</a>.</p></noscript>
       </section>
     </main>
     <footer><div class="shell footer-inner"><span class="footer-mark">WagSignals ✦</span><p>Educational guidance, not a diagnosis. Read the whole dog and make space when you are unsure.</p></div></footer>
-    <script src="./app.js?v=17" defer></script>
-    <script src="./signals.js?v=3" defer></script>
+    <script src="./app.js?v=20" defer></script>
+    <script src="./signals.js?v=5" defer></script>
   </body>
 </html>
