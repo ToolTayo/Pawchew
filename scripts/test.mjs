@@ -52,7 +52,7 @@ assert.equal(run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html',
 assert.match(source, /history\.replaceState\(history\.state, '', scenarioSearchUrl\(window\.location\.href, search\.value\)\)/, 'Scenario search state should survive browser Back and refresh');
 for (const [query, expectedTitle] of [
   ['my dog bites me', null],
-  ["won't give toy back", 'Food bowl time'],
+  ["won't give toy back", 'Food or toy guarding'],
   ['pulling leash', 'A trigger appears on a walk'],
   ['scared of visitors', 'A visitor arrives'],
   ['eating rocks', 'Something unsafe is on the ground'],
@@ -63,8 +63,17 @@ for (const [query, expectedTitle] of [
   if (expectedTitle) assert.ok(Array.from(matches).some((scenario) => scenario.title === expectedTitle), `Scenario search should understand “${query}”.`);
   else assert.equal(matches.length, 0, 'Biting should not be misrepresented as an unrelated scenario.');
 }
+for (const [query, expectedTitle] of [
+  ['DOG GROWLS WITH TOY!!!', 'Food or toy guarding'],
+  ['hates being alone', 'The dog is alone'],
+  ['dog keeps eating stones', 'Something unsafe is on the ground'],
+  ['dog ate something', 'Something unsafe is on the ground']
+]) {
+  assert.ok(Array.from(run(`findScenarioMatches(${JSON.stringify(query)})`)).some((scenario) => scenario.title === expectedTitle), `Scenario search should understand “${query}”.`);
+}
 assert.equal(run(`findScenarioGuideFallback('my dog bites me')[1]`), './challenges.html?guide=biting-nipping#guide', 'A biting query with no matching scenario should route to the existing safety guide.');
 assert.equal(run(`findScenarioGuideFallback('the dog nipped someone')[1]`), './challenges.html?guide=biting-nipping#guide', 'A nipping query should use the same safety-first route.');
+assert.equal(run(`findScenarioGuideFallback('puppy keeps biting')[1]`), './challenges.html?guide=biting-nipping#guide', 'Common puppy-biting wording should reach the existing safety-first guide.');
 assert.equal(run(`findScenarioGuideFallback('my dog is relaxed')`), null, 'Biting fallback should not appear for unrelated searches.');
 for (const scenario of run('scenarioLibrary')) {
   const target = scenario.next[1].split(/[?#]/)[0].replace(/^\.\//, '');
@@ -79,8 +88,12 @@ assert.equal(run("chooseEnglishVoice([{name: 'Japanese Voice', lang: 'ja-JP', lo
 assert.equal(run("chooseEnglishVoice([{name: 'Spanish Voice', lang: 'es-ES', localService: true}, {name: 'English Online Voice', lang: 'en-US', localService: false}, {name: 'English Local Voice', lang: 'en-GB', localService: true}]).name"), 'English Local Voice', 'Prefer a locally available English voice');
 assert.equal(run('Object.keys(signalAuditData).length'), 40);
 assert.equal(run(`signalSearchMatches('loose-tail', signalAuditData['loose-tail'], 'tail wag')`), true, 'Tail-wag clue should be findable using ordinary owner language.');
+assert.equal(run(`signalSearchMatches('loose-tail', signalAuditData['loose-tail'], 'tail wagging')`), true, 'A short natural tail-wag query should find the whole-dog clue.');
+assert.equal(run(`signalSearchMatches('loose-tail', signalAuditData['loose-tail'], 'dog')`), true, 'Treating dog as conversational filler must not make a dog-only search return nothing.');
 assert.equal(run(`signalSearchMatches('loose-tail', signalAuditData['loose-tail'], "I don't know if my dog's tail wag means they're happy")`), true, 'Tail-wag search should tolerate a natural-language question and retain the whole-dog caveat.');
 assert.equal(run(`signalSearchMatches('loose-tail', signalAuditData['loose-tail'], 'Why does my dog wag its tail?')`), true, 'Question-word phrasing should still surface the tail guide.');
+assert.equal(run(`signalSearchMatches('stressed-pattern', signalAuditData['stressed-pattern'], 'dog looks nervous')`), true, 'Everyday wording should surface the cautious whole-body stress guide.');
+assert.equal(run(`signalSearchMatches('stressed-pattern', signalAuditData['stressed-pattern'], 'my puppy seems worried')`), true, 'Puppy and conversational filler words should not block a useful signal match.');
 assert.equal(run('new Set(Object.values(signalAuditData).map(signal => signal.title)).size'), 40, 'Every signal needs its own useful title');
 assert.equal(run("Object.values(signalAuditData).every(signal => ['Face','Ears','Mouth','Tail','Body','Movement','Warnings'].includes(signal.category) && ['title','summary','image','alt','see','check','meaning','avoid','response','help'].every(key => typeof signal[key] === 'string' && signal[key].trim()))"), true, 'Every signal needs complete readable guidance and image text');
 assert.equal(run("Object.values(signalAuditData).every(signal => signal.image.startsWith('./assets/') && signal.alt.length > 15)"), true, 'Every signal image needs local provenance and useful accessible text');

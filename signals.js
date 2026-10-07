@@ -44,14 +44,17 @@ Object.assign(signalContent, {
   'warning-combination': { category: 'Warnings', kicker: 'Whole-body pattern', title: 'Strong warning: the whole pattern', summary: 'Stiffness, hard focus, tight mouth, and vocal or teeth signals mean pressure is too high.', image: './assets/guide-warning.webp', alt: 'Dog showing a stiff body, hard focus, raised hackles, and visible teeth', see: 'Rigid posture, hard eyes, a tight mouth, raised fur, growling, snarling, snapping, or lunging.', check: 'Distance, trigger, exit route, and whether people or animals can move away safely.', meaning: 'The dog is communicating a high need for space; the image cannot predict exactly what they will do next.', avoid: 'Do not punish, corner, grab, stare at, or test a warning.', response: 'Stop pressure and create distance while managing the environment safely.', help: 'Seek qualified behavior and veterinary support for repeated, sudden, or high-risk warnings.', related: ['Read freezing', './signals.html?signal=freeze'] }
 });
 
-const signalSearchStopWords = new Set(['a', 'about', 'always', 'am', 'an', 'and', 'are', 'as', 'be', 'because', 'did', 'does', 'dont', 'for', 'from', 'how', 'i', 'if', 'in', 'is', 'it', 'its', 'know', 'me', 'mean', 'means', 'my', 'of', 'on', 'or', 'so', 'the', 'their', 'them', 'they', 'theyre', 'to', 'was', 'what', 'when', 'why', 'will', 'with', 'you', 'your']);
+const signalSearchStopWords = new Set(['a', 'about', 'always', 'am', 'an', 'and', 'are', 'as', 'be', 'because', 'did', 'does', 'dog', 'dogs', 'dont', 'for', 'from', 'how', 'i', 'if', 'in', 'is', 'it', 'its', 'know', 'look', 'looks', 'me', 'mean', 'means', 'my', 'of', 'on', 'or', 'puppies', 'puppy', 'seem', 'seems', 'so', 'the', 'their', 'them', 'they', 'theyre', 'to', 'was', 'what', 'when', 'why', 'will', 'with', 'you', 'your']);
+const signalSearchAliases = { 'stressed-pattern': ['nervous', 'worried', 'uneasy', 'on edge'] };
 function signalQueryTerms(value) {
-  return String(value ?? '').toLowerCase().replace(/[’']/g, '').match(/[a-z0-9]+/g)?.filter((word) => word.length > 1 && !signalSearchStopWords.has(word)) || [];
+  const words = String(value ?? '').toLowerCase().replace(/[’']/g, '').match(/[a-z0-9]+/g) || [];
+  const terms = words.filter((word) => word.length > 1 && !signalSearchStopWords.has(word));
+  return terms.length ? terms : words.filter((word) => ['dog', 'dogs', 'puppy', 'puppies'].includes(word));
 }
 function signalSearchMatches(key, signal, query) {
   const terms = signalQueryTerms(query);
   if (!terms.length) return !query.trim();
-  const searchable = signalQueryTerms(`${key} ${signal.category} ${signal.title} ${signal.summary} ${signal.see} ${signal.check} ${signal.meaning} ${signal.avoid} ${(signal.searchTerms || []).join(' ')}`);
+  const searchable = signalQueryTerms(`${key} ${signal.category} ${signal.title} ${signal.summary} ${signal.see} ${signal.check} ${signal.meaning} ${signal.avoid} ${(signal.searchTerms || []).join(' ')} ${(signalSearchAliases[key] || []).join(' ')}`);
   return terms.every((term) => searchable.some((word) => word.includes(term) || term.includes(word)));
 }
 
