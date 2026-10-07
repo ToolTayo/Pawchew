@@ -1,4 +1,4 @@
-const BUILD_ID = 'f3ace06eeb3dbf7f';
+const BUILD_ID = 'd9ea2bd882dba38d';
 const SHELL_CACHE = `wagsignals-shell-${BUILD_ID}`;
 const IMAGE_CACHE = 'wagsignals-images-v1';
 const SHELL_URLS = [
@@ -6,7 +6,7 @@ const SHELL_URLS = [
   './training.html', './challenges.html', './body-map.html', './saved.html', './scenarios.html',
   './cheat-sheet.html', './sources-safety.html', './styles.css', './app.js', './signals.js',
   './training-data.js', './guided-reader.js', './training.js', './challenge-data.js', './challenges.js',
-  './pwa-register.js', './manifest.webmanifest', './favicon.svg',
+  './pwa-register.js', './install.js', './manifest.webmanifest', './favicon.svg',
   './assets/wagsignals-192.png', './assets/wagsignals-512.png', './assets/wagsignals-maskable-512.png',
   './assets/dog-language-hero.webp'
 ];

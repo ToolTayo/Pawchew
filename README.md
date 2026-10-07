@@ -50,7 +50,7 @@ npm run preview -- --port <port>
 npm run smoke -- http://127.0.0.1:<port>
 ```
 
-The production build fingerprints CSS and JavaScript URLs automatically to prevent stale cached interfaces. No runtime dependencies or service worker were added. `npm test` exercises progress normalization, expired streaks, unique awards, content counts, persistence, contrast, and the shared reader’s play/pause/resume/stop/restart, section changes, automatic continuation, and stale-speech cancellation without touching browser data. It also checks all eight challenge guides, safety content, and internal cross-links.
+The production build fingerprints CSS and JavaScript URLs automatically to prevent stale cached interfaces. The installed/mobile layout uses a five-destination bottom bar, safe-area spacing, and a compact secondary-links panel; it adds no runtime dependency. A persistent Install WagSignals action uses the browser prompt when available and otherwise gives concise platform-specific steps; it never opens automatically. The existing lightweight service worker keeps the local app shell available offline and caches illustrations as they are viewed. `npm test` exercises progress normalization, expired streaks, unique awards, content counts, persistence, contrast, installation prompt/fallback behavior, and the shared reader’s play/pause/resume/stop/restart, section changes, automatic continuation, and stale-speech cancellation without touching browser data. It also checks all eight challenge guides, safety content, and internal cross-links.
 
 ## Public release metadata
 

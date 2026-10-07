@@ -12,6 +12,7 @@ const challengeDataSource = await fs.readFile(new URL('../challenge-data.js', im
 const challengesSource = await fs.readFile(new URL('../challenges.js', import.meta.url), 'utf8');
 const serviceWorkerSource = await fs.readFile(new URL('../service-worker.js', import.meta.url), 'utf8');
 const pwaRegistrationSource = await fs.readFile(new URL('../pwa-register.js', import.meta.url), 'utf8');
+const installSource = await fs.readFile(new URL('../install.js', import.meta.url), 'utf8');
 const data = new Map();
 const context = vm.createContext({
   console,
@@ -261,6 +262,20 @@ verifyPageHideLifecycle(challengesSource, 'Challenges');
 assert.match(challengesSource, /querySelector\('#guide'\)/, 'Direct challenge routes should render into the real #guide fragment target');
 assert.match(challengeDataSource, /\.\/sources-safety\.html#source-list/, 'Challenge guides should connect to the existing Sources & safety material');
 const stylesheet = await fs.readFile(new URL('../styles.css', import.meta.url), 'utf8');
+for (const fragment of ['grid-template-columns: repeat(5, minmax(0, 1fr))', 'env(safe-area-inset-bottom', 'max-height: 460px', '.mobile-more-menu', '.mobile-install-entry', '.desktop-install-entry', '.install-dialog::backdrop', '.guide-card:active', 'scroll-margin-top: calc(76px', 'z-index: 80']) {
+  assert.ok(stylesheet.includes(fragment), `Responsive installed navigation should include ${fragment}.`);
+}
+for (const destination of ['Home', 'Learn', 'Train', 'Help', 'More', 'Print cheat sheet']) {
+  assert.ok(source.includes(`label: '${destination}'`) || source.includes(`textContent = '${destination}'`) || source.includes(`span>${destination}</span>`), `Mobile navigation should expose ${destination}.`);
+}
+for (const fragment of ['beforeinstallprompt', 'appinstalled', "['standalone', 'minimal-ui', 'fullscreen']", 'appNavigator.standalone', 'aria-modal', 'aria-labelledby', 'restoreFocus', 'pageshow', 'orientationchange']) {
+  assert.ok(installSource.includes(fragment), `Install experience should handle ${fragment}.`);
+}
+assert.match(source, /menu\.append\(menuTitle\);\s*window\.WagSignalsInstall\?\.addMobileEntry\(menu\);\s*menu\.append\(menuLinks\);/, 'Mobile install help should appear near the top of the existing More menu, before its scrollable page links.');
+assert.match(installSource, /event\.preventDefault\(\)/, 'The browser install event must be captured rather than auto-prompted.');
+assert.match(installSource, /await promptEvent\.prompt\(\)/, 'The native prompt should be invoked only by the install action handler.');
+assert.match(installSource, /Add to Home Screen/, 'Fallback guidance should cover browsers without a native prompt.');
+assert.match(installSource, /Open as Web App/, 'iOS guidance should explain Safari’s standalone home-screen option.');
 const cssColor = (property) => stylesheet.match(new RegExp(`${property}:\\s*(#[a-fA-F0-9]{6})`))?.[1];
 const luminance = (color) => color.slice(1).match(/../g).map((hex) => parseInt(hex, 16) / 255).map((channel) => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4).reduce((total, value, index) => total + value * [0.2126, 0.7152, 0.0722][index], 0);
 const contrast = (foreground, background) => { const values = [luminance(foreground), luminance(background)].sort((a, b) => b - a); return (values[0] + 0.05) / (values[1] + 0.05); };
@@ -354,6 +369,7 @@ const shellCacheName = (await testCaches.keys()).find((name) => name.startsWith(
 assert.ok(shellCacheName, 'Install should create a versioned WagSignals shell cache');
 const installedShell = await testCaches.open(shellCacheName);
 assert.match(await (await installedShell.match(`${swScope}scenarios.html`)).text(), /precache:\/scenarios\.html/, 'The route shell should be available to open offline');
+assert.match(await (await installedShell.match(`${swScope}install.js`)).text(), /precache:\/install\.js/, 'Install instructions should remain usable in the offline app shell');
 assert.match(await (await installedShell.match(`${swScope}assets/dog-language-hero.webp`)).text(), /precache:\/assets\/dog-language-hero\.webp/, 'The first offline home view should retain its hero illustration');
 await runServiceWorkerLifecycle('activate');
 assert.equal(clientsClaimed, true, 'Activation should take control after the browser-safe update lifecycle');

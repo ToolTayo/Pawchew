@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pages = ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html', 'saved.html', 'scenarios.html', 'cheat-sheet.html', 'sources-safety.html'];
 const requiredFiles = [
-  ...pages, 'styles.css', 'signals.js', 'app.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'service-worker.js', 'manifest.webmanifest', 'favicon.svg', 'robots.txt', 'sitemap.xml',
+  ...pages, 'styles.css', 'signals.js', 'app.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'install.js', 'service-worker.js', 'manifest.webmanifest', 'favicon.svg', 'robots.txt', 'sitemap.xml',
   'assets/wagsignals-192.png', 'assets/wagsignals-512.png', 'assets/wagsignals-maskable-512.png',
   'assets/dog-language-hero.webp', 'assets/guide-relaxed.webp', 'assets/guide-playful.webp',
   'assets/guide-interested.webp', 'assets/guide-uncertain.webp', 'assets/guide-stressed.webp',
@@ -26,11 +26,12 @@ const requiredFiles = [
 for (const relativePath of requiredFiles) await fs.access(path.join(projectRoot, relativePath));
 
 const htmlByPage = new Map();
-const cacheVersions = { styles: new Set(), app: new Set(), signals: new Set(), trainingData: new Set(), guidedReader: new Set(), training: new Set(), challengeData: new Set(), challenges: new Set(), pwaRegister: new Set() };
+const cacheVersions = { styles: new Set(), app: new Set(), signals: new Set(), trainingData: new Set(), guidedReader: new Set(), training: new Set(), challengeData: new Set(), challenges: new Set(), pwaRegister: new Set(), install: new Set() };
 for (const page of pages) htmlByPage.set(page, await fs.readFile(path.join(projectRoot, page), 'utf8'));
 const allHtml = [...htmlByPage.values()].join('\n');
 if (/\bPawchew\b/i.test(allHtml)) throw new Error('Public page markup must preserve WagSignals branding, not the local project name.');
 for (const [page, html] of htmlByPage) {
+  if (!/<meta name="viewport" content="[^"]*viewport-fit=cover"/.test(html)) throw new Error(`${page} must support safe-area insets on installed mobile displays.`);
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   if (new Set(ids).size !== ids.length) throw new Error(`${page} has duplicate element IDs.`);
   if ((html.match(/<h1\b/g) || []).length !== 1) throw new Error(`${page} must have one main heading.`);
@@ -43,11 +44,14 @@ for (const [page, html] of htmlByPage) {
   const stylesVersion = html.match(/styles\.css\?v=([\w-]+)/)?.[1];
   const appVersion = html.match(/app\.js\?v=([\w-]+)/)?.[1];
   const pwaRegisterVersion = html.match(/pwa-register\.js\?v=([\w-]+)/)?.[1];
-  if (!stylesVersion || !appVersion || !pwaRegisterVersion) throw new Error(`${page} is missing cache-busted shared assets or PWA registration.`);
+  const installVersion = html.match(/install\.js\?v=([\w-]+)/)?.[1];
+  if (!stylesVersion || !appVersion || !pwaRegisterVersion || !installVersion) throw new Error(`${page} is missing cache-busted shared assets or install support.`);
   if (!html.includes('rel="manifest"') || !html.includes('apple-mobile-web-app-capable')) throw new Error(`${page} is missing install metadata.`);
+  if (!html.includes('data-install-action') || !html.includes('Install WagSignals')) throw new Error(`${page} must keep the install action visible without relying on beforeinstallprompt.`);
   cacheVersions.styles.add(stylesVersion);
   cacheVersions.app.add(appVersion);
   cacheVersions.pwaRegister.add(pwaRegisterVersion);
+  cacheVersions.install.add(installVersion);
   if (page === 'signals.html') {
     const signalsVersion = html.match(/signals\.js\?v=([\w-]+)/)?.[1];
     if (!signalsVersion) throw new Error(`${page} is missing cache-busted signal interactions.`);
@@ -101,12 +105,16 @@ const serviceWorkerSource = await fs.readFile(path.join(projectRoot, 'service-wo
 if (/skipWaiting\s*\(/.test(serviceWorkerSource) || !serviceWorkerSource.includes("name.startsWith('wagsignals-shell-')") || !serviceWorkerSource.includes('wagsignals-images-v1')) {
   throw new Error('Service-worker updates must wait safely and clean up only WagSignals-owned shell caches.');
 }
+if (!serviceWorkerSource.includes("'./install.js'")) throw new Error('The install help controller must remain available in the offline app shell.');
 const libraryHtml = htmlByPage.get('signals.html');
 for (const id of ['signal-dialog', 'signal-close', 'signal-prev', 'signal-next', 'signal-page', 'signal-clear']) {
   if (!libraryHtml.includes(`id="${id}"`)) throw new Error(`Missing library control: ${id}`);
 }
 if (!libraryHtml.includes('aria-labelledby="read-title"')) throw new Error('Clue dialog needs an accessible title.');
 const appSource = await fs.readFile(path.join(projectRoot, 'app.js'), 'utf8');
+for (const required of ["mobile-tabbar", "Primary navigation", "./index.html", "./signals.html", "./training.html", "./challenges.html", "./cheat-sheet.html", "More to explore"]) {
+  if (!appSource.includes(required)) throw new Error(`Responsive navigation is missing its ${required} destination or label.`);
+}
 const signalsSource = await fs.readFile(path.join(projectRoot, 'signals.js'), 'utf8');
 const trainingDataSource = await fs.readFile(path.join(projectRoot, 'training-data.js'), 'utf8');
 const guidedReaderSource = await fs.readFile(path.join(projectRoot, 'guided-reader.js'), 'utf8');

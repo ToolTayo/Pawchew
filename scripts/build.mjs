@@ -19,7 +19,7 @@ const indexable = process.env.PUBLIC_SITE_INDEXABLE === 'true';
 if (indexable && !siteOrigin) throw new Error('PUBLIC_SITE_INDEXABLE=true requires PUBLIC_SITE_ORIGIN.');
 const routeFor = (page) => page === 'index.html' ? '/' : `/${page}`;
 const assetVersions = new Map();
-for (const file of ['styles.css', 'app.js', 'signals.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'manifest.webmanifest', 'assets/wagsignals-192.png', 'assets/wagsignals-512.png', 'assets/wagsignals-maskable-512.png']) {
+for (const file of ['styles.css', 'app.js', 'signals.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'install.js', 'manifest.webmanifest', 'assets/wagsignals-192.png', 'assets/wagsignals-512.png', 'assets/wagsignals-maskable-512.png']) {
   assetVersions.set(file, createHash('sha256').update(await fs.readFile(path.join(projectRoot, file))).digest('hex').slice(0, 12));
 }
 const buildHash = createHash('sha256');
@@ -29,7 +29,7 @@ const sourceAssets = (await fs.readdir(path.join(projectRoot, 'assets')))
   .map((file) => `assets/${file}`);
 const buildInputs = [
   ...pages, 'styles.css', 'app.js', 'signals.js', 'training-data.js', 'guided-reader.js', 'training.js',
-  'challenge-data.js', 'challenges.js', 'pwa-register.js', 'manifest.webmanifest', 'service-worker.js',
+  'challenge-data.js', 'challenges.js', 'pwa-register.js', 'install.js', 'manifest.webmanifest', 'service-worker.js',
   'favicon.svg', ...sourceAssets
 ];
 for (const file of buildInputs) {
@@ -40,7 +40,7 @@ for (const file of buildInputs) {
 const buildId = buildHash.digest('hex').slice(0, 16);
 const decorateHtml = (html, page) => {
   // Changed assets get new production URLs, even when a manual version bump is missed.
-  html = html.replace(/(styles\.css|app\.js|signals\.js|training-data\.js|guided-reader\.js|training\.js|challenge-data\.js|challenges\.js|pwa-register\.js)\?v=[\w-]+/g, (_, file) => `${file}?v=${assetVersions.get(file)}`);
+  html = html.replace(/(styles\.css|app\.js|signals\.js|training-data\.js|guided-reader\.js|training\.js|challenge-data\.js|challenges\.js|pwa-register\.js|install\.js)\?v=[\w-]+/g, (_, file) => `${file}?v=${assetVersions.get(file)}`);
   html = html.replace(/manifest\.webmanifest\?v=[\w-]+/g, `manifest.webmanifest?v=${assetVersions.get('manifest.webmanifest')}`);
   html = html.replace(/assets\/(wagsignals-(?:192|512|maskable-512)\.png)\?v=[\w-]+/g, (_, file) => `assets/${file}?v=${assetVersions.get(`assets/${file}`)}`);
   const title = html.match(/<title>(.*?)<\/title>/)?.[1] ?? 'WagSignals';
@@ -74,7 +74,7 @@ for (const file of pages) {
   const html = await fs.readFile(path.join(projectRoot, file), 'utf8');
   await fs.writeFile(path.join(outputRoot, file), decorateHtml(html, file));
 }
-for (const file of ['styles.css', 'signals.js', 'app.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'manifest.webmanifest']) {
+for (const file of ['styles.css', 'signals.js', 'app.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'install.js', 'manifest.webmanifest']) {
   await fs.copyFile(path.join(projectRoot, file), path.join(outputRoot, file));
 }
 const serviceWorker = (await fs.readFile(path.join(projectRoot, 'service-worker.js'), 'utf8')).replace('__BUILD_ID__', buildId);

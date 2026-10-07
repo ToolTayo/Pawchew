@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="theme-color" content="#142d3d" />
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" /><meta name="theme-color" content="#142d3d" />
     <meta name="description" content="Your saved WagSignals dog body-language clues." />
     <title>Saved clues — WagSignals</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
@@ -9,8 +9,9 @@
     <link rel="apple-touch-icon" sizes="192x192" href="./assets/wagsignals-192.png?v=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="WagSignals" />
-    <link rel="stylesheet" href="./styles.css?v=10" />
+    <link rel="stylesheet" href="./styles.css?v=13" />
     <script src="./pwa-register.js?v=1" defer></script>
+    <script src="./install.js?v=1" defer></script>
   </head>
   <body data-page="saved">
     <a class="skip-link" href="#main">Skip to main content</a>
@@ -30,12 +31,17 @@
     </div>
   </details>
   <a class="nav-cta" href="./body-map.html">Body map &amp; safety</a>
+  <div class="desktop-install-entry" data-install-entry>
+    <button class="install-action desktop-install-action" data-install-action type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 14v5h14v-5"/></svg><span>Install WagSignals</span></button>
+    <span class="install-status desktop-install-status" data-install-status role="status" aria-live="polite" hidden><span aria-hidden="true">✓</span> Installed</span>
+    <span class="sr-only" data-install-feedback role="status" aria-live="polite" hidden></span>
+  </div>
 </nav></header>
     <main id="main">
       <section class="shell page-hero" aria-labelledby="saved-title"><div class="page-hero-inner"><div><span class="eyebrow">Your personal shelf</span><h1 id="saved-title">Your saved clues.</h1><p>Keep the Daily Wag lessons you want close at hand for the next walk, greeting, or quiet check-in.</p></div><div class="page-hero-aside"><span data-progress-summary>🐾 0 pawprints · 🔥 0 days · 0 clues · decode best 0/20</span></div></div></section>
       <section class="shell page-content"><div class="section-intro"><div><span class="section-kicker">Revisit anytime</span><h2>Small reminders, ready when you need them.</h2></div><div class="habit-actions"><a class="button" href="./daily.html">Open Daily Wag</a><button class="button secondary" id="saved-clear" type="button">Clear all</button><button class="button secondary" id="reset-progress" type="button">Reset progress</button></div></div><p class="home-helper">Progress is stored only on this device. Resetting removes saved clues, Daily Wag streaks, quiz progress, and pawprints.</p><div id="saved-list" class="saved-grid" aria-live="polite"></div></section>
     </main>
     <footer><div class="shell footer-inner"><span class="footer-mark">WagSignals ✦</span><p>Educational guidance, not a diagnosis. Every dog is an individual; breed, health, age, history, and context all matter.</p></div></footer>
-    <script src="./app.js?v=20" defer></script>
+    <script src="./app.js?v=21" defer></script>
   </body>
 </html>

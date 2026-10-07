@@ -23,6 +23,7 @@ for (const page of pages) {
   assert.match(html, /<meta name="robots" content="noindex, nofollow"\s*\/>/, `${page} must remain private by default`);
   assert.match(html, /rel="manifest" href="\.\/manifest\.webmanifest\?v=[a-f0-9]+"/, `${page} must point to the install manifest`);
   assert.match(html, /pwa-register\.js\?v=[a-f0-9]+/, `${page} must register offline support`);
+  assert.match(html, /install\.js\?v=[a-f0-9]+/, `${page} must load the persistent install experience`);
   assert.equal(html, await fs.readFile(path.join(rootPath, page), 'utf8'), `${page} must match the current build, not a stale server copy`);
   for (const [, ref] of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
     // Check only local resources; external destinations (including mail/tel links) are never fetched.
@@ -82,7 +83,7 @@ const sourceWorker = await fs.readFile(path.join(sourceRoot, 'service-worker.js'
 assert.equal(workerSource, sourceWorker.replace('__BUILD_ID__', workerBuildId), 'The production worker should be exactly the source worker with the deterministic build ID injected.');
 const registrationSource = await fs.readFile(path.join(rootPath, 'pwa-register.js'), 'utf8');
 assert.equal(registrationSource, await fs.readFile(path.join(sourceRoot, 'pwa-register.js'), 'utf8'), 'PWA registration output must match source.');
-for (const file of ['manifest.webmanifest', 'favicon.svg', 'assets/wagsignals-192.png', 'assets/wagsignals-512.png', 'assets/wagsignals-maskable-512.png']) {
+for (const file of ['manifest.webmanifest', 'install.js', 'favicon.svg', 'assets/wagsignals-192.png', 'assets/wagsignals-512.png', 'assets/wagsignals-maskable-512.png']) {
   assert.deepEqual(await fs.readFile(path.join(rootPath, file)), await fs.readFile(path.join(sourceRoot, file)), `${file} must be copied from source without modification.`);
 }
 for (const guide of ['biting-nipping', 'stones-dirt', 'destructive-chewing', 'resource-guarding', 'barking-lunging', 'chasing-traffic', 'separation-distress', 'door-dashing']) {
@@ -90,6 +91,6 @@ for (const guide of ['biting-nipping', 'stones-dirt', 'destructive-chewing', 're
   assert.equal(guideResponse.status, 200, `Direct challenge guide route: ${guide}`);
   assert.match(await guideResponse.text(), /challenge-data\.js\?v=/, `Challenge data must load for ${guide}`);
 }
-const files = [...pages, 'app.js', 'signals.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'service-worker.js', 'manifest.webmanifest', 'styles.css', 'favicon.svg', 'robots.txt', 'sitemap.xml', ...(await fs.readdir(new URL('assets/', root))).map((file) => `assets/${file}`)];
+const files = [...pages, 'app.js', 'signals.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'install.js', 'service-worker.js', 'manifest.webmanifest', 'styles.css', 'favicon.svg', 'robots.txt', 'sitemap.xml', ...(await fs.readdir(new URL('assets/', root))).map((file) => `assets/${file}`)];
 const bytes = (await Promise.all(files.map(async (file) => (await fs.stat(new URL(file, root))).size))).reduce((sum, size) => sum + size, 0);
 console.log(`Passed: ${pages.length} production pages, ${resources.size} local URLs/assets, root homepage. Build size: ${bytes} bytes.`);

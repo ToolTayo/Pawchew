@@ -620,31 +620,89 @@ function initNavigation() {
   const header = document.querySelector('.topbar');
   const nav = header?.querySelector('.nav');
   if (!nav) return;
-  nav.id = 'main-navigation';
-  const toggle = document.createElement('button');
-  toggle.type = 'button'; toggle.className = 'nav-toggle'; toggle.textContent = 'Menu';
-  toggle.setAttribute('aria-controls', nav.id); toggle.setAttribute('aria-expanded', 'false');
-  nav.before(toggle);
-  header.classList.add('nav-ready');
-  const more = nav.querySelector('.nav-more');
-  const close = (restoreFocus = false) => {
-    toggle.setAttribute('aria-expanded', 'false');
-    header.classList.remove('nav-open');
-    if (more) more.open = false;
-    if (restoreFocus) toggle.focus();
+  const mobileNav = document.createElement('nav');
+  mobileNav.className = 'mobile-tabbar';
+  mobileNav.id = 'mobile-navigation';
+  mobileNav.setAttribute('aria-label', 'Primary navigation');
+
+  const icons = {
+    home: '<path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/>',
+    learn: '<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="2.5"/>',
+    training: '<circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.2 2.2 4.8-5"/>',
+    help: '<circle cx="12" cy="12" r="9"/><path d="M9.6 9a2.5 2.5 0 1 1 4.3 1.7c-1.1 1.1-1.9 1.5-1.9 3"/><path d="M12 17.3h.01"/>',
+    more: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>'
   };
-  toggle.addEventListener('click', () => {
-    const open = toggle.getAttribute('aria-expanded') !== 'true';
-    toggle.setAttribute('aria-expanded', String(open)); header.classList.toggle('nav-open', open);
-    if (more) more.open = open;
+  const primary = [
+    { label: 'Home', href: './index.html', icon: 'home' },
+    { label: 'Learn', href: './signals.html', icon: 'learn' },
+    { label: 'Train', href: './training.html', icon: 'training' },
+    { label: 'Help', href: './challenges.html', icon: 'help' }
+  ];
+  const currentPage = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  const primaryPages = new Set(primary.map((item) => item.href.slice(2)));
+  const iconMarkup = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${icons[name]}</svg>`;
+
+  primary.forEach((item) => {
+    const link = document.createElement('a');
+    link.className = 'mobile-tab';
+    link.href = item.href;
+    link.innerHTML = `${iconMarkup(item.icon)}<span>${item.label}</span>`;
+    if ((currentPage === '' ? 'index.html' : currentPage) === item.href.slice(2)) link.setAttribute('aria-current', 'page');
+    mobileNav.append(link);
   });
-  document.addEventListener('click', (event) => { if (!header.contains(event.target)) close(); });
-  header.addEventListener('keydown', (event) => {
+
+  const more = document.createElement('details');
+  more.className = 'mobile-more';
+  const summary = document.createElement('summary');
+  summary.innerHTML = `${iconMarkup('more')}<span>More</span>`;
+  const menu = document.createElement('div');
+  menu.className = 'mobile-more-menu';
+  const menuTitle = document.createElement('p');
+  menuTitle.className = 'mobile-more-title';
+  menuTitle.textContent = 'More to explore';
+  const menuLinks = document.createElement('div');
+  menuLinks.className = 'mobile-more-links';
+  const primaryHrefs = new Set(primary.map((item) => item.href));
+  nav.querySelectorAll('a[href]').forEach((source) => {
+    const href = source.getAttribute('href');
+    if (primaryHrefs.has(href)) return;
+    const link = source.cloneNode(true);
+    link.className = 'mobile-more-link';
+    const route = href.split('/').pop().toLowerCase();
+    if (route === currentPage) link.setAttribute('aria-current', 'page');
+    menuLinks.append(link);
+  });
+  if (!menuLinks.querySelector('a[href="./cheat-sheet.html"]')) {
+    const printable = document.createElement('a');
+    printable.className = 'mobile-more-link';
+    printable.href = './cheat-sheet.html';
+    printable.textContent = 'Print cheat sheet';
+    if (currentPage === 'cheat-sheet.html') printable.setAttribute('aria-current', 'page');
+    menuLinks.append(printable);
+  }
+  menu.append(menuTitle);
+  window.WagSignalsInstall?.addMobileEntry(menu);
+  menu.append(menuLinks);
+  more.append(summary, menu);
+  if (!primaryPages.has(currentPage === '' ? 'index.html' : currentPage)) more.classList.add('is-current');
+  mobileNav.append(more);
+  header.after(mobileNav);
+  header.classList.add('nav-ready');
+  document.body.classList.add('mobile-navigation-ready');
+  window.WagSignalsInstall?.init();
+
+  const desktopMore = nav.querySelector('.nav-more');
+  document.addEventListener('click', (event) => {
+    if (!header.contains(event.target) && desktopMore) desktopMore.open = false;
+    if (!mobileNav.contains(event.target) && !document.querySelector('.install-dialog')?.contains(event.target)) more.open = false;
+  });
+  const closeOnEscape = (event) => {
     if (event.key !== 'Escape') return;
-    if (header.classList.contains('nav-open')) close(true);
-    else if (more?.open) { more.open = false; more.querySelector('summary').focus(); }
-  });
-  window.matchMedia('(max-width: 1020px)').addEventListener?.('change', () => close());
+    if (more.open) { more.open = false; summary.focus(); }
+    if (desktopMore?.open) { desktopMore.open = false; desktopMore.querySelector('summary')?.focus(); }
+  };
+  header.addEventListener('keydown', closeOnEscape);
+  mobileNav.addEventListener('keydown', closeOnEscape);
 }
 
 function initGuideJump() {
