@@ -103,6 +103,31 @@ function uniqueStrings(value) {
   return Array.isArray(value) ? [...new Set(value.filter((item) => typeof item === 'string' && item.trim()))] : [];
 }
 
+function normalizeSavedSignals(value) {
+  if (!Array.isArray(value)) return [];
+  const seen = new Set();
+  const saved = [];
+  for (const item of value) {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) continue;
+    const id = typeof item.id === 'string' ? item.id.trim() : '';
+    const title = typeof item.title === 'string' ? item.title.trim() : '';
+    if (!/^[a-z0-9-]{1,64}$/.test(id) || !title || seen.has(id)) continue;
+    seen.add(id);
+    const image = typeof item.image === 'string' && /^\.\/assets\/[a-z0-9-]+\.webp$/.test(item.image)
+      ? item.image
+      : './assets/guide-relaxed.webp';
+    saved.push({
+      id,
+      title: title.slice(0, 140),
+      summary: typeof item.summary === 'string' ? item.summary.slice(0, 360) : '',
+      image,
+      alt: typeof item.alt === 'string' ? item.alt.slice(0, 240) : ''
+    });
+    if (saved.length === 40) break;
+  }
+  return saved;
+}
+
 function normalizeProgress(value) {
   const source = value && typeof value === 'object' ? value : {};
   const dailyDates = uniqueStrings(source.dailyDates).filter(isDateKey).sort();
@@ -117,6 +142,7 @@ function normalizeProgress(value) {
     dailyDates,
     quizBest,
     favorites: uniqueStrings(source.favorites),
+    savedSignals: normalizeSavedSignals(source.savedSignals),
     completedChallenges,
     learnedClues,
     pawprints,
@@ -134,6 +160,27 @@ function saveProgress(progress) {
   try { localStorage.setItem(storageKey, JSON.stringify(normalizeProgress(progress))); }
   catch { /* Private browsing can deny storage; the current page still remains usable. */ }
 }
+
+function toggleSavedSignal(signal) {
+  if (!signal || typeof signal !== 'object' || typeof signal.id !== 'string' || !/^[a-z0-9-]{1,64}$/.test(signal.id) || typeof signal.title !== 'string' || !signal.title.trim()) return false;
+  const next = readProgress();
+  const wasSaved = next.savedSignals.some((item) => item.id === signal.id);
+  next.savedSignals = wasSaved
+    ? next.savedSignals.filter((item) => item.id !== signal.id)
+    : normalizeSavedSignals([...next.savedSignals, signal]);
+  saveProgress(next);
+  renderProgress();
+  if (typeof Event === 'function' && typeof document.dispatchEvent === 'function') {
+    document.dispatchEvent(new Event('wagsignals:progress-updated'));
+  }
+  return !wasSaved;
+}
+
+window.WagSignalsProgress = Object.freeze({
+  getSavedSignals: () => readProgress().savedSignals,
+  isSignalSaved: (id) => readProgress().savedSignals.some((signal) => signal.id === id),
+  toggleSignal: toggleSavedSignal
+});
 
 function dayDifference(first, second) {
   return Math.round((new Date(`${second}T12:00:00`) - new Date(`${first}T12:00:00`)) / 86400000);
@@ -304,27 +351,88 @@ function renderQuiz() {
 function renderSaved() {
   const target = document.querySelector('#saved-list');
   if (!target) return;
+  const makeCard = ({ image, alt, kicker, title, body, href, removeKind, removeId }) => {
+    const card = document.createElement('article');
+    card.className = 'saved-card';
+    const illustration = document.createElement('img');
+    illustration.src = image;
+    illustration.alt = alt;
+    illustration.width = 1024;
+    illustration.height = 1024;
+    illustration.loading = 'lazy';
+    illustration.decoding = 'async';
+    const content = document.createElement('div');
+    content.className = 'saved-card-body';
+    const label = document.createElement('span');
+    label.className = 'challenge-tag';
+    label.textContent = kicker;
+    const heading = document.createElement('h2');
+    heading.textContent = title;
+    const description = document.createElement('p');
+    description.textContent = body;
+    content.append(label, heading, description);
+    if (href) {
+      const reopen = document.createElement('a');
+      reopen.className = 'button';
+      reopen.href = href;
+      reopen.textContent = 'Reopen body-language clue';
+      reopen.setAttribute('aria-label', `Reopen ${title} body-language clue`);
+      content.append(reopen);
+    }
+    const remove = document.createElement('button');
+    remove.className = 'button secondary';
+    remove.type = 'button';
+    remove.dataset.removeSaved = '';
+    remove.dataset.removeKind = removeKind;
+    remove.dataset.removeId = removeId;
+    remove.setAttribute('aria-label', `Remove ${title} from saved clues`);
+    remove.textContent = 'Remove saved clue';
+    content.append(remove);
+    card.append(illustration, content);
+    return card;
+  };
   const render = () => {
     document.dispatchEvent(new Event('wagsignals:stop-audio'));
     const current = readProgress();
     const lessons = dailyLessons.filter((lesson) => current.favorites.includes(lesson.id));
-    document.querySelector('#saved-clear').disabled = !lessons.length;
-    if (!lessons.length) {
-      target.innerHTML = '<div class="empty-state"><h2>Your saved shelf is empty.</h2><p>Save a Daily Wag clue when you find one you want to revisit.</p><a class="button" href="./daily.html">Open Daily Wag</a></div>';
+    const signals = current.savedSignals;
+    document.querySelector('#saved-clear').disabled = !lessons.length && !signals.length;
+    if (!lessons.length && !signals.length) {
+      target.innerHTML = '<div class="empty-state"><h2>Your saved shelf is empty.</h2><p>Save a body-language clue or a Daily Wag reminder to revisit it here.</p><a class="button" href="./signals.html">Explore body language</a></div>';
       return;
     }
-    target.innerHTML = lessons.map((lesson) => `<article class="saved-card"><img src="${lesson.image}" alt="${lesson.alt}" width="1024" height="1024" loading="lazy" decoding="async" /><div class="saved-card-body"><span class="challenge-tag">${lesson.kicker}</span><h2>${lesson.title}</h2><p>${lesson.body}</p><button class="button secondary" type="button" data-remove="${lesson.id}">Remove saved clue</button></div></article>`).join('');
-    target.querySelectorAll('[data-remove]').forEach((button) => button.addEventListener('click', () => {
-      const next = readProgress(); next.favorites = next.favorites.filter((id) => id !== button.dataset.remove); saveProgress(next); render();
-      const focusTarget = target.querySelector('button, a');
-      focusTarget?.focus();
-    }));
+    const cards = [
+      ...lessons.map((lesson) => makeCard({ image: lesson.image, alt: lesson.alt, kicker: lesson.kicker, title: lesson.title, body: lesson.body, removeKind: 'daily', removeId: lesson.id })),
+      ...signals.map((signal) => makeCard({
+        image: signal.image,
+        alt: signal.alt || `Illustration for ${signal.title}`,
+        kicker: 'Body language',
+        title: signal.title,
+        body: signal.summary,
+        href: `./signals.html?signal=${encodeURIComponent(signal.id)}`,
+        removeKind: 'signal',
+        removeId: signal.id
+      }))
+    ];
+    target.replaceChildren(...cards);
     document.dispatchEvent(new Event('wagsignals:content-updated'));
   };
   render();
+  target.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-remove-saved]');
+    if (!button) return;
+    const cardIndex = [...target.querySelectorAll('.saved-card')].indexOf(button.closest('.saved-card'));
+    const next = readProgress();
+    if (button.dataset.removeKind === 'signal') next.savedSignals = next.savedSignals.filter((item) => item.id !== button.dataset.removeId);
+    else next.favorites = next.favorites.filter((id) => id !== button.dataset.removeId);
+    saveProgress(next);
+    render();
+    const cards = target.querySelectorAll('.saved-card');
+    (cards[Math.min(cardIndex, cards.length - 1)]?.querySelector('[data-remove-saved], a') || target.querySelector('.empty-state a'))?.focus();
+  });
   document.querySelector('#saved-clear')?.addEventListener('click', () => {
     if (!window.confirm('Remove all saved clues from this device? Your pawprints and quiz progress will stay.')) return;
-    const next = readProgress(); next.favorites = []; saveProgress(next); render();
+    const next = readProgress(); next.favorites = []; next.savedSignals = []; saveProgress(next); render();
     target.querySelector('a')?.focus();
   });
   document.querySelector('#reset-progress')?.addEventListener('click', () => {

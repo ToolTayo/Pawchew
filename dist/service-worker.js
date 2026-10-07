@@ -1,4 +1,4 @@
-const BUILD_ID = 'd9ea2bd882dba38d';
+const BUILD_ID = '41862b0357948e4b';
 const SHELL_CACHE = `wagsignals-shell-${BUILD_ID}`;
 const IMAGE_CACHE = 'wagsignals-images-v1';
 const SHELL_URLS = [

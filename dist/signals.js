@@ -69,6 +69,7 @@ const summary = document.getElementById('read-summary');
 const readImage = document.getElementById('read-image');
 const list = document.getElementById('read-list');
 const related = document.getElementById('read-related');
+const saveSignalButton = document.getElementById('signal-save');
 let activeCategory = 'All';
 let activeKey = 'soft-eyes';
 const dialog = document.getElementById('signal-dialog');
@@ -117,12 +118,23 @@ function selectSignal(key) {
   readImage.alt = signal.alt;
   list.innerHTML = [['What you might see', signal.see], ['Check with it', signal.check], ['What it may mean', signal.meaning], ['Don’t assume', signal.avoid], ['Kind response', signal.response], ['Get support if', signal.help]].map(([label, copy]) => `<li><strong>${label}</strong><span>${copy}</span></li>`).join('');
   related.innerHTML = signal.related ? `<a class="text-link" href="${signal.related[1]}">${signal.related[0]} →</a>` : '';
+  const saved = window.WagSignalsProgress?.isSignalSaved(key) || false;
+  saveSignalButton.textContent = saved ? 'Saved ✓' : 'Save clue';
+  saveSignalButton.setAttribute('aria-pressed', String(saved));
   document.dispatchEvent(new Event('wagsignals:stop-audio'));
   const url = new URL(window.location.href); url.searchParams.set('signal', activeKey);
   history.replaceState(null, '', url);
   if (!dialog.open) dialog.showModal();
   dialog.scrollTop = 0;
 }
+
+saveSignalButton.addEventListener('click', () => {
+  const signal = signalContent[activeKey];
+  if (!signal || !window.WagSignalsProgress?.toggleSignal) return;
+  const saved = window.WagSignalsProgress.toggleSignal({ id: activeKey, title: signal.title, summary: signal.summary, image: signal.image, alt: signal.alt });
+  saveSignalButton.textContent = saved ? 'Saved ✓' : 'Save clue';
+  saveSignalButton.setAttribute('aria-pressed', String(saved));
+});
 
 document.getElementById('signal-close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', (event) => { if (event.target === dialog) { const box = dialog.getBoundingClientRect(); if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) dialog.close(); } });

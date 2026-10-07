@@ -5,6 +5,8 @@ import vm from 'node:vm';
 // Run pure helpers without a browser, installed packages, or a user's saved data.
 const source = await fs.readFile(new URL('../app.js', import.meta.url), 'utf8');
 const signalSource = await fs.readFile(new URL('../signals.js', import.meta.url), 'utf8');
+const signalsPageSource = await fs.readFile(new URL('../signals.html', import.meta.url), 'utf8');
+const savedPageSource = await fs.readFile(new URL('../saved.html', import.meta.url), 'utf8');
 const guidedReaderSource = await fs.readFile(new URL('../guided-reader.js', import.meta.url), 'utf8');
 const trainingSource = await fs.readFile(new URL('../training.js', import.meta.url), 'utf8');
 const trainingDataSource = await fs.readFile(new URL('../training-data.js', import.meta.url), 'utf8');
@@ -17,7 +19,8 @@ const data = new Map();
 const context = vm.createContext({
   console,
   URL,
-  document: { addEventListener() {} },
+  window: {},
+  document: { addEventListener() {}, querySelectorAll: () => [] },
   localStorage: { getItem: (key) => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) }
 });
 vm.runInContext(source, context);
@@ -109,10 +112,24 @@ assert.equal(run('normalizeProgress({ quizBest: 999, pawprints: -5 }).quizBest')
 assert.equal(run('normalizeProgress({ quizBest: 999, pawprints: -5 }).pawprints'), 0);
 assert.equal(run('normalizeProgress(null).favorites.length'), 0);
 assert.equal(run("normalizeProgress({favorites: ['soft-eyes','soft-eyes',null]}).favorites.length"), 1);
+assert.equal(run("normalizeProgress({savedSignals: [{id: 'soft-eyes', title: 'Soft eyes'}, {id: 'soft-eyes', title: 'Duplicate'}, {id: '../remote', title: 'Unsafe'}, null]}).savedSignals.length"), 1, 'Saved body-language clues should be unique and reject malformed IDs');
+assert.equal(run("normalizeProgress({savedSignals: [{id: 'soft-eyes', title: 'Soft eyes', image: 'https://example.com/dog.webp'}]}).savedSignals[0].image"), './assets/guide-relaxed.webp', 'Saved clue illustrations must stay on local, approved assets');
+assert.match(signalsPageSource, /id="signal-save"/, 'Body-language clue details should provide a save control');
+assert.match(signalSource, /WagSignalsProgress\.toggleSignal/, 'Body-language save should use shared local progress persistence');
+assert.match(source, /Reopen \$\{title\} body-language clue/, 'Saved clue links should have distinct accessible names');
+assert.match(savedPageSource, /Your saved clues/, 'The existing Saved page should be the destination for bookmarks');
 assert.equal(run("(() => { const p = normalizeProgress({}); addPawprint(p, p.learnedClues, 'soft-eyes'); addPawprint(p, p.learnedClues, 'soft-eyes'); return p.pawprints; })()"), 1);
 run('saveProgress(normalizeProgress({quizBest: 13, favorites: ["soft-eyes"]}))');
 assert.equal(run('readProgress().quizBest'), 13);
 assert.equal(run('readProgress().favorites[0]'), 'soft-eyes');
+const savedSignal = { id: 'soft-eyes', title: 'Relaxed / happy: soft eyes', summary: 'A soft gaze with easy blinking.', image: './assets/guide-relaxed.webp', alt: 'A relaxed dog with soft eyes' };
+assert.equal(run("window.WagSignalsProgress.isSignalSaved('soft-eyes')"), false);
+assert.equal(run(`window.WagSignalsProgress.toggleSignal(${JSON.stringify(savedSignal)})`), true, 'A body-language clue can be saved to the existing local shelf');
+assert.equal(run("window.WagSignalsProgress.isSignalSaved('soft-eyes')"), true);
+assert.equal(run('readProgress().favorites[0]'), 'soft-eyes', 'Adding a signal bookmark must preserve existing Daily Wag favorites');
+assert.equal(run('readProgress().savedSignals[0].title'), savedSignal.title);
+assert.equal(run(`window.WagSignalsProgress.toggleSignal(${JSON.stringify(savedSignal)})`), false, 'Saving again toggles the clue off without duplicating it');
+assert.equal(run('readProgress().savedSignals.length'), 0);
 data.set('wagsignals.progress.v1', '{broken');
 assert.equal(run('readProgress().pawprints'), 0);
 assert.equal(run("voiceTextFromSelectors({ querySelectorAll: () => [{textContent: 'Look', closest: () => null}, {textContent: 'Soft eyes', closest: () => null}, {textContent: 'Try', closest: () => null}, {textContent: 'Give space', closest: () => null}] }, ['strong', 'span'])"), 'Look. Soft eyes. Try. Give space');
