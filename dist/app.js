@@ -61,8 +61,14 @@ function searchTerms(value) {
 function scenarioSearchUrl(currentHref, query) {
   const url = new URL(currentHref);
   const value = String(query ?? '').slice(0, 80);
-  if (value.trim()) url.searchParams.set('search', value);
-  else url.searchParams.delete('search');
+  url.searchParams.delete('search');
+  const fragmentParts = url.hash.slice(1).split('&').filter(Boolean);
+  const preservedFragmentParts = fragmentParts.filter((part) => {
+    const key = part.split('=', 1)[0];
+    return new URLSearchParams(`${key}=`).keys().next().value !== 'search';
+  });
+  if (value.trim()) preservedFragmentParts.push(`search=${encodeURIComponent(value)}`);
+  url.hash = preservedFragmentParts.length ? `#${preservedFragmentParts.join('&')}` : '';
   return url;
 }
 function findScenarioMatches(query) {
@@ -447,8 +453,13 @@ function renderScenarios() {
   const search = document.querySelector('#scenario-search');
   const count = document.querySelector('#scenario-count');
   if (!target || !search || !count) return;
-  const requestedSearch = new URLSearchParams(window.location.search).get('search');
+  const initialUrl = new URL(window.location.href);
+  const requestedSearch = new URLSearchParams(initialUrl.hash.slice(1)).get('search')
+    ?? initialUrl.searchParams.get('search');
   if (requestedSearch && !search.value) search.value = requestedSearch.slice(0, 80);
+  if (initialUrl.searchParams.has('search')) {
+    history.replaceState(history.state, '', scenarioSearchUrl(window.location.href, search.value));
+  }
   const render = () => {
     document.dispatchEvent(new Event('wagsignals:stop-audio'));
     const query = search.value.trim().toLowerCase();
@@ -800,6 +811,18 @@ function initNavigation() {
   window.WagSignalsInstall?.init();
 
   const desktopMore = nav.querySelector('.nav-more');
+  if (desktopMore) {
+    const versionMarker = document.createElement('span');
+    versionMarker.className = 'beta-version-marker';
+    versionMarker.textContent = 'Beta 3';
+    versionMarker.setAttribute('aria-label', 'WagSignals Beta 3');
+    desktopMore.querySelector('.nav-more-menu')?.append(versionMarker);
+  }
+  const mobileVersionMarker = document.createElement('span');
+  mobileVersionMarker.className = 'beta-version-marker';
+  mobileVersionMarker.textContent = 'Beta 3';
+  mobileVersionMarker.setAttribute('aria-label', 'WagSignals Beta 3');
+  menu.append(mobileVersionMarker);
   document.addEventListener('click', (event) => {
     if (!header.contains(event.target) && desktopMore) desktopMore.open = false;
     if (!mobileNav.contains(event.target) && !document.querySelector('.install-dialog')?.contains(event.target)) more.open = false;

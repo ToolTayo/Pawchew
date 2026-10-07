@@ -51,6 +51,7 @@ h1, h2, h3, p { margin-top: 0; }
 .nav-more-menu { position: absolute; top: calc(100% + 8px); right: 0; z-index: 10; display: grid; min-width: 178px; gap: 3px; padding: 8px; border: 1px solid var(--line); border-radius: 15px; background: var(--paper-2); box-shadow: 0 16px 34px rgba(20,45,61,0.14); }
 .nav-more-menu a { padding: 10px 12px; border-radius: 10px; white-space: nowrap; }
 .nav-more-menu a:hover, .nav-more-menu a:focus-visible, .nav-more-menu a[aria-current="page"] { background: var(--sky); color: var(--ink); }
+.beta-version-marker { justify-self: start; margin: 3px 10px 2px; padding: 3px 7px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); font-size: 10px; font-weight: 750; letter-spacing: 0.08em; line-height: 1.2; }
 .nav-cta { padding: 10px 16px; border: 1px solid var(--ink); border-radius: 999px; color: var(--ink) !important; }
 .desktop-install-entry { display: inline-flex; align-items: center; }
 .install-action { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--paper-2); color: var(--ink); font-size: 13px; font-weight: 800; line-height: 1.2; white-space: nowrap; cursor: pointer; transition: background 150ms ease, border-color 150ms ease, transform 150ms ease; }
@@ -412,6 +413,7 @@ footer { padding: 28px 0 40px; border-top: 1px solid var(--line); color: var(--i
   .mobile-more > summary:focus-visible, .mobile-tab:focus-visible { outline: 3px solid var(--ink); outline-offset: -3px; }
   .mobile-more-menu { position: absolute; right: max(12px, env(safe-area-inset-right, 0px)); bottom: calc(100% + 10px); width: min(390px, calc(100vw - 24px)); max-height: min(65dvh, 520px); overflow: auto; padding: 16px; border: 1px solid var(--line); border-radius: 20px; background: var(--paper-2); box-shadow: 0 18px 44px rgba(20,45,61,0.2); }
   .mobile-more-title { margin: 0 0 10px 2px; color: var(--ink-soft); font-size: 11px; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
+  .mobile-more-menu > .beta-version-marker { margin: 12px 0 0 2px; }
   .mobile-more-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .mobile-more-link { display: flex; min-width: 0; min-height: 46px; align-items: center; padding: 9px 11px; border-radius: 12px; color: var(--ink); font-size: 14px; font-weight: 700; line-height: 1.25; text-decoration: none; transition: background 150ms ease, transform 150ms ease; }
   .mobile-install-entry { grid-column: 1 / -1; margin-top: 4px; padding-top: 9px; border-top: 1px solid var(--line); }

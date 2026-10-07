@@ -55,7 +55,7 @@
     const readerPanel = make('section', 'lesson-reader challenge-reader');
     readerPanel.setAttribute('aria-label', 'Optional spoken challenge guide controls');
     readerPanel.append(make('h2', '', 'Read to me, section by section'));
-    const description = make('p', 'reader-description', 'Speech starts only when you choose it. The urgent advice stays visible above.');
+    const description = make('p', 'reader-description', 'Speech starts only when you choose it. The urgent advice stays visible above. Some device voices use an online speech service.');
     const controls = make('div', 'lesson-reader-controls');
     const play = make('button', 'button', '▶ Read this guide');
     play.type = 'button';

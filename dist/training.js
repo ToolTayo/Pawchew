@@ -68,7 +68,7 @@
     const readerPanel = make('section', 'lesson-reader');
     readerPanel.setAttribute('aria-label', 'Optional spoken lesson controls');
     const readerTitle = make('h3', '', 'Listen section by section');
-    const readerDescription = make('p', 'reader-description', 'Speech starts only when you choose it. The written lesson always stays on screen.');
+    const readerDescription = make('p', 'reader-description', 'Speech starts only when you choose it. The written lesson always stays on screen. Some device voices use an online speech service.');
     const controls = make('div', 'lesson-reader-controls');
     const play = make('button', 'button', '▶ Read this lesson');
     play.type = 'button';

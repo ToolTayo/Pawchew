@@ -112,7 +112,7 @@ for (const id of ['signal-dialog', 'signal-close', 'signal-prev', 'signal-next',
 }
 if (!libraryHtml.includes('aria-labelledby="read-title"')) throw new Error('Clue dialog needs an accessible title.');
 const appSource = await fs.readFile(path.join(projectRoot, 'app.js'), 'utf8');
-for (const required of ["mobile-tabbar", "Primary navigation", "./index.html", "./signals.html", "./training.html", "./challenges.html", "./cheat-sheet.html", "More to explore"]) {
+for (const required of ["mobile-tabbar", "Primary navigation", "./index.html", "./signals.html", "./training.html", "./challenges.html", "./cheat-sheet.html", "More to explore", "beta-version-marker", "Beta 3"]) {
   if (!appSource.includes(required)) throw new Error(`Responsive navigation is missing its ${required} destination or label.`);
 }
 const signalsSource = await fs.readFile(path.join(projectRoot, 'signals.js'), 'utf8');

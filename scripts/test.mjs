@@ -19,6 +19,7 @@ const data = new Map();
 const context = vm.createContext({
   console,
   URL,
+  URLSearchParams,
   window: {},
   document: { addEventListener() {}, querySelectorAll: () => [] },
   localStorage: { getItem: (key) => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) }
@@ -49,13 +50,25 @@ assert.equal(run('dailyLessons.length'), 6);
 const scenarioSearchable = Array.from(run('scenarioLibrary.map(scenario => `${scenario.title} ${scenario.tag} ${scenario.look} ${scenario.do} ${scenario.avoid}`.toLowerCase())'));
 for (const term of ['child', 'unsafe', 'food', 'walk', 'alone', 'doorbell']) assert.ok(scenarioSearchable.some((scenario) => scenario.includes(term)), `Challenge scenario deep-link search should find “${term}”.`);
 assert.match(source, /requestedSearch\.slice\(0, 80\)/, 'Scenario deep links should bound and safely initialize their search text');
-const scenarioUrl = run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html?keep=1#list', ' eating rocks ')`);
-assert.equal(scenarioUrl.searchParams.get('search'), ' eating rocks ', 'Typed scenario searches should be serializable into a back/refresh-safe URL');
+const scenarioUrl = run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html?keep=1', ' eating rocks ')`);
+assert.equal(new URLSearchParams(scenarioUrl.hash.slice(1)).get('search'), ' eating rocks ', 'Typed scenario searches should remain refresh-safe in the URL fragment');
+assert.equal(scenarioUrl.searchParams.has('search'), false, 'Search text must not enter HTTP query strings');
 assert.equal(scenarioUrl.searchParams.get('keep'), '1', 'Updating the scenario query should preserve unrelated parameters');
-assert.equal(scenarioUrl.hash, '#list', 'Updating the scenario query should preserve the current fragment');
-assert.equal(run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html?search=old', '   ').searchParams.has('search')`), false, 'Clearing scenario search should clear the URL query');
-assert.equal(run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html', 'x'.repeat(100)).searchParams.get('search').length`), 80, 'Scenario search deep links should remain bounded');
+const anchorSearchUrl = run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html#list', 'tail')`);
+assert.equal(anchorSearchUrl.hash, '#list&search=tail', 'Fragment search state should preserve unrelated in-page fragment state');
+assert.equal(run(`scenarioSearchUrl(${JSON.stringify(anchorSearchUrl.href)}, '').hash`), '#list', 'Clearing search should restore unrelated fragment state');
+assert.equal(run(`new URLSearchParams(scenarioSearchUrl('https://wagsignals.example/scenarios.html?search=old', '   ').hash.slice(1)).has('search')`), false, 'Clearing scenario search should clear the URL fragment state');
+assert.equal(run(`new URLSearchParams(scenarioSearchUrl('https://wagsignals.example/scenarios.html', 'x'.repeat(100)).hash.slice(1)).get('search').length`), 80, 'Scenario search deep links should remain bounded');
+const hostileSearchPayload = `<svg onload=alert(1)>&"'`;
+const hostileSearchUrl = run(`scenarioSearchUrl('https://wagsignals.example/scenarios.html', ${JSON.stringify(hostileSearchPayload)})`);
+assert.equal(hostileSearchUrl.search, '', 'Adversarial search text must not be placed in the HTTP request URL');
+assert.equal(new URLSearchParams(hostileSearchUrl.hash.slice(1)).get('search'), hostileSearchPayload, 'Adversarial search text should round-trip as inert URL-fragment data');
 assert.match(source, /history\.replaceState\(history\.state, '', scenarioSearchUrl\(window\.location\.href, search\.value\)\)/, 'Scenario search state should survive browser Back and refresh');
+assert.match(source, /initialUrl\.searchParams\.has\('search'\)/, 'Older shared query links should be migrated to local fragment state after opening');
+assert.match(trainingSource, /Some device voices use an online speech service/, 'Training speech controls should disclose that a device voice may use an online service');
+assert.match(challengesSource, /Some device voices use an online speech service/, 'Challenge speech controls should disclose that a device voice may use an online service');
+assert.match(signalsPageSource, /id="signal-search" type="search" maxlength="80"/, 'Body-language search must bound user input in the control');
+assert.match(signalSource, /if \(search\.value\.length > 80\) search\.value = search\.value\.slice\(0, 80\)/, 'Body-language search must also enforce its input bound in JavaScript');
 for (const [query, expectedTitle] of [
   ['my dog bites me', null],
   ["won't give toy back", 'Food or toy guarding'],

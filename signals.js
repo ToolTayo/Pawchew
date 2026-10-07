@@ -147,7 +147,11 @@ dialog.addEventListener('close', () => {
 clearFilters.addEventListener('click', () => { search.value = ''; activeCategory = 'All'; pageIndex = 0; renderFilters(); renderCards(); search.focus(); });
 previous.addEventListener('click', () => { pageIndex -= 1; renderCards(); count.focus(); });
 next.addEventListener('click', () => { pageIndex += 1; renderCards(); count.focus(); });
-search.addEventListener('input', () => { pageIndex = 0; renderCards(); });
+search.addEventListener('input', () => {
+  if (search.value.length > 80) search.value = search.value.slice(0, 80);
+  pageIndex = 0;
+  renderCards();
+});
 renderFilters();
 renderCards();
 const requested = new URLSearchParams(window.location.search).get('signal');
