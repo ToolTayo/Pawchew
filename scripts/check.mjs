@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pages = ['index.html', 'daily.html', 'quiz.html', 'signals.html', 'behaviors.html', 'training.html', 'challenges.html', 'body-map.html', 'saved.html', 'scenarios.html', 'cheat-sheet.html', 'sources-safety.html'];
 const requiredFiles = [
-  ...pages, 'styles.css', 'signals.js', 'app.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'favicon.svg', 'robots.txt', 'sitemap.xml',
+  ...pages, 'styles.css', 'signals.js', 'app.js', 'training-data.js', 'guided-reader.js', 'training.js', 'challenge-data.js', 'challenges.js', 'pwa-register.js', 'service-worker.js', 'manifest.webmanifest', 'favicon.svg', 'robots.txt', 'sitemap.xml',
+  'assets/wagsignals-192.png', 'assets/wagsignals-512.png', 'assets/wagsignals-maskable-512.png',
   'assets/dog-language-hero.webp', 'assets/guide-relaxed.webp', 'assets/guide-playful.webp',
   'assets/guide-interested.webp', 'assets/guide-uncertain.webp', 'assets/guide-stressed.webp',
   'assets/guide-fearful.webp', 'assets/guide-tucked-tail.webp', 'assets/guide-needs-space.webp', 'assets/guide-warning.webp',
@@ -25,7 +26,7 @@ const requiredFiles = [
 for (const relativePath of requiredFiles) await fs.access(path.join(projectRoot, relativePath));
 
 const htmlByPage = new Map();
-const cacheVersions = { styles: new Set(), app: new Set(), signals: new Set(), trainingData: new Set(), guidedReader: new Set(), training: new Set(), challengeData: new Set(), challenges: new Set() };
+const cacheVersions = { styles: new Set(), app: new Set(), signals: new Set(), trainingData: new Set(), guidedReader: new Set(), training: new Set(), challengeData: new Set(), challenges: new Set(), pwaRegister: new Set() };
 for (const page of pages) htmlByPage.set(page, await fs.readFile(path.join(projectRoot, page), 'utf8'));
 const allHtml = [...htmlByPage.values()].join('\n');
 if (/\bPawchew\b/i.test(allHtml)) throw new Error('Public page markup must preserve WagSignals branding, not the local project name.');
@@ -41,9 +42,12 @@ for (const [page, html] of htmlByPage) {
   }
   const stylesVersion = html.match(/styles\.css\?v=([\w-]+)/)?.[1];
   const appVersion = html.match(/app\.js\?v=([\w-]+)/)?.[1];
-  if (!stylesVersion || !appVersion) throw new Error(`${page} is missing cache-busted shared assets.`);
+  const pwaRegisterVersion = html.match(/pwa-register\.js\?v=([\w-]+)/)?.[1];
+  if (!stylesVersion || !appVersion || !pwaRegisterVersion) throw new Error(`${page} is missing cache-busted shared assets or PWA registration.`);
+  if (!html.includes('rel="manifest"') || !html.includes('apple-mobile-web-app-capable')) throw new Error(`${page} is missing install metadata.`);
   cacheVersions.styles.add(stylesVersion);
   cacheVersions.app.add(appVersion);
+  cacheVersions.pwaRegister.add(pwaRegisterVersion);
   if (page === 'signals.html') {
     const signalsVersion = html.match(/signals\.js\?v=([\w-]+)/)?.[1];
     if (!signalsVersion) throw new Error(`${page} is missing cache-busted signal interactions.`);
@@ -76,6 +80,26 @@ for (const [page, html] of htmlByPage) {
 }
 for (const [asset, versions] of Object.entries(cacheVersions)) {
   if (versions.size !== 1) throw new Error(`${asset} cache-busting must use one consistent source version across pages.`);
+}
+const manifest = JSON.parse(await fs.readFile(path.join(projectRoot, 'manifest.webmanifest'), 'utf8'));
+if (manifest.name !== 'WagSignals' || manifest.short_name !== 'WagSignals' || manifest.start_url !== './' || manifest.scope !== './' || manifest.display !== 'standalone') {
+  throw new Error('The install manifest must preserve WagSignals identity and use a relative standalone scope.');
+}
+for (const icon of manifest.icons) {
+  const iconPath = path.resolve(projectRoot, icon.src.replace(/^\.\//, ''));
+  const iconBytes = await fs.readFile(iconPath);
+  const expectedSize = Number(icon.sizes.split('x')[0]);
+  if (iconBytes.readUInt32BE(0) !== 0x89504e47 || iconBytes.readUInt32BE(16) !== expectedSize || iconBytes.readUInt32BE(20) !== expectedSize) {
+    throw new Error(`PWA icon ${icon.src} is not a valid ${expectedSize}×${expectedSize} PNG.`);
+  }
+  if (icon.purpose === 'maskable' && icon.src !== './assets/wagsignals-maskable-512.png') throw new Error('Maskable installation needs the dedicated safe-padded original icon.');
+}
+if (!manifest.icons.some((icon) => icon.sizes === '192x192' && icon.purpose === 'any') || !manifest.icons.some((icon) => icon.sizes === '512x512' && icon.purpose === 'any') || !manifest.icons.some((icon) => icon.purpose === 'maskable')) {
+  throw new Error('The manifest needs 192px, 512px, and maskable original icon variants.');
+}
+const serviceWorkerSource = await fs.readFile(path.join(projectRoot, 'service-worker.js'), 'utf8');
+if (/skipWaiting\s*\(/.test(serviceWorkerSource) || !serviceWorkerSource.includes("name.startsWith('wagsignals-shell-')") || !serviceWorkerSource.includes('wagsignals-images-v1')) {
+  throw new Error('Service-worker updates must wait safely and clean up only WagSignals-owned shell caches.');
 }
 const libraryHtml = htmlByPage.get('signals.html');
 for (const id of ['signal-dialog', 'signal-close', 'signal-prev', 'signal-next', 'signal-page', 'signal-clear']) {

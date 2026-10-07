@@ -10,6 +10,8 @@ const trainingSource = await fs.readFile(new URL('../training.js', import.meta.u
 const trainingDataSource = await fs.readFile(new URL('../training-data.js', import.meta.url), 'utf8');
 const challengeDataSource = await fs.readFile(new URL('../challenge-data.js', import.meta.url), 'utf8');
 const challengesSource = await fs.readFile(new URL('../challenges.js', import.meta.url), 'utf8');
+const serviceWorkerSource = await fs.readFile(new URL('../service-worker.js', import.meta.url), 'utf8');
+const pwaRegistrationSource = await fs.readFile(new URL('../pwa-register.js', import.meta.url), 'utf8');
 const data = new Map();
 const context = vm.createContext({
   console,
@@ -269,5 +271,124 @@ assert.ok(contrast(cssColor('--ink'), paper) >= 3, 'Keyboard focus should be vis
 assert.ok(contrast(sun, cssColor('--ink')) >= 3, 'Keyboard focus should be visible against dark panels');
 assert.match(stylesheet, /:focus-visible\s*\{\s*outline:\s*3px solid var\(--ink\)/, 'Default keyboard focus should use the dark high-contrast color');
 assert.match(stylesheet, /\.signal-dialog\s+:focus-visible[^}]*outline-color:\s*var\(--sun\)/, 'Dark panels need the contrasting light focus color');
+assert.doesNotMatch(serviceWorkerSource, /skipWaiting\s*\(/, 'Updates must not force-reload or take over existing reading sessions');
+assert.doesNotMatch(serviceWorkerSource, /localStorage|indexedDB/, 'Offline caching must not replace or manipulate local progress storage');
+let registrationLoadHandler;
+let registrationOptions;
+let serviceWorkerRegistration;
+vm.runInNewContext(pwaRegistrationSource, {
+  navigator: { serviceWorker: { register: (url, options) => { serviceWorkerRegistration = { url, options }; return Promise.resolve({}); } } },
+  window: { isSecureContext: true, addEventListener: (type, listener, options) => { if (type === 'load') { registrationLoadHandler = listener; registrationOptions = options; } } }
+});
+assert.equal(registrationOptions.once, true, 'PWA registration should be deferred until page load and run once');
+assert.equal(serviceWorkerRegistration, undefined, 'Registration must not delay the first page render');
+registrationLoadHandler();
+await Promise.resolve();
+assert.equal(serviceWorkerRegistration.url, './service-worker.js', 'Registration should use the local service-worker file');
+assert.equal(serviceWorkerRegistration.options.scope, './', 'The service worker should stay within the site-relative scope');
+let insecureRegistrationAttempted = false;
+vm.runInNewContext(pwaRegistrationSource, {
+  navigator: { serviceWorker: { register: () => { insecureRegistrationAttempted = true; } } },
+  window: { isSecureContext: false, addEventListener() { throw new Error('Insecure pages must not schedule registration.'); } }
+});
+assert.equal(insecureRegistrationAttempted, false, 'Service workers must not be attempted on insecure origins');
+
+const swScope = 'https://wagsignals.test/';
+const swListeners = new Map();
+let networkOnline = true;
+let clientsClaimed = false;
+const normalizeCacheKey = (request) => {
+  const url = new URL(typeof request === 'string' ? request : request.url, swScope);
+  url.search = '';
+  url.hash = '';
+  return url.href;
+};
+class TestCache {
+  constructor() { this.entries = new Map(); }
+  async addAll(urls) {
+    for (const item of urls) {
+      const absolute = new URL(item, swScope);
+      this.entries.set(normalizeCacheKey(absolute.href), new Response(`precache:${absolute.pathname}`));
+    }
+  }
+  async match(request) { return this.entries.get(normalizeCacheKey(request))?.clone(); }
+  async put(request, response) { this.entries.set(normalizeCacheKey(request), response.clone()); }
+}
+const cacheStore = new Map([
+  ['wagsignals-shell-old', new TestCache()],
+  ['wagsignals-images-v1', new TestCache()],
+  ['unrelated-product-cache', new TestCache()]
+]);
+const testCaches = {
+  async open(name) {
+    if (!cacheStore.has(name)) cacheStore.set(name, new TestCache());
+    return cacheStore.get(name);
+  },
+  async keys() { return [...cacheStore.keys()]; },
+  async delete(name) { return cacheStore.delete(name); }
+};
+const swSelf = {
+  registration: { scope: swScope },
+  location: { origin: new URL(swScope).origin },
+  clients: { async claim() { clientsClaimed = true; } },
+  addEventListener(type, listener) { swListeners.set(type, listener); }
+};
+vm.runInNewContext(serviceWorkerSource, {
+  self: swSelf,
+  caches: testCaches,
+  URL,
+  Response,
+  Promise,
+  fetch: async (request) => {
+    if (!networkOnline) throw new Error('offline');
+    return new Response(`network:${request.url}`);
+  }
+});
+async function runServiceWorkerLifecycle(type) {
+  let pending;
+  swListeners.get(type)({ waitUntil(promise) { pending = promise; } });
+  await pending;
+}
+await runServiceWorkerLifecycle('install');
+const shellCacheName = (await testCaches.keys()).find((name) => name.startsWith('wagsignals-shell-') && name !== 'wagsignals-shell-old');
+assert.ok(shellCacheName, 'Install should create a versioned WagSignals shell cache');
+const installedShell = await testCaches.open(shellCacheName);
+assert.match(await (await installedShell.match(`${swScope}scenarios.html`)).text(), /precache:\/scenarios\.html/, 'The route shell should be available to open offline');
+assert.match(await (await installedShell.match(`${swScope}assets/dog-language-hero.webp`)).text(), /precache:\/assets\/dog-language-hero\.webp/, 'The first offline home view should retain its hero illustration');
+await runServiceWorkerLifecycle('activate');
+assert.equal(clientsClaimed, true, 'Activation should take control after the browser-safe update lifecycle');
+assert.equal((await testCaches.keys()).includes('wagsignals-shell-old'), false, 'Activation should remove only superseded WagSignals shell caches');
+assert.equal((await testCaches.keys()).includes('unrelated-product-cache'), true, 'Activation must preserve caches owned by other apps');
+assert.equal((await testCaches.keys()).includes('wagsignals-images-v1'), true, 'Previously viewed images remain available across shell updates');
+
+async function dispatchFetch(request) {
+  let responsePromise;
+  swListeners.get('fetch')({ request, respondWith(response) { responsePromise = Promise.resolve(response); } });
+  return responsePromise ? { intercepted: true, response: await responsePromise } : { intercepted: false, response: null };
+}
+const pageRequest = (pathname, search = '') => ({
+  url: new URL(`${pathname}${search}`, swScope).href,
+  method: 'GET',
+  destination: 'document',
+  headers: new Headers()
+});
+networkOnline = false;
+const offlineScenario = await dispatchFetch(pageRequest('scenarios.html', '?search=stones'));
+assert.equal(offlineScenario.intercepted, true, 'Same-origin guide routes should be handled while offline');
+assert.match(await offlineScenario.response.text(), /precache:\/scenarios\.html/, 'Offline route queries should reuse their precached HTML without losing URL state');
+
+networkOnline = true;
+const imageUrl = `${swScope}assets/guide-fearful.webp`;
+const onlineImage = await dispatchFetch({ url: imageUrl, method: 'GET', destination: 'image', headers: new Headers() });
+assert.match(await onlineImage.response.text(), /network:.*guide-fearful\.webp/, 'An image should load normally online');
+const imageCache = await testCaches.open('wagsignals-images-v1');
+assert.match(await (await imageCache.match(imageUrl)).text(), /network:.*guide-fearful\.webp/, 'Successfully viewed images should be cached for later offline reading');
+networkOnline = false;
+const offlineImage = await dispatchFetch({ url: imageUrl, method: 'GET', destination: 'image', headers: new Headers() });
+assert.match(await offlineImage.response.text(), /network:.*guide-fearful\.webp/, 'A previously viewed illustration should remain available offline');
+assert.equal((await dispatchFetch({ ...pageRequest('scenarios.html'), url: 'https://outside.example/guide.html' })).intercepted, false, 'External links must not be intercepted or cached');
+assert.equal((await dispatchFetch({ ...pageRequest('scenarios.html'), method: 'POST' })).intercepted, false, 'Non-GET requests must not enter the offline cache');
+assert.equal((await dispatchFetch({ ...pageRequest('scenarios.html'), headers: new Headers({ range: 'bytes=0-20' }) })).intercepted, false, 'Range requests must bypass document caching');
+
 console.log(`Contrast: secondary text ${contrast(softInk, paper).toFixed(2)}:1; white on primary ${contrast('#ffffff', coral).toFixed(2)}:1; focus outline ${contrast(cssColor('--ink'), paper).toFixed(2)}:1 on light, ${contrast(sun, cssColor('--ink')).toFixed(2)}:1 on dark panels.`);
-console.log('Passed progress, body-language completeness, randomized quiz answer balance, persistence, contrast, and audio helper assertions.');
+console.log('Passed progress, body-language completeness, randomized quiz balance, persistence, contrast, audio, and PWA cache lifecycle/offline assertions.');

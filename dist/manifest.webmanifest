@@ -1,0 +1,31 @@
+{
+  "id": "./",
+  "name": "WagSignals",
+  "short_name": "WagSignals",
+  "description": "A practical guide to dog body language, behavior, safety, and kind training.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f8f5ee",
+  "theme_color": "#142d3d",
+  "icons": [
+    {
+      "src": "./assets/wagsignals-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/wagsignals-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/wagsignals-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
